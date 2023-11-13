@@ -1,43 +1,38 @@
 import { useCallback } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreen from './screens/HomeScreen';
+
+const Stack = createNativeStackNavigator();
+
 export default function App() {
 
   const [fontsLoaded] = useFonts({
     'Satoshi-Regular': require('./assets/fonts/Satoshi-Regular.otf'),
+    'Satoshi-Bold': require('./assets/fonts/Satoshi-Bold.otf'),
   });
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) {
-    return null;
+useCallback(async () => {
+  if (fontsLoaded) {
+    await SplashScreen.hideAsync();
   }
+}, [fontsLoaded]);
 
-  return (
-    <View style={styles.container}>
-      <Text>Nouvelle branche</Text>
-      <Text style={styles.textStyle}>PartnerMatch</Text>
-      <Text>Ouais ouais ouais</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+if (!fontsLoaded) {
+  return null;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  textStyle: {
-    fontFamily: 'Satoshi-Regular',
-    fontSize: 24,
-  },
-});
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen 
+          name="Home" 
+          component={HomeScreen} 
+          options={{ headerShown: false }} 
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
