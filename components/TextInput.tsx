@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   inputText: {
     fontFamily: 'Satoshi-Regular',
     height: 48,
-    margin: 12,
+    marginVertical: 12,
     borderWidth: 1,
     padding: 10,
     borderRadius: 12,

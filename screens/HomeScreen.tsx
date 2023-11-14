@@ -1,13 +1,14 @@
-import { Text, SafeAreaView, View, StyleSheet, Button } from 'react-native'
+import { Text, SafeAreaView, View, StyleSheet } from 'react-native'
 import React from 'react'
 import TestSvg from './../assets/images/monsvg.svg';
 import Title from '../components/Title';
 import TextInput from '../components/TextInput';
+import Button from '../components/Button';
 
 const HomeScreen = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.svgContainer}>
@@ -31,7 +32,6 @@ const HomeScreen = () => {
         />
         <Button
           title="Learn More"
-          color="#841584"
           accessibilityLabel="Learn more about this purple button"
         />
       </View>
@@ -41,6 +41,7 @@ const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
+    marginHorizontal: 12,
     marginTop: 100,
   },
   svgContainer: {
@@ -62,14 +63,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     maxWidth: 360,
     marginTop: 20
-  },
-  input: { 
-    height: 48,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderRadius: 12,
-    fontFamily: 'Satoshi-Regular',
   },
 });
 
