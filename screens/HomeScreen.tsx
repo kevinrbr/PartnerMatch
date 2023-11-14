@@ -1,7 +1,7 @@
-import { Text, SafeAreaView, View, StyleSheet, TextInput } from 'react-native'
+import { Text, SafeAreaView, View, StyleSheet, TextInput, Button } from 'react-native'
 import React from 'react'
 import TestSvg from './../assets/images/monsvg.svg';
-import { title1 } from './../common/styles';
+import Title from '../components/Title';
 
 const HomeScreen = () => {
   const [email, setEmail] = React.useState('');
@@ -14,7 +14,7 @@ const HomeScreen = () => {
         />
       </View>
       <View style={styles.textContainer}>
-        <Text style={title1}>Je me connecte</Text>
+        <Title variant='mainTitle'>Je me connecte</Title>
         <Text style={styles.text}>La recherche de partenaires de padel est désormais facile</Text>
       </View>
       <View>
@@ -30,6 +30,11 @@ const HomeScreen = () => {
           onChangeText={setPassword}
           value={password}
           secureTextEntry={true}
+        />
+        <Button
+          title="Learn More"
+          color="#841584"
+          accessibilityLabel="Learn more about this purple button"
         />
       </View>
     </SafeAreaView>
@@ -66,6 +71,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     borderRadius: 12,
+    fontFamily: 'Satoshi-Regular',
   },
 });
 
