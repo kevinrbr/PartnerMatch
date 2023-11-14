@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Satoshi-Regular',
     textAlign: 'center',
     maxWidth: 360,
-    marginTop: 20
+    marginTop: 16,
   },
 });
 

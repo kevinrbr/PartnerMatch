@@ -31,7 +31,7 @@ const buttonColor = getButtonColor(variant);
 const styles = StyleSheet.create({
     button: {
         marginVertical: 12,
-        fontFamily: 'Spartan-Regular',
+        fontFamily: 'Satoshi-Regular',
         height: 48,
         borderRadius: 12,
         display: 'flex',

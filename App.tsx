@@ -1,6 +1,4 @@
-import { useCallback } from 'react';
 import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './screens/HomeScreen';
@@ -13,12 +11,6 @@ export default function App() {
     'Satoshi-Regular': require('./assets/fonts/Satoshi-Regular.otf'),
     'Satoshi-Bold': require('./assets/fonts/Satoshi-Bold.otf'),
   });
-
-useCallback(async () => {
-  if (fontsLoaded) {
-    await SplashScreen.hideAsync();
-  }
-}, [fontsLoaded]);
 
 if (!fontsLoaded) {
   return null;
