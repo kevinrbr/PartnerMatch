@@ -1,6 +1,6 @@
 import { Text, SafeAreaView, View, StyleSheet } from 'react-native'
 import React from 'react'
-import TestSvg from './../assets/images/monsvg.svg';
+import LoginSvg from './../assets/images/loginSvg.svg';
 import Title from '../components/Title';
 import TextInput from '../components/TextInput';
 import Button from '../components/Button';
@@ -12,7 +12,7 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.svgContainer}>
-        <TestSvg 
+        <LoginSvg 
           width={100}
         />
       </View>
