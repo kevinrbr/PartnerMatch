@@ -1,11 +1,13 @@
-import { Text, SafeAreaView, View, StyleSheet, TextInput, Button } from 'react-native'
+import { Text, SafeAreaView, View, StyleSheet, Button } from 'react-native'
 import React from 'react'
 import TestSvg from './../assets/images/monsvg.svg';
 import Title from '../components/Title';
+import TextInput from '../components/TextInput';
 
 const HomeScreen = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.svgContainer}>
@@ -18,18 +20,14 @@ const HomeScreen = () => {
         <Text style={styles.text}>La recherche de partenaires de padel est désormais facile</Text>
       </View>
       <View>
-        <TextInput
-          style={styles.input}
-          placeholder="monemail@gmail.com"
-          onChangeText={setEmail}
-          value={email}
+        <TextInput 
+          placeholder="monemail@gmail.com" 
+          onInputChange={(value) => setEmail(value)}
         />
         <TextInput
-          style={styles.input}
           placeholder="Entrez votre mot de passe"
-          onChangeText={setPassword}
-          value={password}
           secureTextEntry={true}
+          onInputChange={(value) => setPassword(value)}
         />
         <Button
           title="Learn More"
