@@ -1,12 +1,18 @@
-import { StyleSheet, TextInput as NativeInputText, TextInputProps as NativeTextInputProps } from 'react-native'
+import { StyleSheet, TextInput as NativeInputText, TextInputProps as NativeTextInputProps, View, Text } from 'react-native'
 import React, { useState } from 'react'
 
 type TextInputProps = NativeTextInputProps & {
+  label?: string;
   onInputChange: (value: string) => void;
 };
 
-const TextInput = ({ onInputChange, ...props }: TextInputProps) => {
+const TextInput = ({label, onInputChange, ...props }: TextInputProps) => {
   const [inputValue, setInputValue] = useState('');
+  const [isFocused, setFocused] = useState(false);
+
+  const isStylized = () : boolean => {
+    return isFocused || inputValue !== '';
+  }
 
   const handleInputChange = (text: string) => {
     setInputValue(text);
@@ -14,23 +20,40 @@ const TextInput = ({ onInputChange, ...props }: TextInputProps) => {
   }
 
   return (
+    <View style={styles.container}>
+      { label && <Text style={styles.label}>{ label }</Text> }
       <NativeInputText 
-        style={styles.inputText}
+        style={[styles.inputText, isStylized() && styles.inputTextFocused]}
         value={inputValue}
         onChangeText={handleInputChange}
         {...props}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
       />
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginVertical: 12,
+  },
+  label: {
+    marginBottom: 6,
+    marginLeft: 4,
+    fontSize: 16,
+    fontFamily: 'Satoshi-Regular',
+  },
   inputText: {
     fontFamily: 'Satoshi-Regular',
     height: 48,
-    marginVertical: 12,
     borderWidth: 1,
     padding: 10,
     borderRadius: 12,
+    borderColor: '#8996A2',
+  },
+  inputTextFocused: {
+    borderColor: '#182A60',
   },
 })
 

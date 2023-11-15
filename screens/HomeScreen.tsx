@@ -24,11 +24,14 @@ const HomeScreen = () => {
         <TextInput 
           placeholder="monemail@gmail.com" 
           onInputChange={(value) => setEmail(value)}
+          autoFocus
+          label='Email'
         />
         <TextInput
           placeholder="Entrez votre mot de passe"
-          secureTextEntry={true}
           onInputChange={(value) => setPassword(value)}
+          secureTextEntry={true}
+          label='Mot de passe'
         />
         <Button
           title="Learn More"
@@ -54,7 +57,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: 30,
   },
   text: {
     color: '#4E5D6B',
