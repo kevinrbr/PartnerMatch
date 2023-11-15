@@ -19,7 +19,7 @@ const getButtonColor = (variant: 'primary' | 'secondary' | 'transparent' | 'tran
 };
   
 const Button = ({variant = 'primary', ...props}: ButtonProps ) => {
-const buttonColor = getButtonColor(variant);
+    const buttonColor = getButtonColor(variant);
 
   return (
     <View style={[styles[variant], styles.button]}>

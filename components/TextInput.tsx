@@ -1,5 +1,5 @@
 import { StyleSheet, TextInput as NativeInputText, TextInputProps as NativeTextInputProps, View, Text } from 'react-native'
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 type TextInputProps = NativeTextInputProps & {
   label?: string;
@@ -26,9 +26,9 @@ const TextInput = ({label, onInputChange, ...props }: TextInputProps) => {
         style={[styles.inputText, isStylized() && styles.inputTextFocused]}
         value={inputValue}
         onChangeText={handleInputChange}
-        {...props}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
+        {...props}
       />
     </View>
   )
