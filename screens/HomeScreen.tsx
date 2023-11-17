@@ -1,6 +1,7 @@
 import { Text, SafeAreaView, View, StyleSheet } from 'react-native'
 import { useState } from 'react'
 import LoginSvg from './../assets/images/loginSvg.svg';
+import GoogleSvg from './../assets/images/google.svg';
 import Title from '../components/Title';
 import TextInput from '../components/TextInput';
 import Button from '../components/Button';
@@ -26,12 +27,14 @@ const HomeScreen = () => {
         <TextInput 
           placeholder="monemail@gmail.com" 
           onInputChange={(value) => setEmail(value)}
+          autoCapitalize="none"
           autoFocus
           label='Email'
         />
         <TextInput
           placeholder="Entrez votre mot de passe"
           onInputChange={(value) => setPassword(value)}
+          autoCapitalize="none"
           secureTextEntry={true}
           label='Mot de passe'
         />
@@ -39,14 +42,22 @@ const HomeScreen = () => {
           <Checkbox 
             label='Se souvenir de moi'
             onCheckboxChange={(e) => setIsRememberMe(e)}
-            value={isRememberMe}  
+            value={isRememberMe}
           />
           <Text style={styles.forgottenPwd}>Mot de passe oublié</Text>
         </View>
         <Button
-          title="Learn More"
-          accessibilityLabel="Learn more about this purple button"
+          title="Se connecter"
+          accessibilityLabel="Bouton pour se connecter"
         />
+        <Text style={styles.orText}>ou</Text>
+        <Button
+          title="Se connecter avec Google"
+          accessibilityLabel="Bouton pour se connecter avec Google"
+          variant='transparentSecondary'
+        >
+          <GoogleSvg />
+        </Button>
       </View>
     </SafeAreaView>
   )
@@ -76,6 +87,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     maxWidth: 360,
     marginTop: 16,
+  },
+  orText: {
+    width: '100%',
+    textAlign: 'center',
+    marginVertical: 8,
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 16,
   },
   optionsContainer: {
     marginVertical: 20,

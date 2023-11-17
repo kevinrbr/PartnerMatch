@@ -5,10 +5,11 @@ import { useState } from 'react'
 type checkboxType = {
     label?: string;
     value?: boolean;
+    color?: string;
     onCheckboxChange: (value: boolean) => void;
 }
 
-const Checkbox = ({label, value, onCheckboxChange}: checkboxType) => {
+const Checkbox = ({label, value, color = '#000', onCheckboxChange}: checkboxType) => {
 
     const [isChecked, setIsChecked] = useState(value);
 
@@ -22,7 +23,7 @@ const Checkbox = ({label, value, onCheckboxChange}: checkboxType) => {
         <TouchableWithoutFeedback onPress={handleToggle}>
             <View style={styles.checkboxContainer}>
                 <View style={styles.checkboxIconContainer}>
-                    { isChecked && <CheckIcon size={16} /> }
+                    { isChecked && <CheckIcon size={16} color={color} /> }
                 </View>
                 { label && <Text style={styles.label}>{label}</Text> }
             </View>
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Satoshi-Regular',
         fontSize: 16,
         marginLeft: 10,
-    }
+    },
 })
 
 export default Checkbox

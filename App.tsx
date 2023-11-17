@@ -2,6 +2,7 @@ import { useFonts } from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './screens/HomeScreen';
+import { StyleSheet, View } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,14 +18,17 @@ if (!fontsLoaded) {
 }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen 
-          name="Home" 
-          component={HomeScreen} 
-          options={{ headerShown: false }} 
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+      <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen 
+              name="Home" 
+              component={HomeScreen} 
+              options={{ 
+                headerShown: false, 
+                contentStyle: {backgroundColor: '#fff'} 
+              }} 
+            />
+          </Stack.Navigator>
+      </NavigationContainer>
   );
 }

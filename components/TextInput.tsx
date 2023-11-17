@@ -23,7 +23,11 @@ const TextInput = ({label, onInputChange, ...props }: TextInputProps) => {
     <View style={styles.container}>
       { label && <Text style={styles.label}>{ label }</Text> }
       <NativeInputText 
-        style={[styles.inputText, isStylized() && styles.inputTextFocused]}
+        style={[
+          styles.inputText,
+          isStylized() && styles.inputTextFocused,
+          inputValue !== '' && styles.inputTextNotEmpty
+        ]}
         value={inputValue}
         onChangeText={handleInputChange}
         onFocus={() => setFocused(true)}
@@ -54,6 +58,9 @@ const styles = StyleSheet.create({
   },
   inputTextFocused: {
     borderColor: '#182A60',
+  },
+  inputTextNotEmpty: {
+    backgroundColor: '#F8F9FC',
   },
 })
 

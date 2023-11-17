@@ -1,8 +1,9 @@
 import { StyleSheet, Button as NativeButton, ButtonProps as NativeButtonProps, View } from 'react-native'
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 type ButtonProps = NativeButtonProps & {
-    variant?: 'primary' | 'secondary' | 'transparent';
+    variant?: 'primary' | 'secondary' | 'transparent' | 'transparentSecondary';
+    children?: ReactNode;
 };
 
 const getButtonColor = (variant: 'primary' | 'secondary' | 'transparent' | 'transparentSecondary'): string => {
@@ -18,11 +19,12 @@ const getButtonColor = (variant: 'primary' | 'secondary' | 'transparent' | 'tran
     }
 };
   
-const Button = ({variant = 'primary', ...props}: ButtonProps ) => {
+const Button = ({variant = 'primary', children, ...props}: ButtonProps ) => {
     const buttonColor = getButtonColor(variant);
 
   return (
     <View style={[styles[variant], styles.button]}>
+        { children }
         <NativeButton {...props} color={buttonColor} />
     </View>
   )
@@ -35,6 +37,7 @@ const styles = StyleSheet.create({
         height: 48,
         borderRadius: 12,
         display: 'flex',
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
@@ -47,13 +50,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#182A60',
     },
     transparent: {
-        backgroundColor: 'inherit',
+        backgroundColor: 'none',
         borderWidth: 1,
         borderColor: '#FF7131',
         borderStyle: 'solid',
     },
     transparentSecondary: {
-        backgroundColor: 'inherit',
+        backgroundColor: 'none',
         borderWidth: 1,
         borderColor: '#182A60',
         borderStyle: 'solid',
