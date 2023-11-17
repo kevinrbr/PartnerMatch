@@ -6,6 +6,7 @@ import Title from '../components/Title';
 import TextInput from '../components/TextInput';
 import Button from '../components/Button';
 import Checkbox from '../components/Checkbox';
+import Separator from '../components/Separator';
 
 const HomeScreen = () => {
   const [email, setEmail] = useState('');
@@ -50,7 +51,7 @@ const HomeScreen = () => {
           title="Se connecter"
           accessibilityLabel="Bouton pour se connecter"
         />
-        <Text style={styles.orText}>ou</Text>
+        <Separator />
         <Button
           title="Se connecter avec Google"
           accessibilityLabel="Bouton pour se connecter avec Google"
@@ -87,13 +88,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     maxWidth: 360,
     marginTop: 16,
-  },
-  orText: {
-    width: '100%',
-    textAlign: 'center',
-    marginVertical: 8,
-    fontFamily: 'Satoshi-Regular',
-    fontSize: 16,
   },
   optionsContainer: {
     marginVertical: 20,
