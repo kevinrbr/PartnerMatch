@@ -1,6 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 
-const Separator = () => {
+type Separatorprops =  {
+    text: string;
+  };
+
+const Separator = ({ text }: Separatorprops) => {
   return (
     <View style={styles.separatorContainer}>
         <View style={styles.leftLine} />

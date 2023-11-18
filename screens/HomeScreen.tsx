@@ -15,11 +15,6 @@ const HomeScreen = () => {
   
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.svgContainer}>
-        <LoginSvg 
-          width={100}
-        />
-      </View>
       <View style={styles.textContainer}>
         <Title variant='mainTitle'>Je me connecte</Title>
         <Text style={styles.text}>La recherche de partenaires de padel est désormais facile</Text>
@@ -51,7 +46,7 @@ const HomeScreen = () => {
           title="Se connecter"
           accessibilityLabel="Bouton pour se connecter"
         />
-        <Separator />
+        <Separator text='ou'/>
         <Button
           title="Se connecter avec Google"
           accessibilityLabel="Bouton pour se connecter avec Google"
@@ -67,7 +62,9 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 12,
-    marginTop: 100,
+    display: 'flex',
+    justifyContent: 'center',
+    height: '100%',
   },
   svgContainer: {
     display: 'flex',
