@@ -8,13 +8,29 @@ import Button from '../components/Button';
 import Separator from '../components/Separator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/routes';
+import { supabase } from '../supabase';
+import { Alert } from 'react-native';
 
 type SignInNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignIn'>;
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false)
+
   const navigation = useNavigation<SignInNavigationProp>();
+
+  async function signInWithEmail() {
+    setLoading(true)
+    const { error, data } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    })
+
+    console.log(data);
+    if (error) Alert.alert(error.message)
+    setLoading(false)
+  }
 
   const navigateToSignUp = () => {
     navigation.navigate('SignUp');
@@ -47,6 +63,8 @@ const SignIn = () => {
         <Button
           title="Se connecter"
           accessibilityLabel="Bouton pour se connecter"
+          disabled={loading} 
+          onPress={() => signInWithEmail()}
         />
         <TouchableOpacity onPress={navigateToSignUp}>
           <View style={styles.redirectSignUpTextContainer}>

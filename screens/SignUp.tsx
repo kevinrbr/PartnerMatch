@@ -1,4 +1,4 @@
-import { Text, SafeAreaView, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { Text, SafeAreaView, View, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import GoogleSvg from './../assets/images/google.svg';
@@ -8,13 +8,31 @@ import Button from '../components/Button';
 import Separator from '../components/Separator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/routes';
+import { supabase } from '../supabase';
 
 type SignUpNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false)
+
   const navigation = useNavigation<SignUpNavigationProp>();
+
+  async function signUpWithEmail() {
+    setLoading(true)
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+    })
+
+    if (error) Alert.alert(error.message)
+    if (!session) Alert.alert('Please check your inbox for email verification!')
+    setLoading(false)
+  }
 
   const navigateToSignUp = () => {
     navigation.navigate('SignIn');
@@ -44,6 +62,8 @@ const SignUp = () => {
         <Button
           title="S'inscrire"
           accessibilityLabel="Bouton pour se connecter"
+          disabled={loading} 
+          onPress={() => signUpWithEmail()}
         />
         <TouchableOpacity onPress={navigateToSignUp}>
           <View style={styles.redirectSignUpTextContainer}>
