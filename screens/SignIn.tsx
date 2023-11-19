@@ -1,18 +1,23 @@
-import { Text, SafeAreaView, View, StyleSheet } from 'react-native'
+import { Text, SafeAreaView, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { useState } from 'react'
-import LoginSvg from './../assets/images/loginSvg.svg';
+import { useNavigation } from '@react-navigation/native';
 import GoogleSvg from './../assets/images/google.svg';
 import Title from '../components/Title';
 import TextInput from '../components/TextInput';
 import Button from '../components/Button';
-import Checkbox from '../components/Checkbox';
 import Separator from '../components/Separator';
 
-const HomeScreen = () => {
+
+const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isRememberMe, setIsRememberMe] = useState<boolean>(false);
-  
+  const navigation = useNavigation();
+
+  const navigateToSignUp = () => {
+    navigation.navigate('SignUp');
+  };
+
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.textContainer}>
@@ -35,17 +40,18 @@ const HomeScreen = () => {
           label='Mot de passe'
         />
         <View style={styles.optionsContainer}>
-          <Checkbox 
-            label='Se souvenir de moi'
-            onCheckboxChange={(e) => setIsRememberMe(e)}
-            value={isRememberMe}
-          />
           <Text style={styles.forgottenPwd}>Mot de passe oublié</Text>
         </View>
         <Button
           title="Se connecter"
           accessibilityLabel="Bouton pour se connecter"
         />
+        <TouchableOpacity onPress={navigateToSignUp}>
+          <View style={styles.redirectSignUpTextContainer}>
+            <Text style={styles.redirectSignUpTextLeft}>Pas encore de compte ?</Text>
+            <Text style={styles.redirectSignUpTextRight} >S'inscrire</Text>
+          </View>
+        </TouchableOpacity>
         <Separator text='ou'/>
         <Button
           title="Se connecter avec Google"
@@ -87,7 +93,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   optionsContainer: {
-    marginVertical: 20,
+    marginBottom: 10,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -97,6 +103,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Satoshi-Regular',
   },
+  redirectSignUpTextContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'center',
+  },
+  redirectSignUpTextLeft: {
+    fontSize: 13,
+    fontFamily: 'Satoshi-Regular',
+    fontStyle: 'italic',
+    color: '#4E5D6B',
+  },
+  redirectSignUpTextRight: {
+    fontSize: 13,
+    fontFamily: 'Satoshi-Bold',
+    fontStyle: 'italic',
+    color: '#182A60',
+  }
 });
 
-export default HomeScreen
+export default SignIn

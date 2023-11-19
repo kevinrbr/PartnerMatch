@@ -1,9 +1,15 @@
 import { useFonts } from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './screens/HomeScreen';
+import SignIn from './screens/SignIn';
+import SignUp from './screens/SignUp';
 
-const Stack = createNativeStackNavigator();
+type RootStackParamList = {
+  SignIn: undefined;
+  SignUp: undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
 
@@ -20,8 +26,16 @@ if (!fontsLoaded) {
       <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen 
-              name="Home" 
-              component={HomeScreen} 
+              name="SignIn" 
+              component={SignIn} 
+              options={{ 
+                headerShown: false, 
+                contentStyle: {backgroundColor: '#fff'} 
+              }} 
+            />
+            <Stack.Screen 
+              name="SignUp" 
+              component={SignUp} 
               options={{ 
                 headerShown: false, 
                 contentStyle: {backgroundColor: '#fff'} 

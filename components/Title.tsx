@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     mainTitle: {
         fontSize: 32,
         fontFamily: 'Satoshi-Bold',
+        fontStyle: 'italic',
     },
     subTitle: {
         fontSize: 24,
