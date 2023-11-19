@@ -7,9 +7,9 @@ type Separatorprops =  {
 const Separator = ({ text }: Separatorprops) => {
   return (
     <View style={styles.separatorContainer}>
-        <View style={styles.leftLine} />
+        <View style={styles.line} />
         <Text style={styles.text}>ou</Text>
-        <View style={styles.rightLine} />
+        <View style={styles.line} />
     </View>
   )
 }
@@ -19,23 +19,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        marginVertical: 8,
       },
-    leftLine: {
+      line: {
         flex: 1,
-        height: 1,
+        height: 0.5,
         backgroundColor: 'black',
     },
     text: {
         textAlign: 'center',
-        marginVertical: 8,
         fontFamily: 'Satoshi-Regular',
         fontSize: 16,
         marginHorizontal: 10,
-    },
-    rightLine: {
-        flex: 1,
-        height: 1,
-        backgroundColor: 'black',
+        marginBottom: 5,
     },
 })
 

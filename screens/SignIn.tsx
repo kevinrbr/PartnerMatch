@@ -20,7 +20,6 @@ const SignIn = () => {
     navigation.navigate('SignUp');
   };
 
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.textContainer}>
@@ -52,7 +51,7 @@ const SignIn = () => {
         <TouchableOpacity onPress={navigateToSignUp}>
           <View style={styles.redirectSignUpTextContainer}>
             <Text style={styles.redirectSignUpTextLeft}>Pas encore de compte ?</Text>
-            <Text style={styles.redirectSignUpTextRight} >S'inscrire</Text>
+            <Text style={styles.redirectSignUpTextRight}>S'inscrire</Text>
           </View>
         </TouchableOpacity>
         <Separator text='ou'/>
@@ -123,6 +122,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Satoshi-Bold',
     fontStyle: 'italic',
     color: '#182A60',
+    marginLeft: 6,
   }
 });
 
