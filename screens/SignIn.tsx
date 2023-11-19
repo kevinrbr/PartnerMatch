@@ -6,12 +6,15 @@ import Title from '../components/Title';
 import TextInput from '../components/TextInput';
 import Button from '../components/Button';
 import Separator from '../components/Separator';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types/routes';
 
+type SignInNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignIn'>;
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigation = useNavigation();
+  const navigation = useNavigation<SignInNavigationProp>();
 
   const navigateToSignUp = () => {
     navigation.navigate('SignUp');
