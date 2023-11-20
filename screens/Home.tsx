@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <SafeAreaView>
       <Text>Home</Text>
-      <Button title="deconnexion" onPress={signOut}/>
+      <Button title="deconnexion" onPress={signOut} />
     </SafeAreaView>
   )
 }

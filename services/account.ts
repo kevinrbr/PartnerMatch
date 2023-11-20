@@ -1,6 +1,6 @@
 import { supabaseAuth } from "./constants";
 
-export async function signInWithEmail(email: string, password: string) {
+export const signInWithEmail = async (email: string, password: string) => {
   const { error, data } = await supabaseAuth.signInWithPassword({
     email: email,
     password: password,
@@ -11,7 +11,7 @@ export async function signInWithEmail(email: string, password: string) {
   return { data, error };
 }
 
-export async function signUpWithEmail(email: string, password: string) {
+export const signUpWithEmail = async (email: string, password: string) => {
   const {
     data: { session },
     error,
@@ -23,7 +23,7 @@ export async function signUpWithEmail(email: string, password: string) {
   return { error, session };
 }
 
-export async function signOut() {
+export const signOut = async () => {
   const { error } = await supabaseAuth.signOut();
 
   if (error) {

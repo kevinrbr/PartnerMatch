@@ -19,9 +19,9 @@ const SignUp = () => {
 
   const navigation = useNavigation<SignUpNavigationProp>();
 
-  async function signUp() {
+  const signUp = async () => {
     setLoading(true)
-    const { error, session } = await signUpWithEmail(email, password);
+    const { error, session } = await signUpWithEmail(email, password);
     if (error) Alert.alert(error.message)
     if (!session) Alert.alert('Please check your inbox for email verification!')
     setLoading(false)
@@ -38,8 +38,8 @@ const SignUp = () => {
         <Text style={styles.text}>La recherche de partenaires de padel est désormais facile</Text>
       </View>
       <View>
-        <TextInput 
-          placeholder="monemail@gmail.com" 
+        <TextInput
+          placeholder="monemail@gmail.com"
           onInputChange={(value) => setEmail(value)}
           autoCapitalize="none"
           autoFocus
@@ -55,7 +55,7 @@ const SignUp = () => {
         <Button
           title="S'inscrire"
           accessibilityLabel="Bouton pour se connecter"
-          disabled={loading} 
+          disabled={loading}
           onPress={() => signUp()}
         />
         <TouchableOpacity onPress={navigateToSignUp}>
@@ -63,7 +63,7 @@ const SignUp = () => {
             <Text style={styles.redirectSignUpTextLeft}>J'ai déjà un compte</Text>
           </View>
         </TouchableOpacity>
-        <Separator text='ou'/>
+        <Separator text='ou' />
         <Button
           title="Se connecter avec Google"
           accessibilityLabel="Bouton pour se connecter avec Google"

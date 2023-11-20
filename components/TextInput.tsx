@@ -6,11 +6,11 @@ type TextInputProps = NativeTextInputProps & {
   onInputChange: (value: string) => void;
 };
 
-const TextInput = ({label, onInputChange, ...props }: TextInputProps) => {
+const TextInput = ({ label, onInputChange, ...props }: TextInputProps) => {
   const [inputValue, setInputValue] = useState('');
   const [isFocused, setFocused] = useState(false);
 
-  const isStylized = () : boolean => {
+  const isStylized = (): boolean => {
     return isFocused || inputValue !== '';
   }
 
@@ -21,8 +21,8 @@ const TextInput = ({label, onInputChange, ...props }: TextInputProps) => {
 
   return (
     <View style={styles.container}>
-      { label && <Text style={styles.label}>{ label }</Text> }
-      <NativeInputText 
+      {label && <Text style={styles.label}>{label}</Text>}
+      <NativeInputText
         style={[
           styles.inputText,
           isStylized() && styles.inputTextFocused,
@@ -32,6 +32,7 @@ const TextInput = ({label, onInputChange, ...props }: TextInputProps) => {
         onChangeText={handleInputChange}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
+
         {...props}
       />
     </View>

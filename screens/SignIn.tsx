@@ -23,7 +23,7 @@ const SignIn = () => {
 
   const navigation = useNavigation<SignInNavigationProp>();
 
-  async function handleLogin() {
+  const handleLogin = async () => {
     setLoading(true);
     await signInWithEmail(email, password);
 
@@ -49,14 +49,14 @@ const SignIn = () => {
         <Text style={styles.text}>La recherche de partenaires de padel est désormais facile</Text>
       </View>
       <View>
-        <TextInput 
-          placeholder="monemail@gmail.com" 
+        <TextInput
+          placeholder="monemail@gmail.com"
           onInputChange={(value) => setEmail(value)}
           autoCapitalize="none"
           autoFocus
           label='Email'
         />
-        { emailError && <TextError errorMsg={emailError} /> }
+        {emailError && <TextError errorMsg={emailError} />}
         <TextInput
           placeholder="Entrez votre mot de passe"
           onInputChange={(value) => setPassword(value)}
@@ -64,14 +64,14 @@ const SignIn = () => {
           secureTextEntry={true}
           label='Mot de passe'
         />
-        { passwordError && <TextError errorMsg={passwordError} /> }
+        {passwordError && <TextError errorMsg={passwordError} />}
         <View style={styles.optionsContainer}>
           <Text style={styles.forgottenPwd}>Mot de passe oublié</Text>
         </View>
         <Button
           title="Se connecter"
           accessibilityLabel="Bouton pour se connecter"
-          disabled={loading} 
+          disabled={loading}
           onPress={() => handleLogin()}
         />
         <TouchableOpacity onPress={navigateToSignUp}>
@@ -80,7 +80,7 @@ const SignIn = () => {
             <Text style={styles.redirectSignUpTextRight}>S'inscrire</Text>
           </View>
         </TouchableOpacity>
-        <Separator text='ou'/>
+        <Separator text='ou' />
         <Button
           title="Se connecter avec Google"
           accessibilityLabel="Bouton pour se connecter avec Google"
