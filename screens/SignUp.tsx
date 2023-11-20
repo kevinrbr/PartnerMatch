@@ -9,6 +9,7 @@ import Separator from '../components/Separator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/routes';
 import { supabase } from '../supabase';
+import { signUpWithPassword } from '../services/account';
 
 type SignUpNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
 
@@ -21,14 +22,7 @@ const SignUp = () => {
 
   async function signUpWithEmail() {
     setLoading(true)
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-    })
-
+    const { error, session } = await signUpWithPassword(email, password);
     if (error) Alert.alert(error.message)
     if (!session) Alert.alert('Please check your inbox for email verification!')
     setLoading(false)

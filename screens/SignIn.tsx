@@ -10,6 +10,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/routes';
 import { supabase } from '../supabase';
 import { Alert } from 'react-native';
+import { signInWithPassword } from '../services/account';
 
 type SignInNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignIn'>;
 
@@ -21,15 +22,10 @@ const SignIn = () => {
   const navigation = useNavigation<SignInNavigationProp>();
 
   async function signInWithEmail() {
-    setLoading(true)
-    const { error, data } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    })
-
-    console.log(data);
-    if (error) Alert.alert(error.message)
-    setLoading(false)
+    setLoading(true);
+    const { error } = await signInWithPassword(email, password);
+    if (error) Alert.alert(error.message);
+    setLoading(false);
   }
 
   const navigateToSignUp = () => {
