@@ -8,7 +8,7 @@ import Button from '../components/Button';
 import Separator from '../components/Separator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/routes';
-import { signUpWithPassword } from '../services/account';
+import { signUpWithEmail } from '../services/account';
 
 type SignUpNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
 
@@ -19,9 +19,9 @@ const SignUp = () => {
 
   const navigation = useNavigation<SignUpNavigationProp>();
 
-  async function signUpWithEmail() {
+  async function signUp() {
     setLoading(true)
-    const { error, session } = await signUpWithPassword(email, password);
+    const { error, session } = await signUpWithEmail(email, password);
     if (error) Alert.alert(error.message)
     if (!session) Alert.alert('Please check your inbox for email verification!')
     setLoading(false)
@@ -56,7 +56,7 @@ const SignUp = () => {
           title="S'inscrire"
           accessibilityLabel="Bouton pour se connecter"
           disabled={loading} 
-          onPress={() => signUpWithEmail()}
+          onPress={() => signUp()}
         />
         <TouchableOpacity onPress={navigateToSignUp}>
           <View style={styles.redirectSignUpTextContainer}>

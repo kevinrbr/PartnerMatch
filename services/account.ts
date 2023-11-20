@@ -11,7 +11,7 @@ export async function signInWithEmail(email: string, password: string) {
   return { data, error };
 }
 
-export async function signUpWithPassword(email: string, password: string) {
+export async function signUpWithEmail(email: string, password: string) {
   const {
     data: { session },
     error,
