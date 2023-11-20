@@ -8,7 +8,6 @@ import Button from '../components/Button';
 import Separator from '../components/Separator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/routes';
-import { supabase } from '../supabase';
 import { signUpWithPassword } from '../services/account';
 
 type SignUpNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
