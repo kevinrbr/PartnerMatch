@@ -8,22 +8,33 @@ import Button from '../components/Button';
 import Separator from '../components/Separator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/routes';
-import { Alert } from 'react-native';
-import { signInWithPassword } from '../services/account';
+import { signInWithEmail } from '../services/account';
+import validator from 'validator';
+import TextError from '../components/TextError';
 
 type SignInNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignIn'>;
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
   const navigation = useNavigation<SignInNavigationProp>();
 
-  async function signInWithEmail() {
+  async function handleLogin() {
     setLoading(true);
-    const { error } = await signInWithPassword(email, password);
-    if (error) Alert.alert(error.message);
+    await signInWithEmail(email, password);
+
+    if (!validator.isEmail(email)) {
+      setEmailError('Veuillez entrer une adresse e-mail valide.');
+    }
+
+    if (password.length < 6) {
+      setPasswordError('Le mot de passe doit contenir au moins 6 caractères.');
+    }
+
     setLoading(false);
   }
 
@@ -45,6 +56,7 @@ const SignIn = () => {
           autoFocus
           label='Email'
         />
+        { emailError && <TextError errorMsg={emailError} /> }
         <TextInput
           placeholder="Entrez votre mot de passe"
           onInputChange={(value) => setPassword(value)}
@@ -52,6 +64,7 @@ const SignIn = () => {
           secureTextEntry={true}
           label='Mot de passe'
         />
+        { passwordError && <TextError errorMsg={passwordError} /> }
         <View style={styles.optionsContainer}>
           <Text style={styles.forgottenPwd}>Mot de passe oublié</Text>
         </View>
@@ -59,7 +72,7 @@ const SignIn = () => {
           title="Se connecter"
           accessibilityLabel="Bouton pour se connecter"
           disabled={loading} 
-          onPress={() => signInWithEmail()}
+          onPress={() => handleLogin()}
         />
         <TouchableOpacity onPress={navigateToSignUp}>
           <View style={styles.redirectSignUpTextContainer}>
