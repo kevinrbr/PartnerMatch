@@ -11,7 +11,7 @@ import { RootStackParamList } from '../types/routes';
 import { signInWithEmail } from '../services/account';
 import validator from 'validator';
 import TextError from '../components/TextError';
-import { AuthApiError } from '@supabase/supabase-js';
+import { AuthApiError, isAuthApiError } from '@supabase/supabase-js';
 
 type SignInNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignIn'>;
 
@@ -47,8 +47,8 @@ const SignIn = () => {
       setEmailError(null);
     }
   
-    if (password.length < 8) {
-      setPasswordError('Le mot de passe doit contenir au moins 8 caractères.');
+    if (password.length < 6) {
+      setPasswordError('Le mot de passe doit contenir au moins 6 caractères.');
       hasError = true;
     } else {
       setPasswordError(null);
@@ -65,7 +65,7 @@ const SignIn = () => {
         throw error;
       }
     } catch (error) {
-      if (error instanceof AuthApiError && error.message === 'Invalid login credentials') {
+      if (error instanceof AuthApiError) {
         Alert.alert(
           'Connexion',
           'Identifiants invalides. Veuillez vérifier votre email et votre mot de passe.'
