@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
   },
   forgottenPwd: {
     width: 'auto',
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: 'Satoshi-Regular',
   },
   redirectSignUpTextContainer: {
