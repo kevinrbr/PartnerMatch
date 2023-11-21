@@ -11,7 +11,6 @@ import { RootStackParamList } from '../types/routes';
 import { signUpWithEmail } from '../services/account';
 import TextError from '../components/TextError';
 import validator from 'validator';
-import { AuthApiError } from '@supabase/supabase-js';
 
 type SignUpNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
 
@@ -75,33 +74,39 @@ const SignUp = () => {
         <Text style={styles.text}>La recherche de partenaires de padel est désormais facile</Text>
       </View>
       <View>
-        <TextInput
-          placeholder="monemail@gmail.com"
-          onInputChange={(value) => setEmail(value)}
-          autoCapitalize="none"
-          autoFocus
-          label='Email'
-        />
-        {emailError && <TextError errorMsg={emailError} />}
-        <TextInput
-          placeholder="Entrez votre mot de passe"
-          onInputChange={(value) => setPassword(value)}
-          autoCapitalize="none"
-          secureTextEntry={true}
-          label='Mot de passe'
-        />
-        {passwordError && <TextError errorMsg={passwordError} />}
-        <Button
-          title="S'inscrire"
-          accessibilityLabel="Bouton pour se connecter"
-          disabled={loading}
-          onPress={() => handleRegister()}
-        />
-        <TouchableOpacity onPress={navigateToSignIn}>
-          <View style={styles.redirectSignUpTextContainer}>
-            <Text style={styles.redirectSignUpTextLeft}>J'ai déjà un compte</Text>
+        <View style={styles.formContainer}>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="monemail@gmail.com"
+              onInputChange={(value) => setEmail(value)}
+              autoCapitalize="none"
+              autoFocus
+              label='Email'
+            />
+            {emailError && <TextError errorMsg={emailError} />}
           </View>
-        </TouchableOpacity>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Entrez votre mot de passe"
+              onInputChange={(value) => setPassword(value)}
+              autoCapitalize="none"
+              secureTextEntry={true}
+              label='Mot de passe'
+            />
+            {passwordError && <TextError errorMsg={passwordError} />}
+          </View>
+          <Button
+            title="S'inscrire"
+            accessibilityLabel="Bouton pour se connecter"
+            disabled={loading}
+            onPress={() => handleRegister()}
+          />
+          <TouchableOpacity onPress={navigateToSignIn}>
+            <View style={styles.redirectSignUpTextContainer}>
+              <Text style={styles.redirectSignUpTextLeft}>J'ai déjà un compte</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
         <Separator text='ou' />
         <Button
           title="Se connecter avec Google"
@@ -121,6 +126,9 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     height: '100%',
+  },
+  formContainer: {
+    marginBottom: 20,
   },
   svgContainer: {
     display: 'flex',
@@ -143,14 +151,14 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   optionsContainer: {
-    marginBottom: 10,
+    marginVertical: 10,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   forgottenPwd: {
     width: 'auto',
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Satoshi-Regular',
   },
   redirectSignUpTextContainer: {
@@ -164,6 +172,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Satoshi-Regular',
     fontStyle: 'italic',
     color: '#4E5D6B',
+  },
+  inputContainer: {
+    marginVertical: 8,
   },
 });
 

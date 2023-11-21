@@ -20,7 +20,7 @@ const TextInput = ({ label, onInputChange, ...props }: TextInputProps) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View>
       {label && <Text style={styles.label}>{label}</Text>}
       <NativeInputText
         style={[
@@ -32,7 +32,6 @@ const TextInput = ({ label, onInputChange, ...props }: TextInputProps) => {
         onChangeText={handleInputChange}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-
         {...props}
       />
     </View>
@@ -40,9 +39,6 @@ const TextInput = ({ label, onInputChange, ...props }: TextInputProps) => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: 12,
-  },
   label: {
     marginBottom: 6,
     marginLeft: 4,

@@ -1,13 +1,13 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TextProps } from 'react-native'
 import React from 'react'
 
-type TextErrorProps = {
+type TextErrorProps = TextProps &  {
     errorMsg: string;
 }
 
-const TextError = ({errorMsg}: TextErrorProps) => {
+const TextError = ({errorMsg, ...props}: TextErrorProps) => {
   return (
-      <Text style={styles.error}>{errorMsg}</Text>
+      <Text {...props} style={styles.error}>{errorMsg}</Text>
   )
 }
 
@@ -16,7 +16,8 @@ export default TextError;
 const styles = StyleSheet.create({
     error: {
         color: 'red',
-        fontSize: 13,
+        fontSize: 12,
         fontFamily: 'Satoshi-Regular',
+        marginTop: 6,
     },
 });

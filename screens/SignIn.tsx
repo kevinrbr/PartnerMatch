@@ -91,39 +91,45 @@ const SignIn = () => {
         <Text style={styles.text}>La recherche de partenaires de padel est désormais facile</Text>
       </View>
       <View>
-        <TextInput
-          placeholder="monemail@gmail.com"
-          onInputChange={(value) => setEmail(value)}
-          autoCapitalize="none"
-          autoFocus
-          label='Email'
-          value={email}
-        />
-        {emailError && <TextError errorMsg={emailError} />}
-        <TextInput
-          placeholder="Entrez votre mot de passe"
-          onInputChange={(value) => setPassword(value)}
-          autoCapitalize="none"
-          secureTextEntry={true}
-          label='Mot de passe'
-          value={password}
-        />
-        {passwordError && <TextError errorMsg={passwordError} />}
-        <View style={styles.optionsContainer}>
-          <Text style={styles.forgottenPwd}>Mot de passe oublié</Text>
-        </View>
-        <Button
-          title="Se connecter"
-          accessibilityLabel="Bouton pour se connecter"
-          disabled={loading}
-          onPress={() => handleLogin()}
-        />
-        <TouchableOpacity onPress={navigateToSignUp}>
-          <View style={styles.redirectSignUpTextContainer}>
-            <Text style={styles.redirectSignUpTextLeft}>Pas encore de compte ?</Text>
-            <Text style={styles.redirectSignUpTextRight}>S'inscrire</Text>
+        <View style={styles.formContainer}>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="monemail@gmail.com"
+              onInputChange={(value) => setEmail(value)}
+              autoCapitalize="none"
+              autoFocus
+              label='Email'
+              value={email}
+            />
+            {emailError && <TextError errorMsg={emailError} />}
           </View>
-        </TouchableOpacity>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Entrez votre mot de passe"
+              onInputChange={(value) => setPassword(value)}
+              autoCapitalize="none"
+              secureTextEntry={true}
+              label='Mot de passe'
+              value={password}
+            />
+            {passwordError && <TextError errorMsg={passwordError}/>}
+          </View>
+          <View style={styles.optionsContainer}>
+            <Text style={styles.forgottenPwd}>Mot de passe oublié</Text>
+          </View>
+          <Button
+            title="Se connecter"
+            accessibilityLabel="Bouton pour se connecter"
+            disabled={loading}
+            onPress={() => handleLogin()}
+          />
+          <TouchableOpacity onPress={navigateToSignUp}>
+            <View style={styles.redirectSignUpTextContainer}>
+              <Text style={styles.redirectSignUpTextLeft}>Pas encore de compte ?</Text>
+              <Text style={styles.redirectSignUpTextRight}>S'inscrire</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
         <Separator text='ou' />
         <Button
           title="Se connecter avec Google"
@@ -143,6 +149,9 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     height: '100%',
+  },
+  formContainer: {
+    marginBottom: 20,
   },
   svgContainer: {
     display: 'flex',
@@ -165,14 +174,14 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   optionsContainer: {
-    marginBottom: 10,
+    marginVertical: 10,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   forgottenPwd: {
     width: 'auto',
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'Satoshi-Regular',
   },
   redirectSignUpTextContainer: {
@@ -193,7 +202,10 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     color: '#182A60',
     marginLeft: 6,
-  }
+  },
+  inputContainer: {
+    marginVertical: 8,
+  },
 });
 
 export default SignIn
