@@ -9,25 +9,36 @@ import Separator from '../components/Separator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/routes';
 import { signUpWithEmail } from '../services/account';
+import TextError from '../components/TextError';
+import validator from 'validator';
 
 type SignUpNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
   const navigation = useNavigation<SignUpNavigationProp>();
 
-  const signUp = async () => {
+  const handleRegister = async () => {
     setLoading(true)
     const { error, session } = await signUpWithEmail(email, password);
-    if (error) Alert.alert(error.message)
-    if (!session) Alert.alert('Please check your inbox for email verification!')
+    if (!validator.isEmail(email)) {
+      setEmailError('Veuillez entrer une adresse e-mail valide.');
+    }
+
+    if (password.length < 6) {
+      setPasswordError('Le mot de passe doit contenir au moins 6 caractères.');
+    }
+    
+    if (!session && !error) Alert.alert('Please check your inbox for email verification!')
     setLoading(false)
   }
 
-  const navigateToSignUp = () => {
+  const navigateToSignIn = () => {
     navigation.navigate('SignIn');
   };
 
@@ -45,6 +56,7 @@ const SignUp = () => {
           autoFocus
           label='Email'
         />
+        {emailError && <TextError errorMsg={emailError} />}
         <TextInput
           placeholder="Entrez votre mot de passe"
           onInputChange={(value) => setPassword(value)}
@@ -52,13 +64,14 @@ const SignUp = () => {
           secureTextEntry={true}
           label='Mot de passe'
         />
+        {passwordError && <TextError errorMsg={passwordError} />}
         <Button
           title="S'inscrire"
           accessibilityLabel="Bouton pour se connecter"
           disabled={loading}
-          onPress={() => signUp()}
+          onPress={() => handleRegister()}
         />
-        <TouchableOpacity onPress={navigateToSignUp}>
+        <TouchableOpacity onPress={navigateToSignIn}>
           <View style={styles.redirectSignUpTextContainer}>
             <Text style={styles.redirectSignUpTextLeft}>J'ai déjà un compte</Text>
           </View>

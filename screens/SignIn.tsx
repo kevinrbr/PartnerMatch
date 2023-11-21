@@ -1,5 +1,5 @@
-import { Text, SafeAreaView, View, StyleSheet, TouchableOpacity } from 'react-native'
-import { useState } from 'react'
+import { Text, SafeAreaView, View, StyleSheet, TouchableOpacity, Alert } from 'react-native'
+import { useCallback, useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import GoogleSvg from './../assets/images/google.svg';
 import Title from '../components/Title';
@@ -11,6 +11,7 @@ import { RootStackParamList } from '../types/routes';
 import { signInWithEmail } from '../services/account';
 import validator from 'validator';
 import TextError from '../components/TextError';
+import { AuthApiError } from '@supabase/supabase-js';
 
 type SignInNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignIn'>;
 
@@ -23,20 +24,64 @@ const SignIn = () => {
 
   const navigation = useNavigation<SignInNavigationProp>();
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setEmail('');
+      setPassword('');
+      setEmailError('');
+      setPasswordError('');
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   const handleLogin = async () => {
     setLoading(true);
-    await signInWithEmail(email, password);
-
+  
+    let hasError = false;
+  
+    // Vérifier l'email
     if (!validator.isEmail(email)) {
       setEmailError('Veuillez entrer une adresse e-mail valide.');
+      hasError = true;
+    } else {
+      setEmailError(null);
     }
-
-    if (password.length < 6) {
-      setPasswordError('Le mot de passe doit contenir au moins 6 caractères.');
+  
+    // Vérifier le mot de passe
+    if (password.length < 8) {
+      setPasswordError('Le mot de passe doit contenir au moins 8 caractères.');
+      hasError = true;
+    } else {
+      setPasswordError(null);
     }
-
+    
+    if (hasError) {
+      setLoading(false);
+      return;
+    }
+  
+    try {
+      const { error } = await signInWithEmail(email, password);
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
+      if (error instanceof AuthApiError && error.message === 'Invalid login credentials') {
+        Alert.alert(
+          'Connexion',
+          'Identifiants invalides. Veuillez vérifier votre email et votre mot de passe.'
+        );
+      } else {
+        Alert.alert(
+          'Connexion',
+          'Une erreur s\'est produite lors de la connexion.'
+        );
+      }
+    }
+  
     setLoading(false);
-  }
+  };
 
   const navigateToSignUp = () => {
     navigation.navigate('SignUp');
@@ -55,6 +100,7 @@ const SignIn = () => {
           autoCapitalize="none"
           autoFocus
           label='Email'
+          value={email}
         />
         {emailError && <TextError errorMsg={emailError} />}
         <TextInput
@@ -63,6 +109,7 @@ const SignIn = () => {
           autoCapitalize="none"
           secureTextEntry={true}
           label='Mot de passe'
+          value={password}
         />
         {passwordError && <TextError errorMsg={passwordError} />}
         <View style={styles.optionsContainer}>
