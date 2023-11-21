@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   formContainer: {
-    marginBottom: 20,
+    marginBottom: 10,
   },
   svgContainer: {
     display: 'flex',
