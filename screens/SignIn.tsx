@@ -39,8 +39,7 @@ const SignIn = () => {
     setLoading(true);
   
     let hasError = false;
-  
-    // Vérifier l'email
+
     if (!validator.isEmail(email)) {
       setEmailError('Veuillez entrer une adresse e-mail valide.');
       hasError = true;
@@ -48,14 +47,13 @@ const SignIn = () => {
       setEmailError(null);
     }
   
-    // Vérifier le mot de passe
     if (password.length < 8) {
       setPasswordError('Le mot de passe doit contenir au moins 8 caractères.');
       hasError = true;
     } else {
       setPasswordError(null);
     }
-    
+
     if (hasError) {
       setLoading(false);
       return;
