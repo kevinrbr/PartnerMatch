@@ -11,6 +11,7 @@ import { RootStackParamList } from '../types/routes';
 import { signUpWithEmail } from '../services/account';
 import TextError from '../components/TextError';
 import validator from 'validator';
+import { AuthApiError } from '@supabase/supabase-js';
 
 type SignUpNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
 
@@ -25,17 +26,42 @@ const SignUp = () => {
 
   const handleRegister = async () => {
     setLoading(true)
-    const { error, session } = await signUpWithEmail(email, password);
+    let hasError = false;
+
     if (!validator.isEmail(email)) {
       setEmailError('Veuillez entrer une adresse e-mail valide.');
+      hasError = true;
+    } else {
+      setEmailError('');
     }
 
     if (password.length < 6) {
       setPasswordError('Le mot de passe doit contenir au moins 6 caractères.');
+      hasError = true;
+    } else {
+      setPasswordError('');
     }
-    
-    if (!session && !error) Alert.alert('Please check your inbox for email verification!')
-    setLoading(false)
+
+    if (hasError) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const { session, error } = await signUpWithEmail(email, password);
+      if (error) {
+        throw error;
+      }
+
+      if (!session && !error) Alert.alert('Please check your inbox for email verification!');
+      setLoading(false);
+
+    } catch (error) {
+      Alert.alert(
+        'Inscription',
+        'Une erreur s\'est produite lors de l\'inscri^tion.'
+      );
+    }
   }
 
   const navigateToSignIn = () => {

@@ -1,5 +1,5 @@
 import { Text, SafeAreaView, View, StyleSheet, TouchableOpacity, Alert } from 'react-native'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import GoogleSvg from './../assets/images/google.svg';
 import Title from '../components/Title';
@@ -37,21 +37,20 @@ const SignIn = () => {
 
   const handleLogin = async () => {
     setLoading(true);
-  
     let hasError = false;
 
     if (!validator.isEmail(email)) {
       setEmailError('Veuillez entrer une adresse e-mail valide.');
       hasError = true;
     } else {
-      setEmailError(null);
+      setEmailError('');
     }
   
     if (password.length < 6) {
       setPasswordError('Le mot de passe doit contenir au moins 6 caractères.');
       hasError = true;
     } else {
-      setPasswordError(null);
+      setPasswordError('');
     }
 
     if (hasError) {
