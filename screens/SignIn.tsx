@@ -39,6 +39,8 @@ const SignIn = () => {
 
   const handleLogin = async () => {
     setLoading(true)
+    setEmailError('')
+    setPasswordError('')
     let hasError = false
 
     if (!validator.isEmail(email)) {

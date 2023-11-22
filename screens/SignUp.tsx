@@ -25,41 +25,37 @@ const SignUp = () => {
 
   const handleRegister = async () => {
     setLoading(true)
-    let hasError = false;
+    setEmailError('')
+    setPasswordError('')
+    let hasError = false
 
     if (!validator.isEmail(email)) {
-      setEmailError('Veuillez entrer une adresse e-mail valide.');
-      hasError = true;
-    } else {
-      setEmailError('');
+      setEmailError('Veuillez entrer une adresse e-mail valide.')
+      hasError = true
     }
 
     if (password.length < 6) {
-      setPasswordError('Le mot de passe doit contenir au moins 6 caractères.');
-      hasError = true;
-    } else {
-      setPasswordError('');
+      setPasswordError('Le mot de passe doit contenir au moins 6 caractères.')
+      hasError = true
     }
 
     if (hasError) {
-      setLoading(false);
+      setLoading(false)
       return;
     }
 
-    try {
-      const { session, error } = await signUpWithEmail(email, password);
-      if (error) {
-        throw error;
-      }
-
-      if (!session && !error) Alert.alert('Please check your inbox for email verification!');
-      setLoading(false);
-
-    } catch (error) {
-      Alert.alert(
-        'Inscription',
-        'Une erreur s\'est produite lors de l\'inscri^tion.'
-      );
+    if (hasError) {
+      setLoading(false)
+    } else {
+      signUpWithEmail(email, password).then((value) => {
+        if (!value.session && !value.error)
+          Alert.alert('Please check your inbox for email verification!')
+      }).catch(() => {
+        Alert.alert(
+          'Inscription',
+          'Une erreur s\'est produite lors de l\'inscription.'
+        )
+      }).finally(() => setLoading(false))
     }
   }
 

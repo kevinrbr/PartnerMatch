@@ -6,7 +6,7 @@ import SignIn from './screens/SignIn';
 import SignUp from './screens/SignUp';
 import Home from './screens/Home'; // Importez votre composant de page d'accueil
 import { Session } from '@supabase/supabase-js';
-import { supabase } from './supabase';
+import { supabaseAuth } from './services/constants';
 
 const Stack = createNativeStackNavigator();
 
@@ -14,11 +14,11 @@ export default function App() {
   const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabaseAuth.getSession().then(({ data: { session } }) => {
       setSession(session);
     });
 
-    supabase.auth.onAuthStateChange((_event, session) => {
+    supabaseAuth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
   }, []);
