@@ -15,6 +15,8 @@ import { AuthApiError, isAuthApiError } from '@supabase/supabase-js';
 
 type SignInNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignIn'>;
 
+const PASSWORD_MINIMUM_LENGTH = 6
+
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -36,52 +38,40 @@ const SignIn = () => {
   }, [navigation]);
 
   const handleLogin = async () => {
-    setLoading(true);
-    let hasError = false;
+    setLoading(true)
+    let hasError = false
 
     if (!validator.isEmail(email)) {
-      setEmailError('Veuillez entrer une adresse e-mail valide.');
-      hasError = true;
-    } else {
-      setEmailError('');
+      setEmailError('Veuillez entrer une adresse e-mail valide.')
+      hasError = true
     }
-  
-    if (password.length < 6) {
-      setPasswordError('Le mot de passe doit contenir au moins 6 caractères.');
-      hasError = true;
-    } else {
-      setPasswordError('');
+
+    if (password.length < PASSWORD_MINIMUM_LENGTH) {
+      setPasswordError('Le mot de passe doit contenir au moins 6 caractères.')
+      hasError = true
     }
 
     if (hasError) {
-      setLoading(false);
-      return;
+      setLoading(false)
+    } else {
+      signInWithEmail(email, password).catch((error) => {
+        if (error instanceof AuthApiError) {
+          Alert.alert(
+            'Connexion',
+            'Identifiants invalides. Veuillez vérifier votre email et votre mot de passe.'
+          );
+        } else {
+          Alert.alert(
+            'Connexion',
+            'Une erreur s\'est produite lors de la connexion.'
+          );
+        }
+      }).finally(() => setLoading(false))
     }
-  
-    try {
-      const { error } = await signInWithEmail(email, password);
-      if (error) {
-        throw error;
-      }
-    } catch (error) {
-      if (error instanceof AuthApiError) {
-        Alert.alert(
-          'Connexion',
-          'Identifiants invalides. Veuillez vérifier votre email et votre mot de passe.'
-        );
-      } else {
-        Alert.alert(
-          'Connexion',
-          'Une erreur s\'est produite lors de la connexion.'
-        );
-      }
-    }
-  
-    setLoading(false);
   };
 
   const navigateToSignUp = () => {
-    navigation.navigate('SignUp');
+    navigation.navigate('SignUp')
   };
 
   return (
@@ -112,7 +102,7 @@ const SignIn = () => {
               label='Mot de passe'
               value={password}
             />
-            {passwordError && <TextError errorMsg={passwordError}/>}
+            {passwordError && <TextError errorMsg={passwordError} />}
           </View>
           <View style={styles.optionsContainer}>
             <Text style={styles.forgottenPwd}>Mot de passe oublié</Text>
