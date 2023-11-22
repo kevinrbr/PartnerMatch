@@ -1,5 +1,5 @@
 import { StyleSheet, Button as NativeButton, ButtonProps as NativeButtonProps, View } from 'react-native'
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 type ButtonProps = NativeButtonProps & {
     variant?: 'primary' | 'secondary' | 'transparent' | 'transparentSecondary';

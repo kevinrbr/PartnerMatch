@@ -1,5 +1,4 @@
 import { Text, StyleSheet, TextProps } from 'react-native'
-import React from 'react'
 
 type TitleProps = TextProps & {
     variant: 'mainTitle' | 'subTitle';

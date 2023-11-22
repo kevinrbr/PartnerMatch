@@ -1,5 +1,5 @@
-import { Text, SafeAreaView, View, StyleSheet, TouchableOpacity } from 'react-native'
-import { useState } from 'react'
+import { Text, SafeAreaView, View, StyleSheet, TouchableOpacity, Alert } from 'react-native'
+import { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import GoogleSvg from './../assets/images/google.svg';
 import Title from '../components/Title';
@@ -8,16 +8,72 @@ import Button from '../components/Button';
 import Separator from '../components/Separator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/routes';
+import { signInWithEmail } from '../services/account';
+import validator from 'validator';
+import TextError from '../components/TextError';
+import { AuthApiError, isAuthApiError } from '@supabase/supabase-js';
 
 type SignInNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignIn'>;
+
+const PASSWORD_MINIMUM_LENGTH = 6
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
   const navigation = useNavigation<SignInNavigationProp>();
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setEmail('');
+      setPassword('');
+      setEmailError('');
+      setPasswordError('');
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  const handleLogin = async () => {
+    setLoading(true)
+    setEmailError('')
+    setPasswordError('')
+    let hasError = false
+
+    if (!validator.isEmail(email)) {
+      setEmailError('Veuillez entrer une adresse e-mail valide.')
+      hasError = true
+    }
+
+    if (password.length < PASSWORD_MINIMUM_LENGTH) {
+      setPasswordError('Le mot de passe doit contenir au moins 6 caractères.')
+      hasError = true
+    }
+
+    if (hasError) {
+      setLoading(false)
+    } else {
+      signInWithEmail(email, password).catch((error) => {
+        if (error instanceof AuthApiError) {
+          Alert.alert(
+            'Connexion',
+            'Identifiants invalides. Veuillez vérifier votre email et votre mot de passe.'
+          );
+        } else {
+          Alert.alert(
+            'Connexion',
+            'Une erreur s\'est produite lors de la connexion.'
+          );
+        }
+      }).finally(() => setLoading(false))
+    }
+  };
+
   const navigateToSignUp = () => {
-    navigation.navigate('SignUp');
+    navigation.navigate('SignUp')
   };
 
   return (
@@ -27,34 +83,46 @@ const SignIn = () => {
         <Text style={styles.text}>La recherche de partenaires de padel est désormais facile</Text>
       </View>
       <View>
-        <TextInput 
-          placeholder="monemail@gmail.com" 
-          onInputChange={(value) => setEmail(value)}
-          autoCapitalize="none"
-          autoFocus
-          label='Email'
-        />
-        <TextInput
-          placeholder="Entrez votre mot de passe"
-          onInputChange={(value) => setPassword(value)}
-          autoCapitalize="none"
-          secureTextEntry={true}
-          label='Mot de passe'
-        />
-        <View style={styles.optionsContainer}>
-          <Text style={styles.forgottenPwd}>Mot de passe oublié</Text>
-        </View>
-        <Button
-          title="Se connecter"
-          accessibilityLabel="Bouton pour se connecter"
-        />
-        <TouchableOpacity onPress={navigateToSignUp}>
-          <View style={styles.redirectSignUpTextContainer}>
-            <Text style={styles.redirectSignUpTextLeft}>Pas encore de compte ?</Text>
-            <Text style={styles.redirectSignUpTextRight}>S'inscrire</Text>
+        <View style={styles.formContainer}>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="monemail@gmail.com"
+              onInputChange={(value) => setEmail(value)}
+              autoCapitalize="none"
+              autoFocus
+              label='Email'
+              value={email}
+            />
+            {emailError && <TextError errorMsg={emailError} />}
           </View>
-        </TouchableOpacity>
-        <Separator text='ou'/>
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Entrez votre mot de passe"
+              onInputChange={(value) => setPassword(value)}
+              autoCapitalize="none"
+              secureTextEntry={true}
+              label='Mot de passe'
+              value={password}
+            />
+            {passwordError && <TextError errorMsg={passwordError} />}
+          </View>
+          <View style={styles.optionsContainer}>
+            <Text style={styles.forgottenPwd}>Mot de passe oublié</Text>
+          </View>
+          <Button
+            title="Se connecter"
+            accessibilityLabel="Bouton pour se connecter"
+            disabled={loading}
+            onPress={() => handleLogin()}
+          />
+          <TouchableOpacity onPress={navigateToSignUp}>
+            <View style={styles.redirectSignUpTextContainer}>
+              <Text style={styles.redirectSignUpTextLeft}>Pas encore de compte ?</Text>
+              <Text style={styles.redirectSignUpTextRight}>S'inscrire</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+        <Separator text='ou' />
         <Button
           title="Se connecter avec Google"
           accessibilityLabel="Bouton pour se connecter avec Google"
@@ -73,6 +141,9 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     height: '100%',
+  },
+  formContainer: {
+    marginBottom: 10,
   },
   svgContainer: {
     display: 'flex',
@@ -95,14 +166,14 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   optionsContainer: {
-    marginBottom: 10,
+    marginVertical: 10,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   forgottenPwd: {
     width: 'auto',
-    fontSize: 16,
+    fontSize: 13,
     fontFamily: 'Satoshi-Regular',
   },
   redirectSignUpTextContainer: {
@@ -123,7 +194,10 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     color: '#182A60',
     marginLeft: 6,
-  }
+  },
+  inputContainer: {
+    marginVertical: 8,
+  },
 });
 
 export default SignIn
