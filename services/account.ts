@@ -1,24 +1,35 @@
 import { supabaseAuth } from "./constants";
 
 export const signInWithEmail = async (email: string, password: string) => {
-  const { error, data } = await supabaseAuth.signInWithPassword({
-    email: email,
-    password: password,
-  })
+  try {
+    const { error } = await supabaseAuth.signInWithPassword({
+      email,
+      password,
+    });
 
-  return { data, error };
-}
+    if (error) {
+      throw error;
+    }
+    
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const signUpWithEmail = async (email: string, password: string) => {
-  const {
-    data: { session },
-    error,
-  } = await supabaseAuth.signUp({
-    email: email,
-    password: password,
-  });
+  try {
+    const { error } = await supabaseAuth.signUp({
+      email: email,
+      password: password,
+    });
 
-  return { error, session };
+    if (error) {
+      throw error;
+    }
+    
+  } catch (error) {
+    throw error;
+  }
 }
 
 export const signOut = async () => {
