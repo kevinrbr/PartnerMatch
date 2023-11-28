@@ -11,6 +11,7 @@ import { RootStackParamList } from '../types/routes';
 import { signUpWithEmail } from '../services/account';
 import TextError from '../components/TextError';
 import validator from 'validator';
+import DismissKeyboard from '../components/DismissKeyboard';
 
 type SignUpNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
 
@@ -63,55 +64,56 @@ const SignUp = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.textContainer}>
-        <Title variant='mainTitle'>Je m'inscris</Title>
-        <Text style={styles.text}>La recherche de partenaires de padel est désormais facile</Text>
-      </View>
-      <View>
-        <View style={styles.formContainer}>
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="monemail@gmail.com"
-              onInputChange={(value) => setEmail(value)}
-              autoCapitalize="none"
-              autoFocus
-              label='Email'
-            />
-            {emailError && <TextError errorMsg={emailError} />}
-          </View>
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="Entrez votre mot de passe"
-              onInputChange={(value) => setPassword(value)}
-              autoCapitalize="none"
-              secureTextEntry={true}
-              label='Mot de passe'
-            />
-            {passwordError && <TextError errorMsg={passwordError} />}
-          </View>
-          <Button
-            title="S'inscrire"
-            accessibilityLabel="Bouton pour se connecter"
-            disabled={loading}
-            onPress={() => handleRegister()}
-          />
-          <TouchableOpacity onPress={navigateToSignIn}>
-            <View style={styles.redirectSignUpTextContainer}>
-              <Text style={styles.redirectSignUpTextLeft}>J'ai déjà un compte</Text>
-            </View>
-          </TouchableOpacity>
+    <DismissKeyboard>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.textContainer}>
+          <Title variant='mainTitle'>Je m'inscris</Title>
+          <Text style={styles.text}>La recherche de partenaires de padel est désormais facile</Text>
         </View>
-        <Separator text='ou' />
-        <Button
-          title="Se connecter avec Google"
-          accessibilityLabel="Bouton pour se connecter avec Google"
-          variant='transparentSecondary'
-        >
-          <GoogleSvg />
-        </Button>
-      </View>
-    </SafeAreaView>
+        <View>
+          <View style={styles.formContainer}>
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="monemail@gmail.com"
+                onInputChange={(value) => setEmail(value)}
+                autoCapitalize="none"
+                label='Email'
+              />
+              {emailError && <TextError errorMsg={emailError} />}
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="Entrez votre mot de passe"
+                onInputChange={(value) => setPassword(value)}
+                autoCapitalize="none"
+                secureTextEntry={true}
+                label='Mot de passe'
+              />
+              {passwordError && <TextError errorMsg={passwordError} />}
+            </View>
+            <Button
+              title="S'inscrire"
+              accessibilityLabel="Bouton pour se connecter"
+              disabled={loading}
+              onPress={() => handleRegister()}
+            />
+            <TouchableOpacity onPress={navigateToSignIn}>
+              <View style={styles.redirectSignUpTextContainer}>
+                <Text style={styles.redirectSignUpTextLeft}>J'ai déjà un compte</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <Separator text='ou' />
+          <Button
+            title="Se connecter avec Google"
+            accessibilityLabel="Bouton pour se connecter avec Google"
+            variant='transparentSecondary'
+          >
+            <GoogleSvg />
+          </Button>
+        </View>
+      </SafeAreaView>
+    </DismissKeyboard>
   )
 }
 
