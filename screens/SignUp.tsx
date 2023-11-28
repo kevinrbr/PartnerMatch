@@ -48,7 +48,6 @@ const SignUp = () => {
       setLoading(false)
     } else {
       signUpWithEmail(email, password).then((value) => {
-        if (!value.session && !value.error)
           Alert.alert('Please check your inbox for email verification!')
       }).catch(() => {
         Alert.alert(
