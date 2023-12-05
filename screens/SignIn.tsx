@@ -12,6 +12,7 @@ import { signInWithEmail } from '../services/account';
 import validator from 'validator';
 import TextError from '../components/TextError';
 import { AuthApiError, isAuthApiError } from '@supabase/supabase-js';
+import DismissKeyboard from '../components/DismissKeyboard';
 
 type SignInNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignIn'>;
 
@@ -77,61 +78,62 @@ const SignIn = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.textContainer}>
-        <Title variant='mainTitle'>Je me connecte</Title>
-        <Text style={styles.text}>La recherche de partenaires de padel est désormais facile</Text>
-      </View>
-      <View>
-        <View style={styles.formContainer}>
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="monemail@gmail.com"
-              onInputChange={(value) => setEmail(value)}
-              autoCapitalize="none"
-              autoFocus
-              label='Email'
-              value={email}
-            />
-            {emailError && <TextError errorMsg={emailError} />}
-          </View>
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="Entrez votre mot de passe"
-              onInputChange={(value) => setPassword(value)}
-              autoCapitalize="none"
-              secureTextEntry={true}
-              label='Mot de passe'
-              value={password}
-            />
-            {passwordError && <TextError errorMsg={passwordError} />}
-          </View>
-          <View style={styles.optionsContainer}>
-            <Text style={styles.forgottenPwd}>Mot de passe oublié</Text>
-          </View>
-          <Button
-            title="Se connecter"
-            accessibilityLabel="Bouton pour se connecter"
-            disabled={loading}
-            onPress={() => handleLogin()}
-          />
-          <TouchableOpacity onPress={navigateToSignUp}>
-            <View style={styles.redirectSignUpTextContainer}>
-              <Text style={styles.redirectSignUpTextLeft}>Pas encore de compte ?</Text>
-              <Text style={styles.redirectSignUpTextRight}>S'inscrire</Text>
-            </View>
-          </TouchableOpacity>
+    <DismissKeyboard>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.textContainer}>
+          <Title variant='mainTitle'>Je me connecte</Title>
+          <Text style={styles.text}>La recherche de partenaires de padel est désormais facile</Text>
         </View>
-        <Separator text='ou' />
-        <Button
-          title="Se connecter avec Google"
-          accessibilityLabel="Bouton pour se connecter avec Google"
-          variant='transparentSecondary'
-        >
-          <GoogleSvg />
-        </Button>
-      </View>
-    </SafeAreaView>
+        <View>
+          <View style={styles.formContainer}>
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="monemail@gmail.com"
+                onInputChange={(value) => setEmail(value)}
+                autoCapitalize="none"
+                label='Email'
+                value={email}
+              />
+              {emailError && <TextError errorMsg={emailError} />}
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="Entrez votre mot de passe"
+                onInputChange={(value) => setPassword(value)}
+                autoCapitalize="none"
+                secureTextEntry={true}
+                label='Mot de passe'
+                value={password}
+              />
+              {passwordError && <TextError errorMsg={passwordError} />}
+            </View>
+            <View style={styles.optionsContainer}>
+              <Text style={styles.forgottenPwd}>Mot de passe oublié</Text>
+            </View>
+            <Button
+              title="Se connecter"
+              accessibilityLabel="Bouton pour se connecter"
+              disabled={loading}
+              onPress={() => handleLogin()}
+            />
+            <TouchableOpacity onPress={navigateToSignUp}>
+              <View style={styles.redirectSignUpTextContainer}>
+                <Text style={styles.redirectSignUpTextLeft}>Pas encore de compte ?</Text>
+                <Text style={styles.redirectSignUpTextRight}>S'inscrire</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <Separator text='ou' />
+          <Button
+            title="Se connecter avec Google"
+            accessibilityLabel="Bouton pour se connecter avec Google"
+            variant='transparentSecondary'
+          >
+            <GoogleSvg />
+          </Button>
+        </View>
+      </SafeAreaView>
+    </DismissKeyboard>
   )
 }
 
