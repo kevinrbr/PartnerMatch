@@ -3,8 +3,8 @@
     // ... other configs, if any
     "baseUrl": "." ,
     "paths": {
-       "@components/*": [
-         "./components/*"
+       "@/*": [
+         "./*"
        ],
     },
  },

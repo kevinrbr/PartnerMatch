@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { useFonts } from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import SignIn from './screens/SignIn';
-import SignUp from './screens/SignUp';
-import Home from './screens/Home'; // Importez votre composant de page d'accueil
+import SignIn from '@/screens/SignIn';
+import SignUp from '@/screens/SignUp';
+import Home from '@/screens/Home'; // Importez votre composant de page d'accueil
 import { Session } from '@supabase/supabase-js';
-import { supabaseAuth } from './services/constants';
+import { supabaseAuth } from '@/services/constants';
 
 const Stack = createNativeStackNavigator();
 

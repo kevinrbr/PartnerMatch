@@ -1,17 +1,17 @@
 import { Text, SafeAreaView, View, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
-import GoogleSvg from './../assets/images/google.svg';
-import Title from '../components/Title';
-import TextInput from '../components/TextInput';
-import Button from '../components/Button';
-import Separator from '../components/Separator';
+import GoogleSvg from '@/assets/images/google.svg';
+import Title from '@/components/Title';
+import TextInput from '@/components/TextInput';
+import Button from '@/components/Button';
+import Separator from '@/components/Separator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../types/routes';
-import { signUpWithEmail } from '../services/account';
-import TextError from '../components/TextError';
+import { RootStackParamList } from '@/types/routes';
+import { signUpWithEmail } from '@/services/account';
+import TextError from '@/components/TextError';
 import validator from 'validator';
-import DismissKeyboard from '../components/DismissKeyboard';
+import DismissKeyboard from '@/components/DismissKeyboard';
 
 type SignUpNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignUp'>;
 

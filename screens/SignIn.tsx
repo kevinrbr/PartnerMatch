@@ -2,15 +2,15 @@ import { useEffect, useState } from 'react';
 import { Text, SafeAreaView, View, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import Title from '@components/Title';
-import TextInput from '@components/TextInput';
-import Button from '@components/Button';
-import Separator from '@components/Separator';
-import TextError from '@components/TextError';
-import DismissKeyboard from '@components/DismissKeyboard';
-import GoogleSvg from './../assets/images/google.svg';
-import { RootStackParamList } from '../types/routes';
-import { signInWithEmail } from '../services/account';
+import Title from '@/components/Title';
+import TextInput from '@/components/TextInput';
+import Button from '@/components/Button';
+import Separator from '@/components/Separator';
+import TextError from '@/components/TextError';
+import DismissKeyboard from '@/components/DismissKeyboard';
+import GoogleSvg from '@/assets/images/google.svg';
+import { RootStackParamList } from '@/types/routes';
+import { signInWithEmail } from '@/services/account';
 import validator from 'validator';
 import { AuthApiError } from '@supabase/supabase-js';
 
