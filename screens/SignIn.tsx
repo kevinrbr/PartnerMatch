@@ -1,18 +1,18 @@
+import { useEffect, useState } from 'react';
 import { Text, SafeAreaView, View, StyleSheet, TouchableOpacity, Alert } from 'react-native'
-import { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
-import GoogleSvg from './../assets/images/google.svg';
-import Title from '../components/Title';
-import TextInput from '../components/TextInput';
-import Button from '../components/Button';
-import Separator from '../components/Separator';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../types/routes';
-import { signInWithEmail } from '../services/account';
+import Title from '@/components/Title';
+import TextInput from '@/components/TextInput';
+import Button from '@/components/Button';
+import Separator from '@/components/Separator';
+import TextError from '@/components/TextError';
+import DismissKeyboard from '@/components/DismissKeyboard';
+import GoogleSvg from '@/assets/images/google.svg';
+import { RootStackParamList } from '@/types/routes';
+import { signInWithEmail } from '@/services/account';
 import validator from 'validator';
-import TextError from '../components/TextError';
-import { AuthApiError, isAuthApiError } from '@supabase/supabase-js';
-import DismissKeyboard from '../components/DismissKeyboard';
+import { AuthApiError } from '@supabase/supabase-js';
 
 type SignInNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignIn'>;
 
