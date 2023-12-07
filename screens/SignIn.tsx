@@ -1,42 +1,43 @@
-import { useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { AuthApiError } from '@supabase/supabase-js'
+import { useEffect, useState } from 'react'
 import { Text, SafeAreaView, View, StyleSheet, TouchableOpacity, Alert } from 'react-native'
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import Title from '@/components/Title';
-import TextInput from '@/components/TextInput';
-import Button from '@/components/Button';
-import Separator from '@/components/Separator';
-import TextError from '@/components/TextError';
-import DismissKeyboard from '@/components/DismissKeyboard';
-import GoogleSvg from '@/assets/images/google.svg';
-import { RootStackParamList } from '@/types/routes';
-import { signInWithEmail } from '@/services/account';
-import validator from 'validator';
-import { AuthApiError } from '@supabase/supabase-js';
+import validator from 'validator'
 
-type SignInNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignIn'>;
+import GoogleSvg from '@/assets/images/google.svg'
+import Button from '@/components/Button'
+import DismissKeyboard from '@/components/DismissKeyboard'
+import Separator from '@/components/Separator'
+import TextError from '@/components/TextError'
+import TextInput from '@/components/TextInput'
+import Title from '@/components/Title'
+import { signInWithEmail } from '@/services/account'
+import { RootStackParamList } from '@/types/routes'
+
+type SignInNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignIn'>
 
 const PASSWORD_MINIMUM_LENGTH = 6
 
 const SignIn = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [emailError, setEmailError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
 
-  const navigation = useNavigation<SignInNavigationProp>();
+  const navigation = useNavigation<SignInNavigationProp>()
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      setEmail('');
-      setPassword('');
-      setEmailError('');
-      setPasswordError('');
-    });
+      setEmail('')
+      setPassword('')
+      setEmailError('')
+      setPasswordError('')
+    })
 
-    return unsubscribe;
-  }, [navigation]);
+    return unsubscribe
+  }, [navigation])
 
   const handleLogin = async () => {
     setLoading(true)
@@ -57,31 +58,30 @@ const SignIn = () => {
     if (hasError) {
       setLoading(false)
     } else {
-      signInWithEmail(email, password).catch((error) => {
-        if (error instanceof AuthApiError) {
-          Alert.alert(
-            'Connexion',
-            'Identifiants invalides. Veuillez vérifier votre email et votre mot de passe.'
-          );
-        } else {
-          Alert.alert(
-            'Connexion',
-            'Une erreur s\'est produite lors de la connexion.'
-          );
-        }
-      }).finally(() => setLoading(false))
+      signInWithEmail(email, password)
+        .catch(error => {
+          if (error instanceof AuthApiError) {
+            Alert.alert(
+              'Connexion',
+              'Identifiants invalides. Veuillez vérifier votre email et votre mot de passe.'
+            )
+          } else {
+            Alert.alert('Connexion', "Une erreur s'est produite lors de la connexion.")
+          }
+        })
+        .finally(() => setLoading(false))
     }
-  };
+  }
 
   const navigateToSignUp = () => {
     navigation.navigate('SignUp')
-  };
+  }
 
   return (
     <DismissKeyboard>
       <SafeAreaView style={styles.container}>
         <View style={styles.textContainer}>
-          <Title variant='mainTitle'>Je me connecte</Title>
+          <Title variant="mainTitle">Je me connecte</Title>
           <Text style={styles.text}>La recherche de partenaires de padel est désormais facile</Text>
         </View>
         <View>
@@ -89,9 +89,9 @@ const SignIn = () => {
             <View style={styles.inputContainer}>
               <TextInput
                 placeholder="monemail@gmail.com"
-                onInputChange={(value) => setEmail(value)}
+                onInputChange={value => setEmail(value)}
                 autoCapitalize="none"
-                label='Email'
+                label="Email"
                 value={email}
               />
               {emailError && <TextError errorMsg={emailError} />}
@@ -99,10 +99,10 @@ const SignIn = () => {
             <View style={styles.inputContainer}>
               <TextInput
                 placeholder="Entrez votre mot de passe"
-                onInputChange={(value) => setPassword(value)}
+                onInputChange={value => setPassword(value)}
                 autoCapitalize="none"
-                secureTextEntry={true}
-                label='Mot de passe'
+                secureTextEntry
+                label="Mot de passe"
                 value={password}
               />
               {passwordError && <TextError errorMsg={passwordError} />}
@@ -123,11 +123,11 @@ const SignIn = () => {
               </View>
             </TouchableOpacity>
           </View>
-          <Separator text='ou' />
+          <Separator text="ou" />
           <Button
             title="Se connecter avec Google"
             accessibilityLabel="Bouton pour se connecter avec Google"
-            variant='transparentSecondary'
+            variant="transparentSecondary"
           >
             <GoogleSvg />
           </Button>
@@ -142,22 +142,22 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     display: 'flex',
     justifyContent: 'center',
-    height: '100%',
+    height: '100%'
   },
   formContainer: {
-    marginBottom: 10,
+    marginBottom: 10
   },
   svgContainer: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: 30
   },
   textContainer: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: 30
   },
   text: {
     color: '#4E5D6B',
@@ -165,41 +165,41 @@ const styles = StyleSheet.create({
     fontFamily: 'Satoshi-Regular',
     textAlign: 'center',
     maxWidth: 360,
-    marginTop: 16,
+    marginTop: 16
   },
   optionsContainer: {
     marginVertical: 10,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   forgottenPwd: {
     width: 'auto',
     fontSize: 13,
-    fontFamily: 'Satoshi-Regular',
+    fontFamily: 'Satoshi-Regular'
   },
   redirectSignUpTextContainer: {
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   redirectSignUpTextLeft: {
     fontSize: 13,
     fontFamily: 'Satoshi-Regular',
     fontStyle: 'italic',
-    color: '#4E5D6B',
+    color: '#4E5D6B'
   },
   redirectSignUpTextRight: {
     fontSize: 13,
     fontFamily: 'Satoshi-Bold',
     fontStyle: 'italic',
     color: '#182A60',
-    marginLeft: 6,
+    marginLeft: 6
   },
   inputContainer: {
-    marginVertical: 8,
-  },
-});
+    marginVertical: 8
+  }
+})
 
 export default SignIn

@@ -1,18 +1,16 @@
-import { StyleSheet, Text, View, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import React, { ReactNode } from 'react'
+import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 
 type DismissKeyboardProps = {
-    children?: ReactNode;
+  children?: ReactNode
 }
 
 const DismissKeyboard = ({ children }: DismissKeyboardProps) => {
   return (
-   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      {children }
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      {children}
     </TouchableWithoutFeedback>
   )
 }
 
 export default DismissKeyboard
-
-const styles = StyleSheet.create({})

@@ -1,5 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+
 import Button from '@/components/Button'
 import { signOut } from '@/services/account'
 
@@ -11,7 +12,5 @@ const Home = () => {
     </SafeAreaView>
   )
 }
-
-const styles = StyleSheet.create({})
 
 export default Home
