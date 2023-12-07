@@ -10,8 +10,9 @@ import Button from '@/components/Button'
 import DismissKeyboard from '@/components/DismissKeyboard'
 import Separator from '@/components/Separator'
 import TextError from '@/components/TextError'
-import TextInput from '@/components/TextInput'
 import Title from '@/components/Title'
+import PasswordInput from '@/components/input/PasswordInput'
+import TextInput from '@/components/input/TextInput'
 import { signInWithEmail } from '@/services/account'
 import { RootStackParamList } from '@/types/routes'
 
@@ -89,24 +90,14 @@ const SignIn = () => {
             <View style={styles.inputContainer}>
               <TextInput
                 placeholder="monemail@gmail.com"
-                onInputChange={value => setEmail(value)}
+                onInputChange={setEmail}
                 autoCapitalize="none"
                 label="Email"
                 value={email}
               />
               {emailError && <TextError errorMsg={emailError} />}
             </View>
-            <View style={styles.inputContainer}>
-              <TextInput
-                placeholder="Entrez votre mot de passe"
-                onInputChange={value => setPassword(value)}
-                autoCapitalize="none"
-                secureTextEntry
-                label="Mot de passe"
-                value={password}
-              />
-              {passwordError && <TextError errorMsg={passwordError} />}
-            </View>
+            <PasswordInput onInputChange={setPassword} passwordError={passwordError} />
             <View style={styles.optionsContainer}>
               <Text style={styles.forgottenPwd}>Mot de passe oublié</Text>
             </View>
@@ -146,12 +137,6 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     marginBottom: 10
-  },
-  svgContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 30
   },
   textContainer: {
     display: 'flex',
