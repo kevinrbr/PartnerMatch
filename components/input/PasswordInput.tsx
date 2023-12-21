@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { StyleSheet, View, Pressable } from 'react-native'
-import Icon from 'react-native-vector-icons/Ionicons'
+import { EyeIcon, EyeSlashIcon } from 'react-native-heroicons/outline'
 
-import TextInput from './TextInput'
-import TextError from '../TextError'
+import TextError from '@/components/TextError'
+import TextInput from '@/components/input/TextInput'
 
 type PasswordInputProps = {
   passwordError?: string
@@ -12,15 +12,8 @@ type PasswordInputProps = {
 
 const PasswordInput = ({ passwordError, onInputChange }: PasswordInputProps) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false)
-  const [icon, setIcon] = useState('eye')
 
   const handlePasswordVisibility = () => {
-    if (passwordVisibility) {
-      setIcon('eye-off')
-    } else {
-      setIcon('eye')
-    }
-
     setPasswordVisibility(!passwordVisibility)
   }
 
@@ -34,7 +27,11 @@ const PasswordInput = ({ passwordError, onInputChange }: PasswordInputProps) => 
         label="Mot de passe"
       />
       <Pressable onPress={handlePasswordVisibility}>
-        <Icon name={icon} size={22} color="#232323" />
+        {passwordVisibility ? (
+          <EyeSlashIcon size={22} color="#232323" />
+        ) : (
+          <EyeIcon size={22} color="#232323" />
+        )}
       </Pressable>
       {passwordError && <TextError errorMsg={passwordError} />}
     </View>
