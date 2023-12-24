@@ -1,18 +1,20 @@
-import { useState } from 'react'
+import { ReactNode, useState } from 'react'
 import {
   StyleSheet,
   TextInput as NativeInputText,
   TextInputProps as NativeTextInputProps,
   View,
-  Text
+  Text,
+  TouchableWithoutFeedback
 } from 'react-native'
 
 type TextInputProps = NativeTextInputProps & {
   label?: string
   onInputChange: (value: string) => void
+  children?: ReactNode
 }
 
-const TextInput = ({ label, onInputChange, ...props }: TextInputProps) => {
+const TextInput = ({ children, label, onInputChange, ...props }: TextInputProps) => {
   const [inputValue, setInputValue] = useState('')
   const [isFocused, setFocused] = useState(false)
 
@@ -25,26 +27,47 @@ const TextInput = ({ label, onInputChange, ...props }: TextInputProps) => {
     onInputChange(text)
   }
 
+  const handleOnClick = () => {
+    setFocused(true)
+  }
+
   return (
     <View>
       {label && <Text style={styles.label}>{label}</Text>}
-      <NativeInputText
-        style={[
-          styles.inputText,
-          isStylized() && styles.inputTextFocused,
-          inputValue !== '' && styles.inputTextNotEmpty
-        ]}
-        value={inputValue}
-        onChangeText={handleInputChange}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        {...props}
-      />
+      <TouchableWithoutFeedback onFocus={handleOnClick}>
+        <View
+          style={[
+            styles.inputTextContainer,
+            isStylized() && styles.inputTextFocused,
+            inputValue !== '' && styles.inputTextNotEmpty
+          ]}
+        >
+          <NativeInputText
+            style={styles.inputText}
+            value={inputValue}
+            onChangeText={handleInputChange}
+            onBlur={() => setFocused(false)}
+            {...props}
+          />
+          {children}
+        </View>
+      </TouchableWithoutFeedback>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  inputTextContainer: {
+    borderWidth: 1,
+    borderRadius: 12,
+    height: 48,
+    borderColor: '#8996A2',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingRight: 16
+  },
   label: {
     marginBottom: 6,
     marginLeft: 4,
@@ -54,10 +77,8 @@ const styles = StyleSheet.create({
   inputText: {
     fontFamily: 'Satoshi-Regular',
     height: 48,
-    borderWidth: 1,
-    padding: 10,
-    borderRadius: 12,
-    borderColor: '#8996A2'
+    flex: 1,
+    padding: 10
   },
   inputTextFocused: {
     borderColor: '#182A60'

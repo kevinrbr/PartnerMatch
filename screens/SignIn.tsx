@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     marginLeft: 6
   },
   inputContainer: {
-    marginVertical: 8
+    marginVertical: 16
   }
 })
 
