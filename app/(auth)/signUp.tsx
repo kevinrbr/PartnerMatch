@@ -1,8 +1,6 @@
-import { useNavigation } from '@react-navigation/native'
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { Link } from 'expo-router'
 import { useState } from 'react'
-import { Text, SafeAreaView, View, StyleSheet, TouchableOpacity, Alert } from 'react-native'
+import { Text, SafeAreaView, View, StyleSheet, Alert } from 'react-native'
 import validator from 'validator'
 
 import GoogleSvg from '@/assets/images/google.svg'
@@ -12,8 +10,8 @@ import Separator from '@/components/Separator'
 import TextError from '@/components/TextError'
 import TextInput from '@/components/TextInput'
 import Title from '@/components/Title'
+import PasswordInput from '@/components/input/PasswordInput'
 import { signUpWithEmail } from '@/services/account'
-import { RootStackParamList } from '@/types/routes'
 
 const SignUp = () => {
   const [email, setEmail] = useState('')
@@ -47,7 +45,7 @@ const SignUp = () => {
       setLoading(false)
     } else {
       signUpWithEmail(email, password)
-        .then(value => {
+        .then(() => {
           Alert.alert('Please check your inbox for email verification!')
         })
         .catch(() => {
@@ -69,22 +67,13 @@ const SignUp = () => {
             <View style={styles.inputContainer}>
               <TextInput
                 placeholder="monemail@gmail.com"
-                onInputChange={value => setEmail(value)}
+                onInputChange={setEmail}
                 autoCapitalize="none"
                 label="Email"
               />
               {emailError && <TextError errorMsg={emailError} />}
             </View>
-            <View style={styles.inputContainer}>
-              <TextInput
-                placeholder="Entrez votre mot de passe"
-                onInputChange={value => setPassword(value)}
-                autoCapitalize="none"
-                secureTextEntry
-                label="Mot de passe"
-              />
-              {passwordError && <TextError errorMsg={passwordError} />}
-            </View>
+            <PasswordInput onInputChange={setPassword} passwordError={passwordError} />
             <Button
               title="S'inscrire"
               accessibilityLabel="Bouton pour se connecter"
@@ -121,12 +110,6 @@ const styles = StyleSheet.create({
   formContainer: {
     marginBottom: 10
   },
-  svgContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 30
-  },
   textContainer: {
     display: 'flex',
     justifyContent: 'center',
@@ -140,17 +123,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     maxWidth: 360,
     marginTop: 16
-  },
-  optionsContainer: {
-    marginVertical: 10,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  forgottenPwd: {
-    width: 'auto',
-    fontSize: 14,
-    fontFamily: 'Satoshi-Regular'
   },
   redirectSignUpTextContainer: {
     display: 'flex',
