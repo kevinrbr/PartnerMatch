@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
   redirectSignUpTextContainer: {
     display: 'flex',
     flexDirection: 'row',
-    width: '100%',
+    width: 'auto',
     justifyContent: 'center'
   },
   redirectSignUpTextLeft: {

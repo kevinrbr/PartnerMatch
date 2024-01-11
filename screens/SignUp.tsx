@@ -98,11 +98,14 @@ const SignUp = () => {
               disabled={loading}
               onPress={() => handleRegister()}
             />
-            <TouchableOpacity onPress={navigateToSignIn}>
-              <View style={styles.redirectSignUpTextContainer}>
+            <View style={styles.test}>
+              <TouchableOpacity
+                onPress={navigateToSignIn}
+                style={styles.redirectSignUpTextContainer}
+              >
                 <Text style={styles.redirectSignUpTextLeft}>J'ai déjà un compte</Text>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
           </View>
           <Separator text="ou" />
           <Button
@@ -159,11 +162,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Satoshi-Regular'
   },
-  redirectSignUpTextContainer: {
+  test: {
     display: 'flex',
     flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'center'
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%'
+  },
+  redirectSignUpTextContainer: {
+    textAlign: 'center'
   },
   redirectSignUpTextLeft: {
     fontSize: 13,
