@@ -8,8 +8,6 @@ export default function IndexPage() {
     supabaseAuth.getSession().then(({ data: { session } }) => {
       if (session) {
         router.replace('/(tabs)/home/')
-      } else {
-        console.log('no user1')
       }
     })
 
@@ -17,7 +15,6 @@ export default function IndexPage() {
       if (session) {
         router.replace('/(tabs)/home/')
       } else {
-        console.log('no user2')
         router.replace('/(auth)/signIn')
       }
     })

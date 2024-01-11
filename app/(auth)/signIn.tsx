@@ -113,7 +113,7 @@ const SignIn = () => {
               disabled={loading}
               onPress={() => handleLogin()}
             />
-            <Link href="/signUp" style={styles.linkContainer}>
+            <Link href="/signUp" asChild>
               <View style={styles.redirectSignUpTextContainer}>
                 <Text style={styles.redirectSignUpTextLeft}>Pas encore de compte ?</Text>
                 <Text style={styles.redirectSignUpTextRight}>S'inscrire</Text>
@@ -175,11 +175,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: 'Satoshi-Regular'
   },
-  linkContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center'
-  },
   redirectSignUpTextContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -197,7 +192,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Satoshi-Bold',
     fontStyle: 'italic',
     color: '#182A60',
-    marginLeft: 10
+    marginLeft: 6
   },
   inputContainer: {
     marginVertical: 8

@@ -91,8 +91,10 @@ const SignUp = () => {
               disabled={loading}
               onPress={() => handleRegister()}
             />
-            <Link href="/signIn" style={styles.redirectSignUpTextContainer} asChild>
-              <Text style={styles.redirectSignUpTextLeft}>J'ai déjà un compte</Text>
+            <Link href="/signIn" asChild>
+              <View style={styles.redirectSignUpTextContainer}>
+                <Text style={styles.redirectSignUpTextLeft}>J'ai déjà un compte</Text>
+              </View>
             </Link>
           </View>
           <Separator text="ou" />
