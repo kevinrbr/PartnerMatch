@@ -1,6 +1,8 @@
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { useState } from 'react'
+import { AuthApiError } from '@supabase/supabase-js'
+import { Link } from 'expo-router'
+import { useEffect, useState } from 'react'
 import { Text, SafeAreaView, View, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import validator from 'validator'
 
@@ -11,21 +13,34 @@ import Separator from '@/components/Separator'
 import TextError from '@/components/TextError'
 import TextInput from '@/components/TextInput'
 import Title from '@/components/Title'
-import { signUpWithEmail } from '@/services/account'
+import { signInWithEmail } from '@/services/account'
 import { RootStackParamList } from '@/types/routes'
 
-type SignUpNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignUp'>
+type SignInNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignIn'>
 
-const SignUp = () => {
+const PASSWORD_MINIMUM_LENGTH = 6
+
+const SignIn = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
 
-  const navigation = useNavigation<SignUpNavigationProp>()
+  const navigation = useNavigation<SignInNavigationProp>()
 
-  const handleRegister = async () => {
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setEmail('')
+      setPassword('')
+      setEmailError('')
+      setPasswordError('')
+    })
+
+    return unsubscribe
+  }, [navigation])
+
+  const handleLogin = async () => {
     setLoading(true)
     setEmailError('')
     setPasswordError('')
@@ -36,39 +51,34 @@ const SignUp = () => {
       hasError = true
     }
 
-    if (password.length < 6) {
+    if (password.length < PASSWORD_MINIMUM_LENGTH) {
       setPasswordError('Le mot de passe doit contenir au moins 6 caractères.')
       hasError = true
     }
 
     if (hasError) {
       setLoading(false)
-      return
-    }
-
-    if (hasError) {
-      setLoading(false)
     } else {
-      signUpWithEmail(email, password)
-        .then(value => {
-          Alert.alert('Please check your inbox for email verification!')
-        })
-        .catch(() => {
-          Alert.alert('Inscription', "Une erreur s'est produite lors de l'inscription.")
+      signInWithEmail(email, password)
+        .catch(error => {
+          if (error instanceof AuthApiError) {
+            Alert.alert(
+              'Connexion',
+              'Identifiants invalides. Veuillez vérifier votre email et votre mot de passe.'
+            )
+          } else {
+            Alert.alert('Connexion', "Une erreur s'est produite lors de la connexion.")
+          }
         })
         .finally(() => setLoading(false))
     }
-  }
-
-  const navigateToSignIn = () => {
-    navigation.navigate('SignIn')
   }
 
   return (
     <DismissKeyboard>
       <SafeAreaView style={styles.container}>
         <View style={styles.textContainer}>
-          <Title variant="mainTitle">Je m'inscris</Title>
+          <Title variant="mainTitle">Je me connecte</Title>
           <Text style={styles.text}>La recherche de partenaires de padel est désormais facile</Text>
         </View>
         <View>
@@ -79,6 +89,7 @@ const SignUp = () => {
                 onInputChange={value => setEmail(value)}
                 autoCapitalize="none"
                 label="Email"
+                value={email}
               />
               {emailError && <TextError errorMsg={emailError} />}
             </View>
@@ -89,20 +100,25 @@ const SignUp = () => {
                 autoCapitalize="none"
                 secureTextEntry
                 label="Mot de passe"
+                value={password}
               />
               {passwordError && <TextError errorMsg={passwordError} />}
             </View>
+            <View style={styles.optionsContainer}>
+              <Text style={styles.forgottenPwd}>Mot de passe oublié</Text>
+            </View>
             <Button
-              title="S'inscrire"
+              title="Se connecter"
               accessibilityLabel="Bouton pour se connecter"
               disabled={loading}
-              onPress={() => handleRegister()}
+              onPress={() => handleLogin()}
             />
-            <TouchableOpacity onPress={navigateToSignIn}>
+            <Link href="/signUp" asChild>
               <View style={styles.redirectSignUpTextContainer}>
-                <Text style={styles.redirectSignUpTextLeft}>J'ai déjà un compte</Text>
+                <Text style={styles.redirectSignUpTextLeft}>Pas encore de compte ?</Text>
+                <Text style={styles.redirectSignUpTextRight}>S'inscrire</Text>
               </View>
-            </TouchableOpacity>
+            </Link>
           </View>
           <Separator text="ou" />
           <Button
@@ -156,7 +172,7 @@ const styles = StyleSheet.create({
   },
   forgottenPwd: {
     width: 'auto',
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: 'Satoshi-Regular'
   },
   redirectSignUpTextContainer: {
@@ -171,9 +187,16 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     color: '#4E5D6B'
   },
+  redirectSignUpTextRight: {
+    fontSize: 13,
+    fontFamily: 'Satoshi-Bold',
+    fontStyle: 'italic',
+    color: '#182A60',
+    marginLeft: 6
+  },
   inputContainer: {
     marginVertical: 8
   }
 })
 
-export default SignUp
+export default SignIn
