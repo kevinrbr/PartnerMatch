@@ -1,6 +1,6 @@
 import { Link } from 'expo-router'
 import { useState } from 'react'
-import { Text, SafeAreaView, View, StyleSheet, Alert } from 'react-native'
+import { Text, SafeAreaView, View, StyleSheet, Alert, Pressable } from 'react-native'
 import validator from 'validator'
 
 import GoogleSvg from '@/assets/images/google.svg'
@@ -81,9 +81,9 @@ const SignUp = () => {
               onPress={() => handleRegister()}
             />
             <Link href="/signIn" asChild>
-              <View style={styles.redirectSignUpTextContainer}>
+              <Pressable style={styles.redirectSignUpTextContainer}>
                 <Text style={styles.redirectSignUpTextLeft}>J'ai déjà un compte</Text>
-              </View>
+              </Pressable>
             </Link>
           </View>
           <Separator text="ou" />

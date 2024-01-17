@@ -3,7 +3,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { AuthApiError } from '@supabase/supabase-js'
 import { Link } from 'expo-router'
 import { useEffect, useState } from 'react'
-import { Text, SafeAreaView, View, StyleSheet, Alert } from 'react-native'
+import { Text, SafeAreaView, View, StyleSheet, Alert, Pressable } from 'react-native'
 import validator from 'validator'
 
 import GoogleSvg from '@/assets/images/google.svg'
@@ -105,10 +105,10 @@ const SignIn = () => {
               onPress={() => handleLogin()}
             />
             <Link href="/signUp" asChild>
-              <View style={styles.redirectSignUpTextContainer}>
+              <Pressable style={styles.redirectSignUpTextContainer}>
                 <Text style={styles.redirectSignUpTextLeft}>Pas encore de compte ?</Text>
                 <Text style={styles.redirectSignUpTextRight}>S'inscrire</Text>
-              </View>
+              </Pressable>
             </Link>
           </View>
           <Separator text="ou" />
