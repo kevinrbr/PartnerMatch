@@ -8,9 +8,9 @@ import Button from '@/components/Button'
 import DismissKeyboard from '@/components/DismissKeyboard'
 import Separator from '@/components/Separator'
 import TextError from '@/components/TextError'
-import TextInput from '@/components/TextInput'
 import Title from '@/components/Title'
 import PasswordInput from '@/components/input/PasswordInput'
+import TextInput from '@/components/input/TextInput'
 import { signUpWithEmail } from '@/services/account'
 
 const SignUp = () => {

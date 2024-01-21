@@ -8,23 +8,33 @@ import {
   TouchableWithoutFeedback
 } from 'react-native'
 
+import TextError from '../TextError'
+
 type TextInputProps = NativeTextInputProps & {
   label?: string
   onInputChange: (value: string) => void
   children?: ReactNode
+  max?: number
+  min?: number
 }
 
-const TextInput = ({ children, label, onInputChange, ...props }: TextInputProps) => {
+const TextInput = ({ children, label, onInputChange, max, min, ...props }: TextInputProps) => {
   const [inputValue, setInputValue] = useState('')
   const [isFocused, setFocused] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
 
   const isStylized = (): boolean => {
     return isFocused || inputValue !== ''
   }
 
-  const handleInputChange = (text: string) => {
-    setInputValue(text)
-    onInputChange(text)
+  const handleInputChange = (value: string) => {
+    setInputValue(value)
+    onInputChange(value)
+    setErrorMsg('')
+
+    if ((max && +value > max) || (min && +value < min)) {
+      setErrorMsg('ERREUR MA GUEULE')
+    }
   }
 
   const handleOnClick = () => {
@@ -52,6 +62,7 @@ const TextInput = ({ children, label, onInputChange, ...props }: TextInputProps)
           {children}
         </View>
       </TouchableWithoutFeedback>
+      <TextError errorMsg={errorMsg} />
     </View>
   )
 }
