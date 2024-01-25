@@ -19,7 +19,7 @@ const SlotCard = () => {
           <View style={styles.profilePictureContainer}>
             <Image style={styles.profilePicture} source={require('@/assets/images/profile.png')} />
           </View>
-          <View style={styles.profilContent}>
+          <View>
             <Text style={styles.name}>Antoine</Text>
             <View style={styles.noteContainer}>
               <Text style={styles.note}>5</Text>
