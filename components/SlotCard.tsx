@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
+import { StarIcon } from 'react-native-heroicons/outline'
 
 const SlotCard = () => {
   return (
@@ -20,11 +21,14 @@ const SlotCard = () => {
           </View>
           <View style={styles.profilContent}>
             <Text style={styles.name}>Antoine</Text>
-            <Text style={styles.note}>5</Text>
+            <View style={styles.noteContainer}>
+              <Text style={styles.note}>5</Text>
+              <StarIcon size={12} color="#000" style={styles.noteIcon} />
+            </View>
           </View>
         </View>
-        <View style={styles.level}>
-          <Text>niv 2/3</Text>
+        <View style={styles.levelContainer}>
+          <Text style={styles.level}>niv 2/3</Text>
         </View>
       </View>
     </View>
@@ -51,13 +55,12 @@ const styles = StyleSheet.create({
     marginBottom: 16
   },
   club: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
     fontFamily: 'Satoshi-Bold'
   },
   hour: {
-    fontSize: 14,
-    fontStyle: 'italic',
+    fontSize: 12,
     fontFamily: 'Satoshi-Regular'
   },
   dispo: {
@@ -78,21 +81,38 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     overflow: 'hidden',
-    borderRadius: 100
+    borderRadius: 100,
+    marginRight: 12
   },
   profilePicture: {
     width: '100%',
-    height: '100%',
-    fontFamily: 'Satoshi-Regular'
+    height: '100%'
   },
-  profilContent: {},
-  level: {},
+  level: {
+    paddingHorizontal: 6,
+    paddingVertical: 4,
+    color: '#fff',
+    fontSize: 12
+  },
+  levelContainer: {
+    borderRadius: 4,
+    backgroundColor: '#FF7131'
+  },
   name: {
     fontFamily: 'Satoshi-Regular',
-    fontSize: 14
+    fontSize: 12
+  },
+  noteContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
   },
   note: {
     fontFamily: 'Satoshi-Regular',
-    fontSize: 14
+    fontSize: 12
+  },
+  noteIcon: {
+    marginLeft: 2
   }
 })
