@@ -75,7 +75,9 @@ const styles = StyleSheet.create({
   },
   profileInfoContainer: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   profilePictureContainer: {
     width: 28,
