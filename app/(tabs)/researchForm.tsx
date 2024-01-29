@@ -22,14 +22,13 @@ const ResearchForm = () => {
   const [errorPlace, setErrorPlace] = useState('')
   const [errorLevel, setErrorLevel] = useState('')
 
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(true)
 
-  const handleChange = (field: string, value: string | Date) => {
-    setError(false)
+  const handleChange = (field: string, value: string) => {
     if (field === ESlot.CITY) {
       if (!value.match(/^[A-Za-z -]+$/) || value === '') {
         setError(true)
-        setErrorCity('Erreur city.')
+        setErrorCity('Caractères autorisés: (A-Z, -)')
       } else {
         setErrorCity('')
       }
@@ -38,7 +37,7 @@ const ResearchForm = () => {
     if (field === ESlot.CLUB) {
       if (!value.match(/^[A-Za-z -]+$/) || value === '') {
         setError(true)
-        setErrorClub('Erreur club.')
+        setErrorClub('Caractères autorisés: (A-Z, -)')
       } else {
         setErrorClub('')
       }
@@ -47,7 +46,7 @@ const ResearchForm = () => {
     if (field === ESlot.NUMBER_PLACES) {
       if (!value.match(/^[0-9]$/) || +value < 1 || +value > 3 || value === '') {
         setError(true)
-        setErrorPlace('Erreur nombre de place.')
+        setErrorPlace('Nombre de place entre 1 et 3')
       } else {
         setErrorPlace('')
       }
@@ -56,12 +55,19 @@ const ResearchForm = () => {
     if (field === ESlot.LEVEL) {
       if (!value.match(/^[0-9]$/) || +value < 1 || +value > 10 || value === '') {
         setError(true)
-        setErrorLevel('Erreur level.')
+        setErrorLevel('Niveau entre 1 et 10')
       } else {
         setErrorLevel('')
       }
     }
 
+    setReservation(prevReservation => ({
+      ...prevReservation,
+      [field]: value
+    }))
+  }
+
+  const handleChangeDate = (field: string, value: Date) => {
     setReservation(prevReservation => ({
       ...prevReservation,
       [field]: value
@@ -112,7 +118,7 @@ const ResearchForm = () => {
         <DateInput
           label="Date"
           date={reservation.date}
-          onInputChange={date => handleChange(ESlot.DATE, date)}
+          onInputChange={date => handleChangeDate(ESlot.DATE, date)}
         />
         <Button
           title="Valider"
