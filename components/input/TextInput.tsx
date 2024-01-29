@@ -14,15 +14,18 @@ type TextInputProps = NativeTextInputProps & {
   label?: string
   onInputChange: (value: string) => void
   children?: ReactNode
-  max?: number
-  min?: number
+  errorMessage?: string
 }
 
-const TextInput = ({ children, label, onInputChange, max, min, ...props }: TextInputProps) => {
+const TextInput = ({
+  children,
+  label,
+  onInputChange,
+  errorMessage = '',
+  ...props
+}: TextInputProps) => {
   const [inputValue, setInputValue] = useState('')
   const [isFocused, setFocused] = useState(false)
-  const [errorMsg, setErrorMsg] = useState('')
-
   const isStylized = (): boolean => {
     return isFocused || inputValue !== ''
   }
@@ -30,11 +33,6 @@ const TextInput = ({ children, label, onInputChange, max, min, ...props }: TextI
   const handleInputChange = (value: string) => {
     setInputValue(value)
     onInputChange(value)
-    setErrorMsg('')
-
-    if ((max && +value > max) || (min && +value < min)) {
-      setErrorMsg('ERREUR MA GUEULE')
-    }
   }
 
   const handleOnClick = () => {
@@ -62,7 +60,7 @@ const TextInput = ({ children, label, onInputChange, max, min, ...props }: TextI
           {children}
         </View>
       </TouchableWithoutFeedback>
-      <TextError errorMsg={errorMsg} />
+      <TextError errorMsg={errorMessage} />
     </View>
   )
 }
