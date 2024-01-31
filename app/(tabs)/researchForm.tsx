@@ -6,7 +6,7 @@ import DismissKeyboard from '@/components/DismissKeyboard'
 import DateInput from '@/components/input/DateInput'
 import TextInput from '@/components/input/TextInput'
 import { postSlot } from '@/services/slot'
-import { ISlot, ESlot } from '@/types/slot'
+import { ISlot, ESlot, ERROR_MESSAGES } from '@/types/slot'
 
 const ResearchForm = () => {
   const [reservation, setReservation] = useState<ISlot>({
@@ -17,43 +17,16 @@ const ResearchForm = () => {
     date: new Date()
   })
 
-  const [errorCity, setErrorCity] = useState(false)
-  const [errorClub, setErrorClub] = useState(false)
-  const [errorPlace, setErrorPlace] = useState(false)
-  const [errorLevel, setErrorLevel] = useState(false)
+  const [errorFields, setErrorFields] = useState({
+    city: false,
+    club: false,
+    nbPlaces: false,
+    level: false
+  })
 
   const handleChange = (field: string, value: string) => {
-    if (field === ESlot.CITY) {
-      if (!value.match(/^[A-Za-z -]+$/) || value === '') {
-        setErrorCity(true)
-      } else {
-        setErrorCity(false)
-      }
-    }
-
-    if (field === ESlot.CLUB) {
-      if (!value.match(/^[A-Za-z -]+$/) || value === '') {
-        setErrorClub(true)
-      } else {
-        setErrorClub(false)
-      }
-    }
-
-    if (field === ESlot.NUMBER_PLACES) {
-      if (!value.match(/^[0-9]$/) || +value < 1 || +value > 3 || value === '') {
-        setErrorPlace(true)
-      } else {
-        setErrorPlace(false)
-      }
-    }
-
-    if (field === ESlot.LEVEL) {
-      if (!value.match(/^[0-9]$/) || +value < 1 || +value > 10 || value === '') {
-        setErrorLevel(true)
-      } else {
-        setErrorLevel(false)
-      }
-    }
+    const isError = !validateField(field, value)
+    setErrorField(field, isError)
 
     setReservation(prevReservation => ({
       ...prevReservation,
@@ -69,24 +42,37 @@ const ResearchForm = () => {
   }
 
   const handleSubmit = (reservation: ISlot) => {
-    if (!errorCity && !errorClub && !errorPlace && !errorLevel) {
+    if (!isError()) {
       postSlot(reservation)
     }
   }
 
   const isError = () => {
-    if (
-      errorCity ||
-      errorClub ||
-      errorPlace ||
-      errorLevel ||
-      reservation.city == '' ||
-      reservation.club == '' ||
-      reservation.level == '' ||
-      reservation.nbPlaces == ''
-    ) {
-      return true
+    return (
+      Object.values(errorFields).some(field => field) ||
+      !Object.values(reservation).every(value => value)
+    )
+  }
+
+  const validateField = (field: string, value: string) => {
+    switch (field) {
+      case ESlot.CITY:
+      case ESlot.CLUB:
+        return !!value.match(/^[A-Za-zÀ-ÖØ-öø-ÿ -]+$/) && value !== ''
+      case ESlot.NUMBER_PLACES:
+        return !!value.match(/^[0-9]$/) && +value >= 1 && +value <= 3 && value !== ''
+      case ESlot.LEVEL:
+        return !!value.match(/^[0-9]$/) && +value >= 1 && +value <= 10 && value !== ''
+      default:
+        return false
     }
+  }
+
+  const setErrorField = (field: string, isError: boolean) => {
+    setErrorFields(prevErrorFields => ({
+      ...prevErrorFields,
+      [field]: isError
+    }))
   }
 
   return (
@@ -97,14 +83,14 @@ const ResearchForm = () => {
           onInputChange={city => handleChange(ESlot.CITY, city)}
           label="Ville"
           value={reservation.city}
-          errorMessage={errorCity && 'erreur city'}
+          errorMessage={errorFields.city && ERROR_MESSAGES.CITY}
         />
         <TextInput
           placeholder="UCPA"
           onInputChange={club => handleChange(ESlot.CLUB, club)}
           label="Club"
           value={reservation.club}
-          errorMessage={errorClub && 'erreur club'}
+          errorMessage={errorFields.club && ERROR_MESSAGES.CLUB}
         />
         <TextInput
           placeholder="2"
@@ -113,7 +99,7 @@ const ResearchForm = () => {
           value={reservation.nbPlaces}
           inputMode="numeric"
           keyboardType="numeric"
-          errorMessage={errorPlace && 'error place'}
+          errorMessage={errorFields.nbPlaces && ERROR_MESSAGES.NUMBER_PLACES}
         />
         <TextInput
           placeholder="2"
@@ -122,7 +108,7 @@ const ResearchForm = () => {
           value={reservation.level}
           inputMode="numeric"
           keyboardType="numeric"
-          errorMessage={errorLevel && 'error level'}
+          errorMessage={errorFields.level && ERROR_MESSAGES.LEVEL}
         />
         <DateInput
           label="Date"

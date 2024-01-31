@@ -13,3 +13,10 @@ export enum ESlot {
   LEVEL = 'level',
   DATE = 'date'
 }
+
+export const ERROR_MESSAGES = {
+  CITY: 'Caractères autorisés : A-Z et -',
+  CLUB: 'Caractères autorisés : A-Z et -',
+  NUMBER_PLACES: '1 à 3 places maximum',
+  LEVEL: 'Niveau 1 à 10 uniquement'
+}
