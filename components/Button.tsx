@@ -27,7 +27,6 @@ const getButtonColor = (
 
 const Button = ({ variant = 'primary', ...props }: ButtonProps) => {
   const buttonColor = getButtonColor(variant)
-  console.log(props.disabled)
   return (
     <View style={[styles[variant], styles.button, props.disabled && styles.disabledBtn]}>
       <NativeButton {...props} color={buttonColor} />

@@ -17,47 +17,41 @@ const ResearchForm = () => {
     date: new Date()
   })
 
-  const [errorCity, setErrorCity] = useState('')
-  const [errorClub, setErrorClub] = useState('')
-  const [errorPlace, setErrorPlace] = useState('')
-  const [errorLevel, setErrorLevel] = useState('')
-
-  const [error, setError] = useState(true)
+  const [errorCity, setErrorCity] = useState(false)
+  const [errorClub, setErrorClub] = useState(false)
+  const [errorPlace, setErrorPlace] = useState(false)
+  const [errorLevel, setErrorLevel] = useState(false)
 
   const handleChange = (field: string, value: string) => {
     if (field === ESlot.CITY) {
       if (!value.match(/^[A-Za-z -]+$/) || value === '') {
-        setError(true)
-        setErrorCity('Caractères autorisés: (A-Z, -)')
+        setErrorCity(true)
       } else {
-        setErrorCity('')
+        setErrorCity(false)
       }
     }
 
     if (field === ESlot.CLUB) {
       if (!value.match(/^[A-Za-z -]+$/) || value === '') {
-        setError(true)
-        setErrorClub('Caractères autorisés: (A-Z, -)')
+        setErrorClub(true)
       } else {
-        setErrorClub('')
+        setErrorClub(false)
       }
     }
 
     if (field === ESlot.NUMBER_PLACES) {
       if (!value.match(/^[0-9]$/) || +value < 1 || +value > 3 || value === '') {
-        setError(true)
-        setErrorPlace('Nombre de place entre 1 et 3')
+        setErrorPlace(true)
       } else {
-        setErrorPlace('')
+        setErrorPlace(false)
       }
     }
 
     if (field === ESlot.LEVEL) {
       if (!value.match(/^[0-9]$/) || +value < 1 || +value > 10 || value === '') {
-        setError(true)
-        setErrorLevel('Niveau entre 1 et 10')
+        setErrorLevel(true)
       } else {
-        setErrorLevel('')
+        setErrorLevel(false)
       }
     }
 
@@ -75,8 +69,23 @@ const ResearchForm = () => {
   }
 
   const handleSubmit = (reservation: ISlot) => {
-    if (!error) {
+    if (!errorCity && !errorClub && !errorPlace && !errorLevel) {
       postSlot(reservation)
+    }
+  }
+
+  const isError = () => {
+    if (
+      errorCity ||
+      errorClub ||
+      errorPlace ||
+      errorLevel ||
+      reservation.city == '' ||
+      reservation.club == '' ||
+      reservation.level == '' ||
+      reservation.nbPlaces == ''
+    ) {
+      return true
     }
   }
 
@@ -88,14 +97,14 @@ const ResearchForm = () => {
           onInputChange={city => handleChange(ESlot.CITY, city)}
           label="Ville"
           value={reservation.city}
-          errorMessage={errorCity}
+          errorMessage={errorCity && 'erreur city'}
         />
         <TextInput
           placeholder="UCPA"
           onInputChange={club => handleChange(ESlot.CLUB, club)}
           label="Club"
           value={reservation.club}
-          errorMessage={errorClub}
+          errorMessage={errorClub && 'erreur club'}
         />
         <TextInput
           placeholder="2"
@@ -104,7 +113,7 @@ const ResearchForm = () => {
           value={reservation.nbPlaces}
           inputMode="numeric"
           keyboardType="numeric"
-          errorMessage={errorPlace}
+          errorMessage={errorPlace && 'error place'}
         />
         <TextInput
           placeholder="2"
@@ -113,7 +122,7 @@ const ResearchForm = () => {
           value={reservation.level}
           inputMode="numeric"
           keyboardType="numeric"
-          errorMessage={errorLevel}
+          errorMessage={errorLevel && 'error level'}
         />
         <DateInput
           label="Date"
@@ -123,7 +132,7 @@ const ResearchForm = () => {
         <Button
           title="Valider"
           accessibilityLabel="Bouton pour se connecter"
-          disabled={error}
+          disabled={isError()}
           onPress={() => handleSubmit(reservation)}
         />
       </View>
