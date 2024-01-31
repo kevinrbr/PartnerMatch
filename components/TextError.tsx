@@ -20,6 +20,6 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 12,
     fontFamily: 'Satoshi-Regular',
-    marginTop: 6
+    marginTop: 2
   }
 })
