@@ -8,7 +8,6 @@ import {
 
 type ButtonProps = NativeButtonProps & {
   variant?: 'primary' | 'secondary' | 'transparent' | 'transparentSecondary'
-  children?: ReactNode
 }
 
 const getButtonColor = (
@@ -26,12 +25,10 @@ const getButtonColor = (
   }
 }
 
-const Button = ({ variant = 'primary', children, ...props }: ButtonProps) => {
+const Button = ({ variant = 'primary', ...props }: ButtonProps) => {
   const buttonColor = getButtonColor(variant)
-
   return (
-    <View style={[styles[variant], styles.button]}>
-      {children}
+    <View style={[styles[variant], styles.button, props.disabled && styles.disabledBtn]}>
       <NativeButton {...props} color={buttonColor} />
     </View>
   )
@@ -67,6 +64,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#182A60',
     borderStyle: 'solid'
+  },
+  disabledBtn: {
+    opacity: 0.3
   }
 })
 

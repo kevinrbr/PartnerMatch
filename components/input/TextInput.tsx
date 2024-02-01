@@ -8,23 +8,31 @@ import {
   TouchableWithoutFeedback
 } from 'react-native'
 
+import TextError from '../TextError'
+
 type TextInputProps = NativeTextInputProps & {
   label?: string
   onInputChange: (value: string) => void
   children?: ReactNode
+  errorMessage?: string
 }
 
-const TextInput = ({ children, label, onInputChange, ...props }: TextInputProps) => {
+const TextInput = ({
+  children,
+  label,
+  onInputChange,
+  errorMessage = '',
+  ...props
+}: TextInputProps) => {
   const [inputValue, setInputValue] = useState('')
   const [isFocused, setFocused] = useState(false)
-
   const isStylized = (): boolean => {
     return isFocused || inputValue !== ''
   }
 
-  const handleInputChange = (text: string) => {
-    setInputValue(text)
-    onInputChange(text)
+  const handleInputChange = (value: string) => {
+    setInputValue(value)
+    onInputChange(value)
   }
 
   const handleOnClick = () => {
@@ -52,6 +60,7 @@ const TextInput = ({ children, label, onInputChange, ...props }: TextInputProps)
           {children}
         </View>
       </TouchableWithoutFeedback>
+      <TextError errorMsg={errorMessage} />
     </View>
   )
 }
