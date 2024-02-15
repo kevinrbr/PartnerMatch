@@ -9,7 +9,11 @@ type SlotCardProps = {
 }
 
 const SlotCard = ({ slot }: SlotCardProps) => {
-  console.log(slot.date)
+  const formatDate = (date: string) => {
+    const parsedDate = parseISO(date)
+    const formattedDate = format(parsedDate, 'HH:mm')
+    return formattedDate
+  }
   return (
     <View style={styles.cardContainer}>
       <View style={styles.cardContent}>
@@ -17,7 +21,7 @@ const SlotCard = ({ slot }: SlotCardProps) => {
           <Text style={styles.club}>
             {slot.city} - {slot.club}
           </Text>
-          <Text style={styles.hour}>10h - 11h30</Text>
+          <Text style={styles.hour}>{formatDate(slot.date.toString())}</Text>
         </View>
         <View>
           <Text style={styles.dispo}>
