@@ -1,17 +1,31 @@
+import { format, parseISO } from 'date-fns'
 import React from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
-import { StarIcon } from 'react-native-heroicons/outline'
 
-const SlotCard = () => {
+import { getDateHours } from '@/common/date'
+import { ISlot } from '@/types/slot'
+
+type SlotCardProps = {
+  slot: ISlot
+}
+
+const SlotCard = ({ slot }: SlotCardProps) => {
+  const numberOfPlacesLabel = slot => {
+    return +slot.nbPlaces > 1
+      ? +slot.nbPlaces + ' places disponibles'
+      : +slot.nbPlaces + ' place disponible'
+  }
   return (
     <View style={styles.cardContainer}>
       <View style={styles.cardContent}>
         <View>
-          <Text style={styles.club}>UCPA Nantes</Text>
-          <Text style={styles.hour}>10h - 11h30</Text>
+          <Text style={styles.club}>
+            {slot.city} - {slot.club}
+          </Text>
+          <Text style={styles.hour}>{getDateHours(slot.date.toString())}</Text>
         </View>
         <View>
-          <Text style={styles.dispo}>1 place disponible</Text>
+          <Text style={styles.dispo}>{numberOfPlacesLabel(slot)}</Text>
         </View>
       </View>
       <View style={styles.footerContent}>
@@ -21,14 +35,10 @@ const SlotCard = () => {
           </View>
           <View>
             <Text style={styles.name}>Antoine</Text>
-            <View style={styles.noteContainer}>
-              <Text style={styles.note}>5</Text>
-              <StarIcon size={12} color="#000" style={styles.noteIcon} />
-            </View>
           </View>
         </View>
         <View style={styles.levelContainer}>
-          <Text style={styles.level}>niv 2/3</Text>
+          <Text style={styles.level}>niv {slot.level}</Text>
         </View>
       </View>
     </View>

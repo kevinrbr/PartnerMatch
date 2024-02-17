@@ -1,15 +1,31 @@
+import { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
 
 import SlotCard from '@/components/SlotCard'
+import { getSlots } from '@/services/slot'
+import { ISlot } from '@/types/slot'
 
 const Home = () => {
+  const [slotsData, setSlotsData] = useState<ISlot[]>([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getSlots()
+        setSlotsData(data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    fetchData()
+  }, [])
+
   return (
     <ScrollView style={styles.slotContainer}>
-      <SlotCard />
-      <SlotCard />
-      <SlotCard />
-      <SlotCard />
-      <SlotCard />
+      {slotsData.map((slot, index) => (
+        <SlotCard key={index} slot={slot} />
+      ))}
     </ScrollView>
   )
 }

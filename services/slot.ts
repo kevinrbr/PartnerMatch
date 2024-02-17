@@ -6,8 +6,23 @@ export const postSlot = async function (formData: ISlot) {
     user_id: (await supabase.auth.getUser()).data.user.id,
     city: formData.city,
     club: formData.club,
-    nb_places: formData.nbPlaces,
-    niveau: formData.level,
-    match_date: formData.date
+    nbPlaces: formData.nbPlaces,
+    level: formData.level,
+    date: formData.date
   })
+}
+
+export const getSlots = async () => {
+  try {
+    const { data, error } = await supabase.from('slot').select('*')
+
+    if (error) {
+      throw error
+    }
+
+    return data
+  } catch (error) {
+    console.error('Erreur lors de la récupération des données:', error.message)
+    throw error
+  }
 }
