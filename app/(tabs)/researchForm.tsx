@@ -1,3 +1,4 @@
+import { router } from 'expo-router'
 import { useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 
@@ -44,6 +45,7 @@ const ResearchForm = () => {
   const handleSubmit = (reservation: ISlot) => {
     if (!isError()) {
       postSlot(reservation)
+      router.replace('/(tabs)/home/')
     }
   }
 

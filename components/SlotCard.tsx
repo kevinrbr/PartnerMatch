@@ -2,6 +2,7 @@ import { format, parseISO } from 'date-fns'
 import React from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
 
+import { getDateHours } from '@/common/date'
 import { ISlot } from '@/types/slot'
 
 type SlotCardProps = {
@@ -9,10 +10,10 @@ type SlotCardProps = {
 }
 
 const SlotCard = ({ slot }: SlotCardProps) => {
-  const formatDate = (date: string) => {
-    const parsedDate = parseISO(date)
-    const formattedDate = format(parsedDate, 'HH:mm')
-    return formattedDate
+  const numberOfPlacesLabel = slot => {
+    return +slot.nbPlaces > 1
+      ? +slot.nbPlaces + ' places disponibles'
+      : +slot.nbPlaces + ' place disponible'
   }
   return (
     <View style={styles.cardContainer}>
@@ -21,14 +22,10 @@ const SlotCard = ({ slot }: SlotCardProps) => {
           <Text style={styles.club}>
             {slot.city} - {slot.club}
           </Text>
-          <Text style={styles.hour}>{formatDate(slot.date.toString())}</Text>
+          <Text style={styles.hour}>{getDateHours(slot.date.toString())}</Text>
         </View>
         <View>
-          <Text style={styles.dispo}>
-            {+slot.nbPlaces > 1
-              ? +slot.nbPlaces + ' places disponibles'
-              : +slot.nbPlaces + ' place disponible'}
-          </Text>
+          <Text style={styles.dispo}>{numberOfPlacesLabel(slot)}</Text>
         </View>
       </View>
       <View style={styles.footerContent}>
