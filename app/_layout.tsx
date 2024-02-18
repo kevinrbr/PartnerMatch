@@ -1,5 +1,7 @@
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { useFonts } from 'expo-font'
 import { Slot } from 'expo-router'
+const queryClient = new QueryClient()
 
 export default function Root() {
   const [fontsLoaded] = useFonts({
