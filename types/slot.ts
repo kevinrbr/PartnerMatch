@@ -4,6 +4,7 @@ export interface ISlot {
   nbPlaces: string
   level: string
   date: Date
+  name?: string
 }
 
 export enum ESlot {

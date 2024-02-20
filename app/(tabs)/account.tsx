@@ -1,28 +1,47 @@
 import { Session } from '@supabase/supabase-js'
-import { Link } from 'expo-router'
 import { useState } from 'react'
-import { Text, View } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 
 import Button from '@/components/Button'
-import { signOut } from '@/services/account'
+import TextInput from '@/components/input/TextInput'
+import { signOut, updateProfile } from '@/services/account'
 import { supabaseAuth } from '@/services/constants'
 
 const Account = () => {
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [session, setSession] = useState<Session | null>(null)
 
   supabaseAuth.getSession().then(({ data: { session } }) => {
     setSession(session)
   })
 
+  const saveInfos = () => {
+    updateProfile(firstName, lastName)
+  }
+
   return (
-    <View>
-      <Text>account</Text>
+    <View style={styles.container}>
+      <TextInput
+        placeholder="Prénom"
+        onInputChange={setFirstName}
+        label="Prénom"
+        value={firstName}
+      />
+      <TextInput placeholder="Nom" onInputChange={setLastName} label="Nom" value={lastName} />
+      <Button title="Enregister" onPress={saveInfos} />
       <Button title="deconnexion" onPress={signOut} />
-      <Link href="/signIn" asChild>
-        <Button title="Connexion" />
-      </Link>
     </View>
   )
 }
 
 export default Account
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    paddingHorizontal: 26,
+    paddingTop: 30
+  }
+})

@@ -7,7 +7,7 @@ import Button from '@/components/Button'
 import DismissKeyboard from '@/components/DismissKeyboard'
 import DateInput from '@/components/input/DateInput'
 import TextInput from '@/components/input/TextInput'
-import { getSlots, postSlot } from '@/services/slot'
+import { postSlot } from '@/services/slot'
 import { ISlot, ESlot, ERROR_MESSAGES } from '@/types/slot'
 
 const ResearchForm = () => {
