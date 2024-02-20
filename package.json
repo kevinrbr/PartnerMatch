@@ -17,6 +17,7 @@
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
     "@supabase/supabase-js": "^2.38.4",
+    "@tanstack/react-query": "^5.21.4",
     "@types/react": "~18.2.14",
     "date-fns": "^3.3.0",
     "expo": "~49.0.15",

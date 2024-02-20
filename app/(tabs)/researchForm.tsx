@@ -1,3 +1,4 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
 import { useState } from 'react'
 import { View, StyleSheet } from 'react-native'
@@ -6,7 +7,7 @@ import Button from '@/components/Button'
 import DismissKeyboard from '@/components/DismissKeyboard'
 import DateInput from '@/components/input/DateInput'
 import TextInput from '@/components/input/TextInput'
-import { postSlot } from '@/services/slot'
+import { getSlots, postSlot } from '@/services/slot'
 import { ISlot, ESlot, ERROR_MESSAGES } from '@/types/slot'
 
 const ResearchForm = () => {
@@ -23,6 +24,20 @@ const ResearchForm = () => {
     club: false,
     nbPlaces: false,
     level: false
+  })
+
+  const queryClient = useQueryClient()
+  queryClient.invalidateQueries({
+    queryKey: ['slots']
+  })
+
+  const addMutation = useMutation({
+    mutationFn: postSlot,
+    onSuccess: data => {
+      queryClient.invalidateQueries({
+        queryKey: ['slots']
+      })
+    }
   })
 
   const handleChange = (field: string, value: string) => {
@@ -44,7 +59,13 @@ const ResearchForm = () => {
 
   const handleSubmit = (reservation: ISlot) => {
     if (!isError()) {
-      postSlot(reservation)
+      queryClient.invalidateQueries({
+        queryKey: ['slots']
+      })
+      addMutation.mutate(reservation)
+      queryClient.invalidateQueries({
+        queryKey: ['slots']
+      })
       router.replace('/(tabs)/home/')
     }
   }
