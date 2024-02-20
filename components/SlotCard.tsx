@@ -1,4 +1,3 @@
-import { format, parseISO } from 'date-fns'
 import React from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
 
@@ -34,7 +33,7 @@ const SlotCard = ({ slot }: SlotCardProps) => {
             <Image style={styles.profilePicture} source={require('@/assets/images/profile.png')} />
           </View>
           <View>
-            <Text style={styles.name}>Antoine</Text>
+            <Text style={styles.name}>{slot.name}</Text>
           </View>
         </View>
         <View style={styles.levelContainer}>
