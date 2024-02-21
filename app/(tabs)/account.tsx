@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 
 import Button from '@/components/Button'
+import DismissKeyboard from '@/components/DismissKeyboard'
 import TextInput from '@/components/input/TextInput'
 import { signOut, updateProfile } from '@/services/account'
 import { supabaseAuth } from '@/services/constants'
@@ -21,17 +22,19 @@ const Account = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        placeholder="Prénom"
-        onInputChange={setFirstName}
-        label="Prénom"
-        value={firstName}
-      />
-      <TextInput placeholder="Nom" onInputChange={setLastName} label="Nom" value={lastName} />
-      <Button title="Enregister" onPress={saveInfos} />
-      <Button title="deconnexion" onPress={signOut} />
-    </View>
+    <DismissKeyboard>
+      <View style={styles.container}>
+        <TextInput
+          placeholder="Prénom"
+          onInputChange={setFirstName}
+          label="Prénom"
+          value={firstName}
+        />
+        <TextInput placeholder="Nom" onInputChange={setLastName} label="Nom" value={lastName} />
+        <Button title="Enregister" onPress={saveInfos} />
+        <Button title="deconnexion" onPress={signOut} />
+      </View>
+    </DismissKeyboard>
   )
 }
 
