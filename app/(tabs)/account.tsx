@@ -1,17 +1,26 @@
 import { Session } from '@supabase/supabase-js'
+import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Pressable, Text } from 'react-native'
+import { ArrowLeftStartOnRectangleIcon } from 'react-native-heroicons/outline'
 
 import Button from '@/components/Button'
 import DismissKeyboard from '@/components/DismissKeyboard'
+import SlotCard from '@/components/SlotCard'
 import TextInput from '@/components/input/TextInput'
 import { signOut, updateProfile } from '@/services/account'
 import { supabaseAuth } from '@/services/constants'
+import { getSlotsByUserId } from '@/services/slot'
 
 const Account = () => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [session, setSession] = useState<Session | null>(null)
+
+  const slotsByUserId = useQuery({
+    queryKey: ['slotsByUserId'],
+    queryFn: getSlotsByUserId
+  })
 
   supabaseAuth.getSession().then(({ data: { session } }) => {
     setSession(session)
@@ -32,7 +41,16 @@ const Account = () => {
         />
         <TextInput placeholder="Nom" onInputChange={setLastName} label="Nom" value={lastName} />
         <Button title="Enregister" onPress={saveInfos} />
-        <Button title="deconnexion" onPress={signOut} />
+        <Pressable style={styles.disconnectLinkContainer} onPress={signOut}>
+          <ArrowLeftStartOnRectangleIcon color="#182A60" />
+          <Text style={styles.disconnectLink}>Se deconnecter</Text>
+        </Pressable>
+
+        {slotsByUserId.data && slotsByUserId.data.length > 0 ? (
+          slotsByUserId.data.map((slot, index) => <SlotCard key={index} slot={slot} />)
+        ) : (
+          <Text>Aucun créneau disponible</Text>
+        )}
       </View>
     </DismissKeyboard>
   )
@@ -46,5 +64,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     paddingHorizontal: 26,
     paddingTop: 30
+  },
+  disconnectLinkContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 8
+  },
+  disconnectLink: {
+    marginLeft: 8,
+    color: '#4E5D6B',
+    fontSize: 16,
+    fontFamily: 'Satoshi-Regular'
   }
 })
