@@ -3,9 +3,18 @@ import { supabaseAuth } from './constants'
 import { supabase } from '@/supabase'
 
 export const signInWithEmail = async (email: string, password: string) => {
-  const { data, error } = await supabase.auth.updateUser({
-    email: 'new@email.com'
-  })
+  try {
+    const { error } = await supabaseAuth.signInWithPassword({
+      email,
+      password
+    })
+
+    if (error) {
+      throw error
+    }
+  } catch (error) {
+    throw error
+  }
 }
 
 export const signUpWithEmail = async (email: string, password: string) => {
