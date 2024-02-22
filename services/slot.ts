@@ -22,6 +22,9 @@ export const postSlot = async function (formData: ISlot) {
       name: firstName
     })
 
+    console.log(data)
+    console.log(error)
+
     if (error) {
       throw error
     }

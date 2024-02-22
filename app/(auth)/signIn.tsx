@@ -113,13 +113,13 @@ const SignIn = () => {
             </Link>
           </View>
           <Separator text="ou" />
-          {/* <Button
+          <Button
             title="Se connecter avec Google"
             accessibilityLabel="Bouton pour se connecter avec Google"
             variant="transparentSecondary"
           >
             <GoogleSvg />
-          </Button> */}
+          </Button>
         </View>
       </SafeAreaView>
     </DismissKeyboard>
