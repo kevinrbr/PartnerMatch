@@ -58,6 +58,7 @@ const SignIn = () => {
     }
 
     if (hasError) {
+      console.log(hasError)
       setLoading(false)
     } else {
       signInWithEmail(email, password)
@@ -102,7 +103,7 @@ const SignIn = () => {
               title="Se connecter"
               accessibilityLabel="Bouton pour se connecter"
               disabled={loading}
-              onPress={() => handleLogin()}
+              onPress={handleLogin}
             />
             <Link href="/signUp" asChild>
               <Pressable style={styles.redirectSignUpTextContainer}>
@@ -112,13 +113,13 @@ const SignIn = () => {
             </Link>
           </View>
           <Separator text="ou" />
-          <Button
+          {/* <Button
             title="Se connecter avec Google"
             accessibilityLabel="Bouton pour se connecter avec Google"
             variant="transparentSecondary"
           >
             <GoogleSvg />
-          </Button>
+          </Button> */}
         </View>
       </SafeAreaView>
     </DismissKeyboard>
