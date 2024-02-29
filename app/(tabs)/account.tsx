@@ -6,7 +6,7 @@ import { ArrowLeftStartOnRectangleIcon } from 'react-native-heroicons/outline'
 
 import Button from '@/components/Button'
 import DismissKeyboard from '@/components/DismissKeyboard'
-import SlotCard from '@/components/SlotCard'
+import SlotList from '@/components/SlotList'
 import TextInput from '@/components/input/TextInput'
 import { signOut, updateProfile } from '@/services/account'
 import { supabaseAuth } from '@/services/constants'
@@ -45,12 +45,7 @@ const Account = () => {
           <ArrowLeftStartOnRectangleIcon color="#182A60" />
           <Text style={styles.disconnectLink}>Se deconnecter</Text>
         </Pressable>
-
-        {slotsByUserId.data && slotsByUserId.data.length > 0 ? (
-          slotsByUserId.data.map((slot, index) => <SlotCard key={index} slot={slot} />)
-        ) : (
-          <Text>Aucun créneau disponible</Text>
-        )}
+        <SlotList slots={slotsByUserId} />
       </View>
     </DismissKeyboard>
   )
@@ -70,7 +65,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 8
+    marginVertical: 16
   },
   disconnectLink: {
     marginLeft: 8,
