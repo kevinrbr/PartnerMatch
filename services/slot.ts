@@ -50,3 +50,21 @@ export const getSlots = async () => {
     throw error
   }
 }
+
+export const getSlotsByUserId = async () => {
+  try {
+    const { data, error } = await supabase
+      .from('slot')
+      .select()
+      .eq('user_id', (await supabase.auth.getUser()).data.user.id)
+
+    if (error) {
+      throw error
+    }
+
+    return data
+  } catch (error) {
+    console.error('Erreur lors de la récupération des données:', error.message)
+    throw error
+  }
+}
