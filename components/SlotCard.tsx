@@ -1,21 +1,30 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
 import { getDateHours } from '@/common/date'
 import { ISlot } from '@/types/slot'
 
 type SlotCardProps = {
   slot: ISlot
+  onClick?: (slot: ISlot) => void
 }
 
-const SlotCard = ({ slot }: SlotCardProps) => {
+const SlotCard = ({ slot, onClick }: SlotCardProps) => {
   const numberOfPlacesLabel = slot => {
     return +slot.nbPlaces > 1
       ? +slot.nbPlaces + ' places disponibles'
       : +slot.nbPlaces + ' place disponible'
   }
+
+  const handlePress = () => {
+    if (onClick) {
+      onClick(slot)
+    }
+  }
+
   return (
-    <View style={styles.cardContainer}>
+    <TouchableWithoutFeedback style={styles.cardContainer} onPress={handlePress}>
       <View style={styles.cardContent}>
         <View>
           <Text style={styles.club}>
@@ -40,7 +49,7 @@ const SlotCard = ({ slot }: SlotCardProps) => {
           <Text style={styles.level}>niv {slot.level}</Text>
         </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   )
 }
 

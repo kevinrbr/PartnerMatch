@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 
 type Separatorprops = {
-  text: string
+  text?: string
 }
 
 const Separator = ({ text }: Separatorprops) => {
   return (
     <View style={styles.separatorContainer}>
       <View style={styles.line} />
-      <Text style={styles.text}>ou</Text>
+      {text && <Text style={styles.text}>{text}</Text>}
       <View style={styles.line} />
     </View>
   )
