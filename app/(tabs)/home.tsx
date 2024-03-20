@@ -1,15 +1,11 @@
-import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetModal,
-  BottomSheetModalProvider,
-  BottomSheetView
-} from '@gorhom/bottom-sheet'
+import BottomSheet from '@gorhom/bottom-sheet'
 import { useQuery } from '@tanstack/react-query'
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { CalendarDaysIcon, XMarkIcon } from 'react-native-heroicons/outline'
 
 import Button from '@/components/Button'
+import CustomBottomSheet from '@/components/CustomBottomSheet'
 import Separator from '@/components/Separator'
 import SlotList from '@/components/SlotList'
 import { bookASlot, getSlots } from '@/services/slot'
@@ -25,21 +21,9 @@ const Home = () => {
 
   const bottomSheetRef = useRef<BottomSheet>(null)
 
-  // callbacks
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index)
-  }, [])
-
-  const snapPoints = useMemo(() => ['70%'], [])
-
   const handleBackLinkClick = () => {
     bottomSheetRef.current?.close()
   }
-
-  const renderBackdrop = useCallback(
-    (props: any) => <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1} {...props} />,
-    []
-  )
 
   const handleOnClick = (value: ISlot) => {
     setBookingSlotId(value.id)
@@ -55,41 +39,32 @@ const Home = () => {
       <ScrollView style={styles.slotContainer}>
         <SlotList slots={slotsQuery} onClick={handleOnClick} />
       </ScrollView>
-      <BottomSheet
-        ref={bottomSheetRef}
-        onChange={handleSheetChanges}
-        snapPoints={snapPoints}
-        enablePanDownToClose
-        index={-1}
-        backdropComponent={renderBackdrop}
-      >
-        <BottomSheetView style={styles.contentContainer}>
-          <Text style={styles.title}>Avant de reserver</Text>
-          <View style={styles.textContainer}>
-            <CalendarDaysIcon style={styles.icon} color="#000" />
-            <Text style={styles.text}>Je m'engage à être présent au moment de la réservation</Text>
-          </View>
-          <Separator />
-          <View style={styles.textContainer}>
-            <XMarkIcon style={styles.icon} color="#FF0000" />
-            <Text style={styles.text}>
-              En cas d’indisponibilité, j’annule ma réservation et je préviens la personne à
-              l’initiative de la réservation afin de permettre au groupe de trouver un joueur pour
-              me remplacer.
-            </Text>
-          </View>
-          <View style={styles.btnContainer}>
-            <Button
-              title="Je reserve"
-              accessibilityLabel="Confirmer la réservation"
-              onPress={confirmBooking}
-            />
-            <TouchableWithoutFeedback onPress={handleBackLinkClick}>
-              <Text style={styles.backLink}>Retour</Text>
-            </TouchableWithoutFeedback>
-          </View>
-        </BottomSheetView>
-      </BottomSheet>
+      <CustomBottomSheet ref={bottomSheetRef}>
+        <Text style={styles.title}>Avant de reserver</Text>
+        <View style={styles.textContainer}>
+          <CalendarDaysIcon style={styles.icon} color="#000" />
+          <Text style={styles.text}>Je m'engage à être présent au moment de la réservation</Text>
+        </View>
+        <Separator />
+        <View style={styles.textContainer}>
+          <XMarkIcon style={styles.icon} color="#FF0000" />
+          <Text style={styles.text}>
+            En cas d’indisponibilité, j’annule ma réservation et je préviens la personne à
+            l’initiative de la réservation afin de permettre au groupe de trouver un joueur pour me
+            remplacer.
+          </Text>
+        </View>
+        <View style={styles.btnContainer}>
+          <Button
+            title="Je reserve"
+            accessibilityLabel="Confirmer la réservation"
+            onPress={confirmBooking}
+          />
+          <TouchableWithoutFeedback onPress={handleBackLinkClick}>
+            <Text style={styles.backLink}>Retour</Text>
+          </TouchableWithoutFeedback>
+        </View>
+      </CustomBottomSheet>
     </View>
   )
 }
@@ -107,7 +82,7 @@ const styles = StyleSheet.create({
   },
   btnContainer: {
     width: '100%',
-    marginTop: 32
+    marginTop: 16
   },
   contentContainer: {
     flex: 1,
