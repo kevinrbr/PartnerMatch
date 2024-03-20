@@ -68,3 +68,24 @@ export const getSlotsByUserId = async () => {
     throw error
   }
 }
+
+export const bookASlot = async (id: number) => {
+  try {
+    const { data, error } = await supabase.from('booking').insert({
+      user_id: (await supabase.auth.getUser()).data.user.id,
+      slot_id: id
+    })
+
+    console.log(data)
+    console.log(error)
+
+    if (error) {
+      throw error
+    }
+
+    return data
+  } catch (error) {
+    console.error('Erreur lors de la création du créneau:', error.message)
+    throw error
+  }
+}

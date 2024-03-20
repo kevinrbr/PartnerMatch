@@ -3,7 +3,8 @@ import {
   StyleSheet,
   Button as NativeButton,
   ButtonProps as NativeButtonProps,
-  View
+  View,
+  Text
 } from 'react-native'
 
 type ButtonProps = NativeButtonProps & {
@@ -30,7 +31,6 @@ const Button = ({ children, variant = 'primary', ...props }: ButtonProps) => {
   const buttonColor = getButtonColor(variant)
   return (
     <View style={[styles[variant], styles.button, props.disabled && styles.disabledBtn]}>
-      {children}
       <NativeButton {...props} color={buttonColor} />
     </View>
   )
@@ -39,15 +39,17 @@ const Button = ({ children, variant = 'primary', ...props }: ButtonProps) => {
 const styles = StyleSheet.create({
   button: {
     marginVertical: 12,
-    fontFamily: 'Satoshi-Regular',
+    fontFamily: 'Satoshi-Bold',
     height: 48,
-    borderRadius: 12,
+    borderRadius: 24,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
-    paddingHorizontal: 20
+    paddingHorizontal: 16
+  },
+  btnText: {
+    fontSize: 100
   },
   primary: {
     backgroundColor: '#FF7131'
