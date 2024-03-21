@@ -1,7 +1,7 @@
 import { Session } from '@supabase/supabase-js'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
-import { View, StyleSheet, Pressable, Text } from 'react-native'
+import { StyleSheet, Pressable, Text, ScrollView } from 'react-native'
 import { ArrowLeftStartOnRectangleIcon } from 'react-native-heroicons/outline'
 
 import Button from '@/components/Button'
@@ -37,7 +37,7 @@ const Account = () => {
 
   return (
     <DismissKeyboard>
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <TextInput
           placeholder="Prénom"
           onInputChange={setFirstName}
@@ -52,7 +52,7 @@ const Account = () => {
         </Pressable>
         <SlotList slots={slotsByUserId} />
         <SlotList slots={bookingByUserId} />
-      </View>
+      </ScrollView>
     </DismissKeyboard>
   )
 }

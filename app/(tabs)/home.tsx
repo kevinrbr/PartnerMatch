@@ -28,9 +28,11 @@ const Home = () => {
   }
 
   const handleOnClick = (value: ISlot) => {
-    setBookingSlotId(value.id)
-    setSlotAvailability(value.nbPlaces)
-    bottomSheetRef.current?.expand()
+    if (+value.nbPlaces > 0) {
+      setBookingSlotId(value.id)
+      setSlotAvailability(value.nbPlaces)
+      bottomSheetRef.current?.expand()
+    }
   }
 
   const confirmBooking = () => {
@@ -45,6 +47,9 @@ const Home = () => {
     onSuccess: data => {
       queryClient.invalidateQueries({
         queryKey: ['slots']
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['bookingByUserId']
       })
     }
   })
