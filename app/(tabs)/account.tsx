@@ -10,7 +10,7 @@ import SlotList from '@/components/SlotList'
 import TextInput from '@/components/input/TextInput'
 import { signOut, updateProfile } from '@/services/account'
 import { supabaseAuth } from '@/services/constants'
-import { getSlotsByUserId } from '@/services/slot'
+import { getBookingByUserId, getSlotsByUserId } from '@/services/slot'
 
 const Account = () => {
   const [firstName, setFirstName] = useState('')
@@ -20,6 +20,11 @@ const Account = () => {
   const slotsByUserId = useQuery({
     queryKey: ['slotsByUserId'],
     queryFn: getSlotsByUserId
+  })
+
+  const bookingByUserId = useQuery({
+    queryKey: ['bookingByUserId'],
+    queryFn: getBookingByUserId
   })
 
   supabaseAuth.getSession().then(({ data: { session } }) => {
@@ -46,6 +51,7 @@ const Account = () => {
           <Text style={styles.disconnectLink}>Se deconnecter</Text>
         </Pressable>
         <SlotList slots={slotsByUserId} />
+        <SlotList slots={bookingByUserId} />
       </View>
     </DismissKeyboard>
   )

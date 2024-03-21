@@ -5,7 +5,7 @@ export interface ISlot {
   level: string
   date: Date
   name?: string
-  id: number
+  id?: number
 }
 
 export enum ESlot {

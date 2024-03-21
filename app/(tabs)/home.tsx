@@ -1,5 +1,5 @@
 import BottomSheet from '@gorhom/bottom-sheet'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useRef, useState } from 'react'
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { CalendarDaysIcon, XMarkIcon } from 'react-native-heroicons/outline'
@@ -8,11 +8,13 @@ import Button from '@/components/Button'
 import CustomBottomSheet from '@/components/CustomBottomSheet'
 import Separator from '@/components/Separator'
 import SlotList from '@/components/SlotList'
-import { bookASlot, getSlots } from '@/services/slot'
+import { bookASlot, getSlots, updateSlotAvailability } from '@/services/slot'
 import { ISlot } from '@/types/slot'
 
 const Home = () => {
+  const queryClient = useQueryClient()
   const [bookingSlotId, setBookingSlotId] = useState<number | null>()
+  const [slotAvailability, setSlotAvailability] = useState<string | null>()
 
   const slotsQuery = useQuery({
     queryKey: ['slots'],
@@ -27,12 +29,25 @@ const Home = () => {
 
   const handleOnClick = (value: ISlot) => {
     setBookingSlotId(value.id)
+    setSlotAvailability(value.nbPlaces)
     bottomSheetRef.current?.expand()
   }
 
   const confirmBooking = () => {
+    addMutation.mutate({ id: bookingSlotId, slotAvailability })
     bookASlot(bookingSlotId)
+    bottomSheetRef.current?.close()
   }
+
+  const addMutation = useMutation({
+    mutationFn: (variables: { id: number; slotAvailability: string }) =>
+      updateSlotAvailability(variables),
+    onSuccess: data => {
+      queryClient.invalidateQueries({
+        queryKey: ['slots']
+      })
+    }
+  })
 
   return (
     <View style={styles.mainContainer}>
