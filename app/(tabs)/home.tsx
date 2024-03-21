@@ -8,10 +8,12 @@ import Button from '@/components/Button'
 import CustomBottomSheet from '@/components/CustomBottomSheet'
 import Separator from '@/components/Separator'
 import SlotList from '@/components/SlotList'
+import Toast from '@/components/Toast'
 import { bookASlot, getSlots, updateSlotAvailability } from '@/services/slot'
 import { ISlot } from '@/types/slot'
 
 const Home = () => {
+  const [showToast, setShowToast] = useState(false)
   const queryClient = useQueryClient()
   const [bookingSlotId, setBookingSlotId] = useState<number | null>()
   const [slotAvailability, setSlotAvailability] = useState<string | null>()
@@ -28,6 +30,7 @@ const Home = () => {
   }
 
   const handleOnClick = (value: ISlot) => {
+    setShowToast(true)
     if (+value.nbPlaces > 0) {
       setBookingSlotId(value.id)
       setSlotAvailability(value.nbPlaces)
@@ -56,6 +59,7 @@ const Home = () => {
 
   return (
     <View style={styles.mainContainer}>
+      <Toast message="Message de succès !" showToast={showToast} setShowToast={setShowToast} />
       <ScrollView style={styles.slotContainer}>
         <SlotList slots={slotsQuery} onClick={handleOnClick} />
       </ScrollView>
