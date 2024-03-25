@@ -30,7 +30,6 @@ const Home = () => {
   }
 
   const handleOnClick = (value: ISlot) => {
-    setShowToast(true)
     if (+value.nbPlaces > 0) {
       setBookingSlotId(value.id)
       setSlotAvailability(value.nbPlaces)
@@ -38,10 +37,13 @@ const Home = () => {
     }
   }
 
-  const confirmBooking = () => {
-    addMutation.mutate({ id: bookingSlotId, slotAvailability })
-    bookASlot(bookingSlotId)
-    bottomSheetRef.current?.close()
+  const confirmBooking = async () => {
+    try {
+      await addMutation.mutate({ id: bookingSlotId, slotAvailability })
+      await bookASlot(bookingSlotId)
+      bottomSheetRef.current?.close()
+      setShowToast(true)
+    } catch (e) {}
   }
 
   const addMutation = useMutation({
@@ -59,7 +61,7 @@ const Home = () => {
 
   return (
     <View style={styles.mainContainer}>
-      <Toast message="Message de succès !" showToast={showToast} setShowToast={setShowToast} />
+      <Toast message="Réservation confirmé" showToast={showToast} setShowToast={setShowToast} />
       <ScrollView style={styles.slotContainer}>
         <SlotList slots={slotsQuery} onClick={handleOnClick} />
       </ScrollView>

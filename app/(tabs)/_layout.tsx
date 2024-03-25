@@ -11,34 +11,38 @@ const queryClient = new QueryClient()
 const StackLayout = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <View style={{ flex: 1, backgroundColor: 'white' }}>
+      <View style={{ flex: 1, backgroundColor: 'white', marginTop: 64 }}>
         <Tabs initialRouteName="home">
           <Tabs.Screen
             name="home"
             options={{
               tabBarIcon: () => <HomeIcon color="#182A60" strokeWidth="1" />,
-              tabBarShowLabel: false
+              tabBarShowLabel: false,
+              headerShown: false
             }}
           />
           <Tabs.Screen
             name="messaging"
             options={{
               tabBarIcon: () => <ChatBubbleOvalLeftIcon color="#182A60" strokeWidth="1" />,
-              tabBarShowLabel: false
+              tabBarShowLabel: false,
+              headerShown: false
             }}
           />
           <Tabs.Screen
             name="account"
             options={{
               tabBarIcon: () => <UserCircleIcon color="#182A60" strokeWidth="1" />,
-              tabBarShowLabel: false
+              tabBarShowLabel: false,
+              headerShown: false
             }}
           />
           <Tabs.Screen
             name="researchForm"
             options={{
               tabBarIcon: () => <PlusCircleIcon color="#182A60" strokeWidth="1" />,
-              tabBarShowLabel: false
+              tabBarShowLabel: false,
+              headerShown: false
             }}
           />
         </Tabs>

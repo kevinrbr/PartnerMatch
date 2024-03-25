@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Text, StyleSheet, Animated } from 'react-native'
 
-const Toast = ({ message, showToast, setShowToast }) => {
+type ToastProps = {
+  message: string
+  showToast: boolean
+  error?: boolean
+  setShowToast: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const Toast = ({ message, showToast, setShowToast, error }: ToastProps) => {
   const [fadeAnim] = useState(new Animated.Value(0))
 
   useEffect(() => {
@@ -39,6 +46,7 @@ const Toast = ({ message, showToast, setShowToast }) => {
     <Animated.View
       style={[
         styles.container,
+        error && styles.errorBtn,
         {
           opacity: fadeAnim
         }
@@ -51,13 +59,18 @@ const Toast = ({ message, showToast, setShowToast }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    backgroundColor: 'rgba(28,202,87,1)',
+    color: 'white',
     padding: 10,
     borderRadius: 5,
     position: 'absolute',
     bottom: 20,
     alignSelf: 'center',
-    zIndex: 999
+    zIndex: 999,
+    width: '100%'
+  },
+  errorBtn: {
+    backgroundColor: 'rgba(239,8,8,1)'
   },
   text: {
     color: '#fff',
