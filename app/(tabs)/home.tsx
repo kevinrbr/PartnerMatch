@@ -1,6 +1,7 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useRef, useState } from 'react'
+import { useLocalSearchParams } from 'expo-router'
+import { useEffect, useRef, useState } from 'react'
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { CalendarDaysIcon, XMarkIcon } from 'react-native-heroicons/outline'
 
@@ -13,10 +14,22 @@ import { bookASlot, getSlots, updateSlotAvailability } from '@/services/slot'
 import { ISlot } from '@/types/slot'
 
 const Home = () => {
+  const { showToastParams, message } = useLocalSearchParams()
+  console.log(showToastParams, message)
+
   const [showToast, setShowToast] = useState(false)
+  const [toastMessage, setToastMessage] = useState('')
   const queryClient = useQueryClient()
   const [bookingSlotId, setBookingSlotId] = useState<number | null>()
   const [slotAvailability, setSlotAvailability] = useState<string | null>()
+
+  useEffect(() => {
+    console.log('ici')
+    if (showToastParams === 'true') {
+      setShowToast(true)
+      setToastMessage(message as string)
+    }
+  }, [showToastParams, message])
 
   const slotsQuery = useQuery({
     queryKey: ['slots'],
@@ -61,7 +74,7 @@ const Home = () => {
 
   return (
     <View style={styles.mainContainer}>
-      <Toast message="Réservation confirmé" showToast={showToast} setShowToast={setShowToast} />
+      <Toast message={toastMessage} showToast={showToast} setShowToast={setShowToast} />
       <ScrollView style={styles.slotContainer}>
         <SlotList slots={slotsQuery} onClick={handleOnClick} />
       </ScrollView>
