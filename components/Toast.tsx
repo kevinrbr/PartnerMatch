@@ -67,7 +67,8 @@ const styles = StyleSheet.create({
     bottom: 20,
     alignSelf: 'center',
     zIndex: 999,
-    width: '100%'
+    width: '90%',
+    margin: 'auto'
   },
   errorBtn: {
     backgroundColor: 'rgba(239,8,8,1)'

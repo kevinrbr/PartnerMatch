@@ -1,8 +1,9 @@
-import BottomSheet from '@gorhom/bottom-sheet'
+import BottomSheet, { TouchableHighlight } from '@gorhom/bottom-sheet'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
 import { useEffect, useRef, useState } from 'react'
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 import { CalendarDaysIcon, XMarkIcon } from 'react-native-heroicons/outline'
 
 import Button from '@/components/Button'
@@ -15,7 +16,6 @@ import { ISlot } from '@/types/slot'
 
 const Home = () => {
   const { showToastParams, message } = useLocalSearchParams()
-  console.log(showToastParams, message)
 
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
@@ -24,7 +24,6 @@ const Home = () => {
   const [slotAvailability, setSlotAvailability] = useState<string | null>()
 
   useEffect(() => {
-    console.log('ici')
     if (showToastParams === 'true') {
       setShowToast(true)
       setToastMessage(message as string)
@@ -39,6 +38,7 @@ const Home = () => {
   const bottomSheetRef = useRef<BottomSheet>(null)
 
   const handleBackLinkClick = () => {
+    console.log('back')
     bottomSheetRef.current?.close()
   }
 
@@ -74,7 +74,9 @@ const Home = () => {
 
   return (
     <View style={styles.mainContainer}>
-      <Toast message={toastMessage} showToast={showToast} setShowToast={setShowToast} />
+      {showToast && (
+        <Toast message={toastMessage} showToast={showToast} setShowToast={setShowToast} />
+      )}
       <ScrollView style={styles.slotContainer}>
         <SlotList slots={slotsQuery} onClick={handleOnClick} />
       </ScrollView>
@@ -151,6 +153,7 @@ const styles = StyleSheet.create({
   },
   backLink: {
     color: '#FF7131',
+    alignItems: 'center',
     textAlign: 'center'
   }
 })
