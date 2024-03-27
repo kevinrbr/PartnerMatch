@@ -72,3 +72,5 @@ export const getProfilesDetails = async () => {
     throw error
   }
 }
+
+export const getUserId = async () => (await supabase.auth.getSession()).data.session.user.id

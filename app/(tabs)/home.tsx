@@ -1,9 +1,8 @@
-import BottomSheet, { TouchableHighlight } from '@gorhom/bottom-sheet'
+import BottomSheet from '@gorhom/bottom-sheet'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
 import { useEffect, useRef, useState } from 'react'
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import { CalendarDaysIcon, XMarkIcon } from 'react-native-heroicons/outline'
 
 import Button from '@/components/Button'
@@ -11,6 +10,7 @@ import CustomBottomSheet from '@/components/CustomBottomSheet'
 import Separator from '@/components/Separator'
 import SlotList from '@/components/SlotList'
 import Toast from '@/components/Toast'
+import { getUserId } from '@/services/account'
 import { bookASlot, getSlots, updateSlotAvailability } from '@/services/slot'
 import { ISlot } from '@/types/slot'
 
@@ -38,11 +38,14 @@ const Home = () => {
   const bottomSheetRef = useRef<BottomSheet>(null)
 
   const handleBackLinkClick = () => {
-    console.log('back')
     bottomSheetRef.current?.close()
   }
 
-  const handleOnClick = (value: ISlot) => {
+  const handleOnClick = async (value: ISlot) => {
+    const userId = await getUserId()
+    if (userId === value.user_id) {
+      console.log('déjà mon creneau')
+    }
     if (+value.nbPlaces > 0) {
       setBookingSlotId(value.id)
       setSlotAvailability(value.nbPlaces)
@@ -55,6 +58,7 @@ const Home = () => {
       await addMutation.mutate({ id: bookingSlotId, slotAvailability })
       await bookASlot(bookingSlotId)
       bottomSheetRef.current?.close()
+      setToastMessage('Réservation confirmée')
       setShowToast(true)
     } catch (e) {}
   }

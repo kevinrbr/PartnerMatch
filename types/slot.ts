@@ -6,6 +6,7 @@ export interface ISlot {
   date: Date
   name?: string
   id?: number
+  user_id?: string
 }
 
 export enum ESlot {
