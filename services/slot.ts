@@ -22,9 +22,6 @@ export const postSlot = async function (formData: ISlot) {
       name: firstName
     })
 
-    console.log(data)
-    console.log(error)
-
     if (error) {
       throw error
     }
@@ -99,16 +96,12 @@ export const getBookingByUserId = async () => {
     .eq('user_id', (await supabase.auth.getUser()).data.user.id)
 
   const slotId = slotIdArray.map(item => item.slot_id)
-  console.log(slotId)
   try {
     const { data, error } = await supabase.from('slot').select().in('id', slotId)
 
     if (error) {
       throw error
     }
-
-    console.log('idi', data)
-
     return data
   } catch (error) {
     console.error('Erreur lors de la récupération des données:', error.message)
@@ -122,9 +115,6 @@ export const bookASlot = async (id: number) => {
       user_id: (await supabase.auth.getUser()).data.user.id,
       slot_id: id
     })
-
-    console.log(data)
-    console.log(error)
 
     if (error) {
       throw error

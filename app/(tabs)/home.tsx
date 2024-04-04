@@ -8,7 +8,7 @@ import HomeBottomSheetBooking from '@/components/HomeBottomSheetBooking'
 import SlotList from '@/components/SlotList'
 import Toast from '@/components/Toast'
 import { getUserId } from '@/services/account'
-import { getSlots } from '@/services/slot'
+import { getBookingByUserId, getSlots } from '@/services/slot'
 import { ISlot } from '@/types/slot'
 
 const Home = () => {
@@ -46,7 +46,10 @@ const Home = () => {
 
   const handleOnClick = async (value: ISlot) => {
     const userId = await getUserId()
-    if (userId === value.user_id) {
+    const bookingByUserId = await getBookingByUserId()
+    const isNotBookable = bookingByUserId.find(book => book.id === value.id)
+
+    if (userId === value.user_id || !!isNotBookable) {
       setToastMessage('Vous participez déjà')
       setIsErrorToast(true)
       setShowToast(true)
