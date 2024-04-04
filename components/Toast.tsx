@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Text, StyleSheet, Animated } from 'react-native'
+import { CheckBadgeIcon, ExclamationCircleIcon } from 'react-native-heroicons/solid'
 
 type ToastProps = {
   message: string
@@ -52,6 +53,11 @@ const Toast = ({ message, showToast, setShowToast, error }: ToastProps) => {
         }
       ]}
     >
+      {error ? (
+        <ExclamationCircleIcon style={styles.icon} color="#fff" />
+      ) : (
+        <CheckBadgeIcon style={styles.icon} color="#12e354" />
+      )}
       <Text style={styles.text}>{message}</Text>
     </Animated.View>
   )
@@ -59,19 +65,25 @@ const Toast = ({ message, showToast, setShowToast, error }: ToastProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'rgba(28,202,87,1)',
+    backgroundColor: '#08bd41',
     color: 'white',
-    padding: 10,
+    padding: 12,
     borderRadius: 5,
     position: 'absolute',
     bottom: 20,
     alignSelf: 'center',
     zIndex: 999,
     width: '90%',
-    margin: 'auto'
+    margin: 'auto',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   errorBtn: {
     backgroundColor: 'rgba(239,8,8,1)'
+  },
+  icon: {
+    marginRight: 8
   },
   text: {
     color: '#fff',
