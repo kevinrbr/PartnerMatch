@@ -126,3 +126,18 @@ export const bookASlot = async (id: number) => {
     throw error
   }
 }
+
+export const removeSlot = async (id: number) => {
+  try {
+    const { data, error } = await supabase.from('slot').delete().eq('id', id)
+
+    if (error) {
+      throw error
+    }
+
+    return data
+  } catch (error) {
+    console.error('Erreur lors de la suppression de la partie', error.message)
+    throw error
+  }
+}

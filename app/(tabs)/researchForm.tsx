@@ -37,6 +37,9 @@ const ResearchForm = () => {
       queryClient.invalidateQueries({
         queryKey: ['slots']
       })
+      queryClient.invalidateQueries({
+        queryKey: ['slotsByUserId']
+      })
     }
   })
 
