@@ -1,18 +1,31 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { useQuery } from '@tanstack/react-query'
-import { useRef, useState } from 'react'
-import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
-import { CalendarDaysIcon, XMarkIcon } from 'react-native-heroicons/outline'
+import { useLocalSearchParams } from 'expo-router'
+import { useEffect, useRef, useState } from 'react'
+import { ScrollView, StyleSheet, View } from 'react-native'
 
-import Button from '@/components/Button'
-import CustomBottomSheet from '@/components/CustomBottomSheet'
-import Separator from '@/components/Separator'
+import HomeBottomSheetBooking from '@/components/HomeBottomSheetBooking'
 import SlotList from '@/components/SlotList'
-import { bookASlot, getSlots } from '@/services/slot'
+import Toast from '@/components/Toast'
+import { getUserId } from '@/services/account'
+import { getBookingByUserId, getSlots } from '@/services/slot'
 import { ISlot } from '@/types/slot'
 
 const Home = () => {
+  const { showToastParams, message } = useLocalSearchParams()
+
+  const [showToast, setShowToast] = useState(false)
+  const [toastMessage, setToastMessage] = useState('')
   const [bookingSlotId, setBookingSlotId] = useState<number | null>()
+  const [slotAvailability, setSlotAvailability] = useState<string | null>()
+  const [isErrorToast, setIsErrorToast] = useState(false)
+
+  useEffect(() => {
+    if (showToastParams === 'true') {
+      setShowToast(true)
+      setToastMessage(message as string)
+    }
+  }, [showToastParams, message])
 
   const slotsQuery = useQuery({
     queryKey: ['slots'],
@@ -21,50 +34,53 @@ const Home = () => {
 
   const bottomSheetRef = useRef<BottomSheet>(null)
 
-  const handleBackLinkClick = () => {
+  const closeBottomSheet = () => {
     bottomSheetRef.current?.close()
   }
 
-  const handleOnClick = (value: ISlot) => {
-    setBookingSlotId(value.id)
-    bottomSheetRef.current?.expand()
+  const confirmBook = () => {
+    setToastMessage('Réservation confirmée')
+    setShowToast(true)
+    bottomSheetRef.current?.close()
   }
 
-  const confirmBooking = () => {
-    bookASlot(bookingSlotId)
+  const handleOnClick = async (value: ISlot) => {
+    const userId = await getUserId()
+    const bookingByUserId = await getBookingByUserId()
+    const isNotBookable = bookingByUserId.find(book => book.id === value.id)
+
+    if (userId === value.user_id || !!isNotBookable) {
+      setToastMessage('Vous participez déjà')
+      setIsErrorToast(true)
+      setShowToast(true)
+    } else if (+value.nbPlaces > 0) {
+      setIsErrorToast(false)
+      setBookingSlotId(value.id)
+      setSlotAvailability(value.nbPlaces)
+      bottomSheetRef.current?.expand()
+    }
   }
 
   return (
     <View style={styles.mainContainer}>
+      {showToast && (
+        <Toast
+          message={toastMessage}
+          showToast={showToast}
+          setShowToast={setShowToast}
+          error={isErrorToast}
+        />
+      )}
       <ScrollView style={styles.slotContainer}>
         <SlotList slots={slotsQuery} onClick={handleOnClick} />
       </ScrollView>
-      <CustomBottomSheet ref={bottomSheetRef}>
-        <Text style={styles.title}>Avant de reserver</Text>
-        <View style={styles.textContainer}>
-          <CalendarDaysIcon style={styles.icon} color="#000" />
-          <Text style={styles.text}>Je m'engage à être présent au moment de la réservation</Text>
-        </View>
-        <Separator />
-        <View style={styles.textContainer}>
-          <XMarkIcon style={styles.icon} color="#FF0000" />
-          <Text style={styles.text}>
-            En cas d’indisponibilité, j’annule ma réservation et je préviens la personne à
-            l’initiative de la réservation afin de permettre au groupe de trouver un joueur pour me
-            remplacer.
-          </Text>
-        </View>
-        <View style={styles.btnContainer}>
-          <Button
-            title="Je reserve"
-            accessibilityLabel="Confirmer la réservation"
-            onPress={confirmBooking}
-          />
-          <TouchableWithoutFeedback onPress={handleBackLinkClick}>
-            <Text style={styles.backLink}>Retour</Text>
-          </TouchableWithoutFeedback>
-        </View>
-      </CustomBottomSheet>
+      <HomeBottomSheetBooking
+        ref={bottomSheetRef}
+        closeBottomSheet={closeBottomSheet}
+        confirmBook={confirmBook}
+        slotId={bookingSlotId}
+        slotAvailability={slotAvailability}
+      />
     </View>
   )
 }
@@ -112,6 +128,7 @@ const styles = StyleSheet.create({
   },
   backLink: {
     color: '#FF7131',
+    alignItems: 'center',
     textAlign: 'center'
   }
 })

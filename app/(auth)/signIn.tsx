@@ -58,7 +58,6 @@ const SignIn = () => {
     }
 
     if (hasError) {
-      console.log(hasError)
       setLoading(false)
     } else {
       signInWithEmail(email, password)

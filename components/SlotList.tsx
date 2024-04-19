@@ -39,7 +39,6 @@ export default SlotList
 
 const styles = StyleSheet.create({
   slotContainer: {
-    flex: 1,
     backgroundColor: 'white'
   }
 })
