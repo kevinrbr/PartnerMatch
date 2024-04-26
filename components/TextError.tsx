@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   error: {
     color: 'red',
     fontSize: 13,
-    fontFamily: 'Satoshi-Bold',
+    fontFamily: 'Satoshi-Regular',
     marginTop: 4
   }
 })

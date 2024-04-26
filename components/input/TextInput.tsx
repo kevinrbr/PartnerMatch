@@ -36,9 +36,25 @@ const TextInput = ({
 
   return (
     <View>
-      {label && <Text style={[styles.label, isFocused && styles.labelFocused]}>{label}</Text>}
+      {label && (
+        <Text
+          style={[
+            styles.label,
+            isFocused && styles.labelFocused,
+            errorMessage !== '' && styles.labelError
+          ]}
+        >
+          {label}
+        </Text>
+      )}
       <TouchableWithoutFeedback onFocus={handleOnClick}>
-        <View style={[styles.inputTextContainer, isFocused && styles.inputTextFocused]}>
+        <View
+          style={[
+            styles.inputTextContainer,
+            isFocused && styles.inputTextFocused,
+            errorMessage !== '' && styles.inputTextError
+          ]}
+        >
           <NativeInputText
             style={styles.inputText}
             value={inputValue}
@@ -72,6 +88,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Satoshi-Bold'
   },
+  labelError: {
+    color: '#FE0E1A'
+  },
   inputText: {
     fontFamily: 'Satoshi-Regular',
     height: 48,
@@ -83,6 +102,9 @@ const styles = StyleSheet.create({
   },
   inputTextFocused: {
     borderColor: '#FF7131'
+  },
+  inputTextError: {
+    borderColor: '#FE0E1A'
   }
 })
 

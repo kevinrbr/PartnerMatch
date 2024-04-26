@@ -6,10 +6,8 @@ import { useEffect, useState } from 'react'
 import { Text, SafeAreaView, View, StyleSheet, Alert, Pressable } from 'react-native'
 import validator from 'validator'
 
-import GoogleSvg from '@/assets/images/google.svg'
 import Button from '@/components/Button'
 import DismissKeyboard from '@/components/DismissKeyboard'
-import Separator from '@/components/Separator'
 import TextError from '@/components/TextError'
 import Title from '@/components/Title'
 import PasswordInput from '@/components/input/PasswordInput'
@@ -89,14 +87,24 @@ const SignIn = () => {
             <View style={styles.inputContainer}>
               <TextInput
                 placeholder="monemail@gmail.com"
-                onInputChange={setEmail}
+                onInputChange={value => {
+                  setEmail(value)
+                  setEmailError('')
+                }}
                 autoCapitalize="none"
                 label="Email"
                 value={email}
+                errorMessage={emailError}
               />
               {emailError && <TextError errorMsg={emailError} />}
             </View>
-            <PasswordInput onInputChange={setPassword} passwordError={passwordError} />
+            <PasswordInput
+              onInputChange={value => {
+                setPassword(value)
+                setPasswordError('')
+              }}
+              passwordError={passwordError}
+            />
             <Text style={styles.forgottenPwd}>Mot de passe oublié</Text>
             <View style={styles.loginButton}>
               <Button title="Se connecter" onPress={handleLogin} />
@@ -117,12 +125,6 @@ const SignIn = () => {
 const styles = StyleSheet.create({
   formContainer: {
     marginBottom: 10
-  },
-  svgContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 30
   },
   textContainer: {
     marginBottom: 48
