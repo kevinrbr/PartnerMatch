@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Tabs } from 'expo-router'
-import { View } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import {
   HomeIcon,
   ChatBubbleOvalLeftIcon,
@@ -52,3 +52,9 @@ const StackLayout = () => {
 }
 
 export default StackLayout
+
+const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 12
+  }
+})

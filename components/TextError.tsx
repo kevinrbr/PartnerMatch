@@ -18,8 +18,8 @@ export default TextError
 const styles = StyleSheet.create({
   error: {
     color: 'red',
-    fontSize: 12,
-    fontFamily: 'Satoshi-Regular',
-    marginTop: 2
+    fontSize: 13,
+    fontFamily: 'Satoshi-Bold',
+    marginTop: 4
   }
 })
