@@ -14,16 +14,19 @@ import TextInput from '@/components/input/TextInput'
 import { signUpWithEmail } from '@/services/account'
 
 const SignUp = () => {
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
+  const [nameError, setNameError] = useState('')
+  const [loading, setLoading] = useState<boolean>()
 
   const handleRegister = async () => {
-    setLoading(true)
-    setEmailError('')
+    setLoading(true), setEmailError('')
     setPasswordError('')
+    setNameError('')
+    setNameError('')
     let hasError = false
 
     if (!validator.isEmail(email)) {
@@ -33,6 +36,11 @@ const SignUp = () => {
 
     if (password.length < 6) {
       setPasswordError('Le mot de passe doit contenir au moins 6 caractères.')
+      hasError = true
+    }
+
+    if (name.length < 3) {
+      setNameError('Incorrect changez wording')
       hasError = true
     }
 
@@ -57,43 +65,58 @@ const SignUp = () => {
 
   return (
     <DismissKeyboard>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView>
         <View style={styles.textContainer}>
-          <Title variant="mainTitle">Je m'inscris</Title>
-          <Text style={styles.text}>La recherche de partenaires de padel est désormais facile</Text>
+          <Title variant="mainTitle">Créer un compte</Title>
+          <Text style={styles.text}>
+            Trouvez des partenaires de padel passionnés près de chez vous !
+          </Text>
         </View>
         <View>
           <View style={styles.formContainer}>
             <View style={styles.inputContainer}>
               <TextInput
+                placeholder="Antoine Pascaud"
+                onInputChange={value => {
+                  setName(value)
+                  setNameError('')
+                }}
+                autoCapitalize="none"
+                label="Nom et prénom"
+                errorMessage={nameError}
+              />
+              {nameError && <TextError errorMsg={nameError} />}
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
                 placeholder="monemail@gmail.com"
-                onInputChange={setEmail}
+                onInputChange={value => {
+                  setEmail(value)
+                  setEmailError('')
+                }}
                 autoCapitalize="none"
                 label="Email"
+                errorMessage={emailError}
               />
               {emailError && <TextError errorMsg={emailError} />}
             </View>
-            <PasswordInput onInputChange={setPassword} passwordError={passwordError} />
-            <Button
-              title="S'inscrire"
-              accessibilityLabel="Bouton pour se connecter"
-              disabled={loading}
-              onPress={() => handleRegister()}
+            <PasswordInput
+              onInputChange={value => {
+                setPassword(value)
+                setPasswordError('')
+              }}
+              passwordError={passwordError}
             />
-            <Link href="/signIn" asChild>
-              <Pressable style={styles.redirectSignUpTextContainer}>
-                <Text style={styles.redirectSignUpTextLeft}>J'ai déjà un compte</Text>
-              </Pressable>
-            </Link>
           </View>
-          <Separator text="ou" />
-          <Button
-            title="Se connecter avec Google"
-            accessibilityLabel="Bouton pour se connecter avec Google"
-            variant="transparentSecondary"
-          >
-            <GoogleSvg />
-          </Button>
+          <View style={styles.loginButton}>
+            <Button title="S'inscrire" onPress={() => handleRegister()} />
+          </View>
+          <Link href="/signIn" asChild>
+            <Pressable style={styles.redirectSignUpTextContainer}>
+              <Text style={styles.redirectSignUpTextLeft}>Déjà un compte ?</Text>
+              <Text style={styles.redirectSignUpTextRight}>Je me connecte</Text>
+            </Pressable>
+          </Link>
         </View>
       </SafeAreaView>
     </DismissKeyboard>
@@ -101,26 +124,17 @@ const SignUp = () => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 12,
-    display: 'flex',
-    justifyContent: 'center',
-    height: '100%'
-  },
   formContainer: {
     marginBottom: 10
   },
   textContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 30
+    marginBottom: 48
   },
   text: {
     color: '#4E5D6B',
     fontSize: 16,
     fontFamily: 'Satoshi-Regular',
-    textAlign: 'center',
+    textAlign: 'left',
     maxWidth: 360,
     marginTop: 16
   },
@@ -133,11 +147,20 @@ const styles = StyleSheet.create({
   redirectSignUpTextLeft: {
     fontSize: 13,
     fontFamily: 'Satoshi-Regular',
-    fontStyle: 'italic',
-    color: '#4E5D6B'
+    color: '#737373'
+  },
+  redirectSignUpTextRight: {
+    fontSize: 13,
+    fontFamily: 'Satoshi-Bold',
+    color: '#FF7131',
+    marginLeft: 4
   },
   inputContainer: {
-    marginVertical: 8
+    marginBottom: 24
+  },
+  loginButton: {
+    marginTop: 28,
+    marginBottom: 16
   }
 })
 

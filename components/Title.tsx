@@ -7,7 +7,6 @@ type TitleProps = TextProps & {
 const Title = ({ variant, ...props }: TitleProps) => {
   return (
     <Text {...props} style={styles[variant]}>
-      {' '}
       {props.children}
     </Text>
   )
@@ -16,8 +15,7 @@ const Title = ({ variant, ...props }: TitleProps) => {
 const styles = StyleSheet.create({
   mainTitle: {
     fontSize: 32,
-    fontFamily: 'Satoshi-Bold',
-    fontStyle: 'italic'
+    fontFamily: 'Poppins-Bold'
   },
   subTitle: {
     fontSize: 24,

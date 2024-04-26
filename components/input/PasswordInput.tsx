@@ -25,6 +25,7 @@ const PasswordInput = ({ passwordError, onInputChange }: PasswordInputProps) => 
         autoCapitalize="none"
         secureTextEntry={!passwordVisibility}
         label="Mot de passe"
+        errorMessage={passwordError}
       >
         <Pressable onPress={handlePasswordVisibility}>
           {passwordVisibility ? (

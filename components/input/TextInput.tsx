@@ -8,8 +8,6 @@ import {
   TouchableWithoutFeedback
 } from 'react-native'
 
-import TextError from '../TextError'
-
 type TextInputProps = NativeTextInputProps & {
   label?: string
   onInputChange: (value: string) => void
@@ -26,9 +24,6 @@ const TextInput = ({
 }: TextInputProps) => {
   const [inputValue, setInputValue] = useState('')
   const [isFocused, setFocused] = useState(false)
-  const isStylized = (): boolean => {
-    return isFocused || inputValue !== ''
-  }
 
   const handleInputChange = (value: string) => {
     setInputValue(value)
@@ -41,13 +36,23 @@ const TextInput = ({
 
   return (
     <View>
-      {label && <Text style={styles.label}>{label}</Text>}
+      {label && (
+        <Text
+          style={[
+            styles.label,
+            isFocused && styles.labelFocused,
+            errorMessage !== '' && styles.labelError
+          ]}
+        >
+          {label}
+        </Text>
+      )}
       <TouchableWithoutFeedback onFocus={handleOnClick}>
         <View
           style={[
             styles.inputTextContainer,
-            isStylized() && styles.inputTextFocused,
-            inputValue !== '' && styles.inputTextNotEmpty
+            isFocused && styles.inputTextFocused,
+            errorMessage !== '' && styles.inputTextError
           ]}
         >
           <NativeInputText
@@ -60,7 +65,6 @@ const TextInput = ({
           {children}
         </View>
       </TouchableWithoutFeedback>
-      <TextError errorMsg={errorMessage} />
     </View>
   )
 }
@@ -70,30 +74,37 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 12,
     height: 48,
-    borderColor: '#8996A2',
+    borderColor: '#E6E6E6',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingRight: 16
+    paddingRight: 16,
+    marginBottom: 0
   },
   label: {
-    marginBottom: 6,
-    marginLeft: 4,
-    fontSize: 16,
-    fontFamily: 'Satoshi-Regular'
+    marginBottom: 8,
+    marginLeft: 2,
+    fontSize: 14,
+    fontFamily: 'Satoshi-Bold'
+  },
+  labelError: {
+    color: '#FE0E1A'
   },
   inputText: {
     fontFamily: 'Satoshi-Regular',
     height: 48,
-    flex: 1,
-    padding: 10
+    padding: 10,
+    flex: 1
+  },
+  labelFocused: {
+    color: '#FF7131'
   },
   inputTextFocused: {
-    borderColor: '#182A60'
+    borderColor: '#FF7131'
   },
-  inputTextNotEmpty: {
-    backgroundColor: '#F8F9FC'
+  inputTextError: {
+    borderColor: '#FE0E1A'
   }
 })
 

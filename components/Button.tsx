@@ -1,15 +1,18 @@
 import { ReactNode } from 'react'
+import { Pressable } from 'react-native'
 import {
   StyleSheet,
   Button as NativeButton,
   ButtonProps as NativeButtonProps,
-  View,
-  Text
+  TouchableWithoutFeedback
 } from 'react-native'
+import { Text } from 'react-native-elements'
 
 type ButtonProps = NativeButtonProps & {
   variant?: 'primary' | 'secondary' | 'transparent' | 'transparentSecondary'
+  title: string
   children?: ReactNode
+  onPress: () => void
 }
 
 const getButtonColor = (
@@ -27,19 +30,19 @@ const getButtonColor = (
   }
 }
 
-const Button = ({ children, variant = 'primary', ...props }: ButtonProps) => {
-  const buttonColor = getButtonColor(variant)
+const Button = ({ onPress, title, variant = 'primary', ...props }: ButtonProps) => {
   return (
-    <View style={[styles[variant], styles.button, props.disabled && styles.disabledBtn]}>
-      <NativeButton {...props} color={buttonColor} />
-    </View>
+    <Pressable
+      style={[styles[variant], styles.button, props.disabled && styles.disabledBtn]}
+      onPress={onPress}
+    >
+      <Text style={styles.btnText}>{title}</Text>
+    </Pressable>
   )
 }
 
 const styles = StyleSheet.create({
   button: {
-    marginVertical: 12,
-    fontFamily: 'Satoshi-Bold',
     height: 48,
     borderRadius: 24,
     display: 'flex',
@@ -49,7 +52,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16
   },
   btnText: {
-    fontSize: 100
+    fontFamily: 'Satoshi-Bold',
+    fontSize: 16,
+    color: '#fff'
   },
   primary: {
     backgroundColor: '#FF7131'
