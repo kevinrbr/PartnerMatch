@@ -3,13 +3,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import React, { forwardRef, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
-import { CalendarDaysIcon, XMarkIcon } from 'react-native-heroicons/outline'
 
 import Button from './Button'
 import CustomBottomSheet from './CustomBottomSheet'
-import Separator from './Separator'
 
-import { bookASlot, removeSlot, updateSlotAvailability } from '@/services/slot'
+import { removeSlot } from '@/services/slot'
 
 interface BottomSheetRemoveBookingProps {
   ref: any
@@ -24,19 +22,6 @@ type Ref = BottomSheet
 const BottomSheetRemoveBooking = forwardRef<Ref, BottomSheetRemoveBookingProps>(
   ({ closeBottomSheet, slotId, confirmBook }: BottomSheetRemoveBookingProps, ref) => {
     const queryClient = useQueryClient()
-
-    // const addMutation = useMutation({
-    //   mutationFn: (variables: { id: number; slotAvailability: string }) =>
-    //     updateSlotAvailability(variables),
-    //   onSuccess: data => {
-    //     queryClient.invalidateQueries({
-    //       queryKey: ['slots']
-    //     })
-    //     queryClient.invalidateQueries({
-    //       queryKey: ['bookingByUserId']
-    //     })
-    //   }
-    // })
 
     const addMutation = useMutation({
       mutationFn: removeSlot,

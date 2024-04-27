@@ -84,7 +84,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    paddingHorizontal: 26,
     paddingTop: 30
   },
   disconnectLinkContainer: {
