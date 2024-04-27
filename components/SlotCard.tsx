@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import { ClockIcon } from 'react-native-heroicons/outline'
 
 import { getDateHours } from '@/common/date'
 import { ISlot } from '@/types/slot'
@@ -30,7 +31,10 @@ const SlotCard = ({ slot, onClick }: SlotCardProps) => {
           <Text style={styles.club}>
             {slot.city} - {slot.club}
           </Text>
-          <Text style={styles.hour}>{getDateHours(slot.date.toString())}</Text>
+          <View style={styles.hourContainer}>
+            <ClockIcon color="#FF7131" size={16} />
+            <Text style={styles.hour}>{getDateHours(slot.date.toString())}</Text>
+          </View>
         </View>
         <View>
           <Text style={styles.dispo}>{numberOfPlacesLabel(slot)}</Text>
@@ -58,13 +62,7 @@ export default SlotCard
 const styles = StyleSheet.create({
   cardContainer: {
     borderRadius: 8,
-    padding: 10,
-    marginBottom: 20,
-    shadowColor: 'rgba(189, 189, 189, 0.24)',
-    shadowOffset: { width: -1, height: 3 },
-    shadowOpacity: 1,
-    shadowRadius: 8,
-    backgroundColor: '#fff'
+    marginBottom: 32
   },
   cardContent: {
     display: 'flex',
@@ -74,8 +72,13 @@ const styles = StyleSheet.create({
   },
   club: {
     fontSize: 16,
-    fontWeight: 'bold',
     fontFamily: 'Satoshi-Bold'
+  },
+  hourContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 4,
+    marginTop: 4
   },
   hour: {
     fontSize: 12,

@@ -2,7 +2,7 @@ import BottomSheet from '@gorhom/bottom-sheet'
 import { useQuery } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
 import { useEffect, useRef, useState } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { ScrollView, StyleSheet, View, Text } from 'react-native'
 
 import HomeBottomSheetBooking from '@/components/HomeBottomSheetBooking'
 import SlotList from '@/components/SlotList'
@@ -71,6 +71,12 @@ const Home = () => {
           error={isErrorToast}
         />
       )}
+      <View>
+        <View>
+          <Text style={styles.labelTitle}>Ville</Text>
+          <Text style={styles.title}>Nantes, Loire-Atlantique</Text>
+        </View>
+      </View>
       <ScrollView style={styles.slotContainer}>
         <SlotList slots={slotsQuery} onClick={handleOnClick} />
       </ScrollView>
@@ -89,12 +95,12 @@ export default Home
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1
+    flex: 1,
+    backgroundColor: 'white'
   },
   slotContainer: {
     backgroundColor: 'white',
-    paddingHorizontal: 26,
-    paddingTop: 30
+    marginTop: 44
   },
   btnContainer: {
     width: '100%',
@@ -113,10 +119,15 @@ const styles = StyleSheet.create({
     width: '100%',
     marginVertical: 22
   },
+  labelTitle: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 16,
+    color: '#4E5D6B'
+  },
   title: {
     fontFamily: 'Satoshi-Bold',
     fontSize: 20,
-    marginBottom: 16
+    color: '#191822'
   },
   text: {
     fontFamily: 'Satoshi-Regular',
