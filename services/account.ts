@@ -19,14 +19,18 @@ export const signInWithEmail = async (email: string, password: string) => {
 
 export const signUpWithEmail = async (email: string, password: string) => {
   try {
-    const { error } = await supabaseAuth.signUp({
+    const { data, error } = await supabaseAuth.signUp({
       email,
       password
     })
 
+    console.log(data.user, error)
+
     if (error) {
       throw error
     }
+
+    return data.user
   } catch (error) {
     throw error
   }
@@ -40,16 +44,16 @@ export const signOut = async () => {
   }
 }
 
-export const updateProfile = async (firstName: string, lastName: string) => {
+export const updateProfile = async (firstName: string, lastName: string, userId: string) => {
   const updates = {
-    id: (await supabase.auth.getUser()).data.user.id,
+    id: userId,
     firstName,
     lastName
   }
 
   try {
     const { error } = await supabase.from('profiles').upsert(updates)
-
+    console.log(error)
     if (error) {
       throw error
     }

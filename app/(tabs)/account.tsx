@@ -6,19 +6,15 @@ import { StyleSheet, Pressable, Text, ScrollView, View } from 'react-native'
 import { ArrowLeftStartOnRectangleIcon } from 'react-native-heroicons/outline'
 
 import BottomSheetRemoveBooking from '@/components/BottomSheetRemoveBooking'
-import Button from '@/components/Button'
 import DismissKeyboard from '@/components/DismissKeyboard'
 import SlotList from '@/components/SlotList'
 import Toast from '@/components/Toast'
-import TextInput from '@/components/input/TextInput'
-import { signOut, updateProfile } from '@/services/account'
+import { signOut } from '@/services/account'
 import { supabaseAuth } from '@/services/constants'
 import { getBookingByUserId, getSlotsByUserId } from '@/services/slot'
 import { ISlot } from '@/types/slot'
 
 const Account = () => {
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
   const [slotId, setSlotId] = useState<number | null>(null)
   const [session, setSession] = useState<Session | null>(null)
   const bottomSheetRef = useRef<BottomSheet>(null)
@@ -38,10 +34,6 @@ const Account = () => {
   supabaseAuth.getSession().then(({ data: { session } }) => {
     setSession(session)
   })
-
-  const saveInfos = () => {
-    updateProfile(firstName, lastName)
-  }
 
   const handleOnClick = (value: ISlot) => {
     setSlotId(value.id)
@@ -64,14 +56,6 @@ const Account = () => {
       <>
         <Toast message={toastMessage} showToast={showToast} setShowToast={setShowToast} />
         <ScrollView style={styles.container}>
-          <TextInput
-            placeholder="Prénom"
-            onInputChange={setFirstName}
-            label="Prénom"
-            value={firstName}
-          />
-          <TextInput placeholder="Nom" onInputChange={setLastName} label="Nom" value={lastName} />
-          <Button title="Enregister" onPress={saveInfos} />
           <Pressable style={styles.disconnectLinkContainer} onPress={signOut}>
             <ArrowLeftStartOnRectangleIcon color="#182A60" />
             <Text style={styles.disconnectLink}>Se deconnecter</Text>
