@@ -3,18 +3,17 @@ import { useState } from 'react'
 import { Text, SafeAreaView, View, StyleSheet, Alert, Pressable } from 'react-native'
 import validator from 'validator'
 
-import GoogleSvg from '@/assets/images/google.svg'
 import Button from '@/components/Button'
 import DismissKeyboard from '@/components/DismissKeyboard'
-import Separator from '@/components/Separator'
 import TextError from '@/components/TextError'
 import Title from '@/components/Title'
 import PasswordInput from '@/components/input/PasswordInput'
 import TextInput from '@/components/input/TextInput'
-import { signUpWithEmail } from '@/services/account'
+import { signUpWithEmail, updateProfile } from '@/services/account'
 
 const SignUp = () => {
-  const [name, setName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [emailError, setEmailError] = useState('')
@@ -23,9 +22,9 @@ const SignUp = () => {
   const [loading, setLoading] = useState<boolean>()
 
   const handleRegister = async () => {
-    setLoading(true), setEmailError('')
+    setLoading(true)
+    setEmailError('')
     setPasswordError('')
-    setNameError('')
     setNameError('')
     let hasError = false
 
@@ -39,8 +38,8 @@ const SignUp = () => {
       hasError = true
     }
 
-    if (name.length < 3) {
-      setNameError('Incorrect changez wording')
+    if (firstName.length === 0 || lastName.length === 0) {
+      setNameError('Veuillez renseignez votre nom et prénom')
       hasError = true
     }
 
@@ -53,13 +52,21 @@ const SignUp = () => {
       setLoading(false)
     } else {
       signUpWithEmail(email, password)
-        .then(() => {
+        .then(userData => {
+          console.log('vue', userData.id)
+          const userId = userData.id
           Alert.alert('Please check your inbox for email verification!')
+          updateProfile(firstName, lastName, userId)
         })
         .catch(() => {
-          Alert.alert('Inscription', "Une erreur s'est produite lors de l'inscription.")
+          Alert.alert(
+            'Inscription',
+            "Une erreur s'est produite lors de l'inscription. Réessayez plus tard."
+          )
         })
-        .finally(() => setLoading(false))
+        .finally(() => {
+          setLoading(false)
+        })
     }
   }
 
@@ -73,18 +80,34 @@ const SignUp = () => {
           </Text>
         </View>
         <View>
-          <View style={styles.formContainer}>
-            <View style={styles.inputContainer}>
-              <TextInput
-                placeholder="Antoine Pascaud"
-                onInputChange={value => {
-                  setName(value)
-                  setNameError('')
-                }}
-                autoCapitalize="none"
-                label="Nom et prénom"
-                errorMessage={nameError}
-              />
+          <View>
+            <View style={[styles.inputContainer]}>
+              <View style={styles.inputMultipleContainer}>
+                <View style={styles.input50}>
+                  <TextInput
+                    placeholder="Antoine"
+                    onInputChange={value => {
+                      setLastName(value)
+                      setNameError('')
+                    }}
+                    autoCapitalize="none"
+                    label="Prénom"
+                    errorMessage={nameError}
+                  />
+                </View>
+                <View style={styles.input50}>
+                  <TextInput
+                    placeholder="Pascaud"
+                    onInputChange={value => {
+                      setFirstName(value)
+                      setNameError('')
+                    }}
+                    autoCapitalize="none"
+                    label="Nom"
+                    errorMessage={nameError}
+                  />
+                </View>
+              </View>
               {nameError && <TextError errorMsg={nameError} />}
             </View>
             <View style={styles.inputContainer}>
@@ -124,9 +147,6 @@ const SignUp = () => {
 }
 
 const styles = StyleSheet.create({
-  formContainer: {
-    marginBottom: 10
-  },
   textContainer: {
     marginBottom: 48
   },
@@ -161,6 +181,14 @@ const styles = StyleSheet.create({
   loginButton: {
     marginTop: 28,
     marginBottom: 16
+  },
+  inputMultipleContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 12
+  },
+  input50: {
+    flex: 1
   }
 })
 
