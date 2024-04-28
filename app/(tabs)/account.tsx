@@ -1,80 +1,54 @@
-import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet'
-import { Session } from '@supabase/supabase-js'
-import { useQuery } from '@tanstack/react-query'
-import { useRef, useState } from 'react'
-import { StyleSheet, Pressable, Text, ScrollView, View } from 'react-native'
-import { ArrowLeftStartOnRectangleIcon } from 'react-native-heroicons/outline'
+import { useEffect, useState } from 'react'
+import { StyleSheet, View, Text, Image } from 'react-native'
 
-import BottomSheetRemoveBooking from '@/components/BottomSheetRemoveBooking'
-import DismissKeyboard from '@/components/DismissKeyboard'
-import SlotList from '@/components/SlotList'
-import Toast from '@/components/Toast'
-import { signOut } from '@/services/account'
-import { supabaseAuth } from '@/services/constants'
-import { getBookingByUserId, getSlotsByUserId } from '@/services/slot'
-import { ISlot } from '@/types/slot'
+import Button from '@/components/Button'
+import Title from '@/components/Title'
+import { getProfilesDetails } from '@/services/account'
 
 const Account = () => {
-  const [slotId, setSlotId] = useState<number | null>(null)
-  const [session, setSession] = useState<Session | null>(null)
-  const bottomSheetRef = useRef<BottomSheet>(null)
-  const [showToast, setShowToast] = useState(false)
-  const [toastMessage, setToastMessage] = useState('')
+  const [profileDetails, setProfileDetails] = useState(null)
 
-  const slotsByUserId = useQuery({
-    queryKey: ['slotsByUserId'],
-    queryFn: getSlotsByUserId
-  })
-
-  const bookingByUserId = useQuery({
-    queryKey: ['bookingByUserId'],
-    queryFn: getBookingByUserId
-  })
-
-  supabaseAuth.getSession().then(({ data: { session } }) => {
-    setSession(session)
-  })
-
-  const handleOnClick = (value: ISlot) => {
-    setSlotId(value.id)
-    bottomSheetRef.current?.expand()
+  const editProfil = () => {
+    // Logique pour l'édition du profil
   }
 
-  const closeBottomSheet = () => {
-    bottomSheetRef.current?.close()
+  const fetchProfileDetails = async () => {
+    try {
+      const details = await getProfilesDetails()
+      setProfileDetails(details[0])
+    } catch (error) {
+      console.error('Erreur lors de la récupération des détails du profil :', error.message)
+    }
   }
 
-  const confirmBook = () => {
-    setToastMessage('Supprimé avec succès')
-    setShowToast(true)
-    closeBottomSheet()
-    bottomSheetRef.current?.close()
-  }
+  useEffect(() => {
+    fetchProfileDetails()
+  }, [])
 
   return (
-    <DismissKeyboard>
-      <>
-        <Toast message={toastMessage} showToast={showToast} setShowToast={setShowToast} />
-        <ScrollView style={styles.container}>
-          <Pressable style={styles.disconnectLinkContainer} onPress={signOut}>
-            <ArrowLeftStartOnRectangleIcon color="#182A60" />
-            <Text style={styles.disconnectLink}>Se deconnecter</Text>
-          </Pressable>
-          <Text style={styles.subTitle}>Mes parties</Text>
-          <SlotList slots={slotsByUserId} onClick={handleOnClick} />
-          <View style={styles.bookingList}>
-            <Text style={styles.subTitleBis}>Mes réservations</Text>
-            <SlotList slots={bookingByUserId} />
+    <View style={styles.container}>
+      <Title variant="pageTitle">Profil</Title>
+      {profileDetails ? (
+        <View style={styles.header}>
+          <View style={styles.profilePictureContainer}>
+            <Image style={styles.profilePicture} source={require('@/assets/images/profile.png')} />
           </View>
-        </ScrollView>
-        <BottomSheetRemoveBooking
-          ref={bottomSheetRef}
-          closeBottomSheet={closeBottomSheet}
-          slotId={slotId}
-          confirmBook={confirmBook}
-        />
-      </>
-    </DismissKeyboard>
+          <View>
+            {profileDetails && (
+              <Text style={styles.name}>
+                <Text style={styles.name}>
+                  {profileDetails.lastName} {profileDetails.firstName}
+                </Text>
+              </Text>
+            )}
+            <Text style={styles.email}>kevinrbr16@gmail.com</Text>
+          </View>
+        </View>
+      ) : (
+        <Text>Chargement des détails du profil...</Text>
+      )}
+      <Button title="Editer mon profil" onPress={editProfil} />
+    </View>
   )
 }
 
@@ -83,34 +57,33 @@ export default Account
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
-    paddingTop: 30
+    backgroundColor: '#fff'
   },
-  disconnectLinkContainer: {
+  header: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 16
+    marginBottom: 24
   },
-  disconnectLink: {
-    marginLeft: 8,
-    color: '#4E5D6B',
+  profilePictureContainer: {
+    width: 56,
+    height: 56,
+    overflow: 'hidden',
+    borderRadius: 100,
+    marginRight: 12
+  },
+  profilePicture: {
+    width: '100%',
+    height: '100%'
+  },
+  name: {
+    fontFamily: 'Satoshi-Bold',
     fontSize: 16,
-    fontFamily: 'Satoshi-Regular'
+    color: '#000000'
   },
-  subTitle: {
-    fontFamily: 'Satoshi-Bold',
-    fontSize: 18,
-    marginBottom: 20
-  },
-  subTitleBis: {
-    fontFamily: 'Satoshi-Bold',
-    fontSize: 18,
-    marginTop: 30,
-    marginBottom: 20
-  },
-  bookingList: {
-    marginBottom: 30
+  email: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 12,
+    color: '#4E5D6B'
   }
 })
