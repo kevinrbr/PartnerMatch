@@ -24,8 +24,6 @@ export const signUpWithEmail = async (email: string, password: string) => {
       password
     })
 
-    console.log(data.user, error)
-
     if (error) {
       throw error
     }
@@ -64,7 +62,10 @@ export const updateProfile = async (firstName: string, lastName: string, userId:
 
 export const getProfilesDetails = async () => {
   try {
-    const { data, error } = await supabase.from('profiles').select('*')
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', (await supabase.auth.getUser()).data.user.id)
 
     if (error) {
       throw error

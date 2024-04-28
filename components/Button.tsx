@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
-import { Pressable } from 'react-native'
 import {
+  Pressable,
   StyleSheet,
   Button as NativeButton,
   ButtonProps as NativeButtonProps,
@@ -43,13 +43,12 @@ const Button = ({ onPress, title, variant = 'primary', ...props }: ButtonProps) 
 
 const styles = StyleSheet.create({
   button: {
-    height: 48,
-    borderRadius: 24,
+    height: 44,
+    borderRadius: 100,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 16
+    alignItems: 'center'
   },
   btnText: {
     fontFamily: 'Satoshi-Bold',

@@ -1,4 +1,3 @@
-import React from 'react'
 import { StyleSheet, View, Text, Image } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { ClockIcon } from 'react-native-heroicons/outline'

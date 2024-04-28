@@ -5,7 +5,8 @@ import {
   HomeIcon,
   ChatBubbleOvalLeftIcon,
   UserCircleIcon,
-  PlusCircleIcon
+  PlusCircleIcon,
+  BookmarkIcon
 } from 'react-native-heroicons/outline'
 const queryClient = new QueryClient()
 const StackLayout = () => {
@@ -26,6 +27,14 @@ const StackLayout = () => {
               name="messaging"
               options={{
                 tabBarIcon: () => <ChatBubbleOvalLeftIcon color="#182A60" strokeWidth="1" />,
+                tabBarShowLabel: false,
+                headerShown: false
+              }}
+            />
+            <Tabs.Screen
+              name="booking"
+              options={{
+                tabBarIcon: () => <BookmarkIcon color="#182A60" strokeWidth="1" />,
                 tabBarShowLabel: false,
                 headerShown: false
               }}
