@@ -2,11 +2,12 @@ import { Text, StyleSheet, TextProps } from 'react-native'
 
 type TitleProps = TextProps & {
   variant?: 'mainTitle' | 'subTitle' | 'pageTitle'
+  hasSubtitle?: boolean
 }
 
-const Title = ({ variant = 'mainTitle', ...props }: TitleProps) => {
+const Title = ({ variant = 'mainTitle', hasSubtitle = false, ...props }: TitleProps) => {
   return (
-    <Text {...props} style={styles[variant]}>
+    <Text {...props} style={[styles[variant], hasSubtitle && styles.hasSubtitle]}>
       {props.children}
     </Text>
   )
@@ -17,6 +18,9 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontFamily: 'Poppins-Bold'
   },
+  hasSubtitle: {
+    marginBottom: 2
+  },
   pageTitle: {
     fontSize: 20,
     fontFamily: 'Poppins-Bold',
@@ -24,8 +28,9 @@ const styles = StyleSheet.create({
     marginBottom: 24
   },
   subTitle: {
-    fontSize: 24,
-    fontFamily: 'Satoshi-Bold'
+    fontSize: 16,
+    fontFamily: 'Satoshi-Regular',
+    color: '#4E5D6B'
   }
 })
 
