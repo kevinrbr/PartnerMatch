@@ -2,14 +2,14 @@ import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSh
 import { Session } from '@supabase/supabase-js'
 import { useQuery } from '@tanstack/react-query'
 import { useRef, useState } from 'react'
-import { StyleSheet, Pressable, Text, ScrollView, View } from 'react-native'
-import { ArrowLeftStartOnRectangleIcon } from 'react-native-heroicons/outline'
+import { ScrollView, StyleSheet, View } from 'react-native'
 
 import BottomSheetRemoveBooking from '@/components/BottomSheetRemoveBooking'
 import DismissKeyboard from '@/components/DismissKeyboard'
+import RedirectLink from '@/components/RedirectLink'
 import SlotList from '@/components/SlotList'
+import Title from '@/components/Title'
 import Toast from '@/components/Toast'
-import { signOut } from '@/services/account'
 import { supabaseAuth } from '@/services/constants'
 import { getBookingByUserId, getSlotsByUserId } from '@/services/slot'
 import { ISlot } from '@/types/slot'
@@ -53,27 +53,26 @@ const Booking = () => {
 
   return (
     <DismissKeyboard>
-      <>
+      <View style={styles.container}>
+        <Title variant="pageTitle" hasSubtitle>
+          Parties et réservations
+        </Title>
+        <Title variant="subTitle">Réservations à venir</Title>
         <Toast message={toastMessage} showToast={showToast} setShowToast={setShowToast} />
-        <ScrollView style={styles.container}>
-          <Pressable style={styles.disconnectLinkContainer} onPress={signOut}>
-            <ArrowLeftStartOnRectangleIcon color="#182A60" />
-            <Text style={styles.disconnectLink}>Se deconnecter</Text>
-          </Pressable>
-          <Text style={styles.subTitle}>Mes parties</Text>
+        <View style={styles.bookingContainer}>
           <SlotList slots={slotsByUserId} onClick={handleOnClick} />
-          <View style={styles.bookingList}>
-            <Text style={styles.subTitleBis}>Mes réservations</Text>
-            <SlotList slots={bookingByUserId} />
-          </View>
-        </ScrollView>
+          <SlotList slots={bookingByUserId} />
+        </View>
+        <RedirectLink text="Gérer mes annonces" />
+        <RedirectLink text="Gérer mes réservations" />
+        <RedirectLink text="Parties archivées" />
         <BottomSheetRemoveBooking
           ref={bottomSheetRef}
           closeBottomSheet={closeBottomSheet}
           slotId={slotId}
           confirmBook={confirmBook}
         />
-      </>
+      </View>
     </DismissKeyboard>
   )
 }
@@ -83,34 +82,10 @@ export default Booking
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
-    paddingTop: 30
+    backgroundColor: '#fff'
   },
-  disconnectLinkContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 16
-  },
-  disconnectLink: {
-    marginLeft: 8,
-    color: '#4E5D6B',
-    fontSize: 16,
-    fontFamily: 'Satoshi-Regular'
-  },
-  subTitle: {
-    fontFamily: 'Satoshi-Bold',
-    fontSize: 18,
-    marginBottom: 20
-  },
-  subTitleBis: {
-    fontFamily: 'Satoshi-Bold',
-    fontSize: 18,
-    marginTop: 30,
-    marginBottom: 20
-  },
-  bookingList: {
-    marginBottom: 30
+  bookingContainer: {
+    marginTop: 32,
+    marginBottom: 16
   }
 })

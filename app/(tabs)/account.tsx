@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { StyleSheet, View, Text, Image } from 'react-native'
+import { StyleSheet, View, Text, Image, Pressable } from 'react-native'
+import { ArrowLeftStartOnRectangleIcon } from 'react-native-heroicons/outline'
 
 import Button from '@/components/Button'
 import Title from '@/components/Title'
-import { getProfilesDetails } from '@/services/account'
+import { getProfilesDetails, signOut } from '@/services/account'
 
 const Account = () => {
   const [profileDetails, setProfileDetails] = useState(null)
@@ -48,6 +49,10 @@ const Account = () => {
         <Text>Chargement des détails du profil...</Text>
       )}
       <Button title="Editer mon profil" onPress={editProfil} />
+      <Pressable style={styles.disconnectLinkContainer} onPress={signOut}>
+        <ArrowLeftStartOnRectangleIcon color="#182A60" />
+        <Text style={styles.disconnectLink}>Se deconnecter</Text>
+      </Pressable>
     </View>
   )
 }
@@ -85,5 +90,18 @@ const styles = StyleSheet.create({
     fontFamily: 'Satoshi-Regular',
     fontSize: 12,
     color: '#4E5D6B'
+  },
+  disconnectLinkContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 16
+  },
+  disconnectLink: {
+    marginLeft: 8,
+    color: '#4E5D6B',
+    fontSize: 16,
+    fontFamily: 'Satoshi-Regular'
   }
 })

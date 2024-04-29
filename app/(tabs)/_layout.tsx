@@ -12,7 +12,7 @@ const queryClient = new QueryClient()
 const StackLayout = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <View style={{ flex: 1, marginTop: 64 }}>
+      <View style={{ flex: 1, marginTop: 80 }}>
         <View style={{ flex: 1, marginHorizontal: 16 }}>
           <Tabs initialRouteName="home">
             <Tabs.Screen

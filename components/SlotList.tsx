@@ -26,11 +26,9 @@ const SlotList = ({ slots, onClick }: SlotCardProps) => {
 
   return (
     <ScrollView style={styles.slotContainer}>
-      {slots?.data && slots.data.length > 0 ? (
-        slots.data.map((slot, index) => <SlotCard key={index} slot={slot} onClick={handlePress} />)
-      ) : (
-        <Text>Aucun créneau disponible</Text>
-      )}
+      {slots?.data &&
+        slots.data.length > 0 &&
+        slots.data.map((slot, index) => <SlotCard key={index} slot={slot} onClick={handlePress} />)}
     </ScrollView>
   )
 }
