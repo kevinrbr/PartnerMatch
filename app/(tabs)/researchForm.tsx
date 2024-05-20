@@ -165,7 +165,8 @@ const ResearchForm = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16
+    paddingHorizontal: 16,
+    paddingTop: 80
   },
   inputContainer: {
     marginBottom: 6

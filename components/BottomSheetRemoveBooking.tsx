@@ -1,8 +1,8 @@
 import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import React, { forwardRef, useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import Button from './Button'
 import CustomBottomSheet from './CustomBottomSheet'
@@ -46,19 +46,21 @@ const BottomSheetRemoveBooking = forwardRef<Ref, BottomSheetRemoveBookingProps>(
     }
 
     return (
-      <CustomBottomSheet ref={ref}>
-        <Text style={styles.title}>Annuler ma partie</Text>
-        <View style={styles.btnContainer}>
-          <Button
-            title="J'annule la partie"
-            accessibilityLabel="Annuler la partie"
-            onPress={confirmBooking}
-          />
-          <TouchableWithoutFeedback onPress={handleBackLinkClick}>
-            <Text style={styles.backLink}>Retour</Text>
-          </TouchableWithoutFeedback>
-        </View>
-      </CustomBottomSheet>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <CustomBottomSheet ref={ref}>
+          <Text style={styles.title}>Annuler ma partie</Text>
+          <View style={styles.btnContainer}>
+            <Button
+              title="J'annule la partie"
+              accessibilityLabel="Annuler la partie"
+              onPress={confirmBooking}
+            />
+            <TouchableWithoutFeedback onPress={handleBackLinkClick}>
+              <Text style={styles.backLink}>Retour</Text>
+            </TouchableWithoutFeedback>
+          </View>
+        </CustomBottomSheet>
+      </GestureHandlerRootView>
     )
   }
 )

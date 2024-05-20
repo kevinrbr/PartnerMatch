@@ -1,7 +1,7 @@
 import { format } from 'date-fns'
 import { useState } from 'react'
 import { Pressable, Text, StyleSheet } from 'react-native'
-import DateTimePicker from 'react-native-modal-datetime-picker'
+// import DateTimePicker from 'react-native-modal-datetime-picker'
 
 import { FR_DATE, local_FR } from '@/types/date'
 
@@ -20,7 +20,7 @@ const DateInput = ({ label, date, onInputChange }: IDateInputProps) => {
       <Pressable style={styles.input} onPress={() => setIsVisible(true)}>
         <Text>{format(date, FR_DATE)}</Text>
       </Pressable>
-      <DateTimePicker
+      {/* <DateTimePicker
         isVisible={isVisible}
         onConfirm={date => {
           onInputChange(date)
@@ -32,7 +32,7 @@ const DateInput = ({ label, date, onInputChange }: IDateInputProps) => {
         confirmTextIOS="Valider"
         minimumDate={new Date()}
         locale={local_FR}
-      />
+      /> */}
     </>
   )
 }

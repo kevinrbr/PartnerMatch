@@ -1,3 +1,4 @@
+import { Link } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { StyleSheet, View, Text, Image, Pressable } from 'react-native'
 import { ArrowLeftStartOnRectangleIcon } from 'react-native-heroicons/outline'
@@ -16,7 +17,7 @@ const Account = () => {
   const fetchProfileDetails = async () => {
     try {
       const details = await getProfilesDetails()
-      setProfileDetails(details[0])
+      setProfileDetails(details)
     } catch (error) {
       console.error('Erreur lors de la récupération des détails du profil :', error.message)
     }
@@ -42,13 +43,15 @@ const Account = () => {
                 </Text>
               </Text>
             )}
-            <Text style={styles.email}>kevinrbr16@gmail.com</Text>
+            <Text style={styles.email}>{profileDetails.email}</Text>
           </View>
         </View>
       ) : (
         <Text>Chargement des détails du profil...</Text>
       )}
-      <Button title="Editer mon profil" onPress={editProfil} />
+      <Link href="/account/accountDetailList" asChild>
+        <Button title="Editer mon profil" onPress={editProfil} />
+      </Link>
       <Pressable style={styles.disconnectLinkContainer} onPress={signOut}>
         <ArrowLeftStartOnRectangleIcon color="#182A60" />
         <Text style={styles.disconnectLink}>Se deconnecter</Text>
@@ -62,7 +65,8 @@ export default Account
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    paddingTop: 80
   },
   header: {
     display: 'flex',
@@ -88,7 +92,7 @@ const styles = StyleSheet.create({
   },
   email: {
     fontFamily: 'Satoshi-Regular',
-    fontSize: 12,
+    fontSize: 14,
     color: '#4E5D6B'
   },
   disconnectLinkContainer: {

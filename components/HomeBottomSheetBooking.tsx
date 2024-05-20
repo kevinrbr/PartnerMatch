@@ -1,8 +1,8 @@
 import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import React, { forwardRef, useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import React, { forwardRef } from 'react'
+import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { CalendarDaysIcon, XMarkIcon } from 'react-native-heroicons/outline'
 
 import Button from './Button'
@@ -54,32 +54,34 @@ const HomeBottomSheetBooking = forwardRef<Ref, HomeBottomSheetBookingProps>(
     }
 
     return (
-      <CustomBottomSheet ref={ref}>
-        <Text style={styles.title}>Avant de reserver</Text>
-        <View style={styles.textContainer}>
-          <CalendarDaysIcon style={styles.icon} color="#000" />
-          <Text style={styles.text}>Je m'engage à être présent au moment de la réservation</Text>
-        </View>
-        <Separator />
-        <View style={styles.textContainer}>
-          <XMarkIcon style={styles.icon} color="#FF0000" />
-          <Text style={styles.text}>
-            En cas d’indisponibilité, j’annule ma réservation et je préviens la personne à
-            l’initiative de la réservation afin de permettre au groupe de trouver un joueur pour me
-            remplacer.
-          </Text>
-        </View>
-        <View style={styles.btnContainer}>
-          <Button
-            title="Je reserve"
-            accessibilityLabel="Confirmer la réservation"
-            onPress={confirmBooking}
-          />
-          <TouchableWithoutFeedback onPress={handleBackLinkClick}>
-            <Text style={styles.backLink}>Retour</Text>
-          </TouchableWithoutFeedback>
-        </View>
-      </CustomBottomSheet>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <CustomBottomSheet ref={ref}>
+          <Text style={styles.title}>Avant de reserver</Text>
+          <View style={styles.textContainer}>
+            <CalendarDaysIcon style={styles.icon} color="#000" />
+            <Text style={styles.text}>Je m'engage à être présent au moment de la réservation</Text>
+          </View>
+          <Separator />
+          <View style={styles.textContainer}>
+            <XMarkIcon style={styles.icon} color="#FF0000" />
+            <Text style={styles.text}>
+              En cas d’indisponibilité, j’annule ma réservation et je préviens la personne à
+              l’initiative de la réservation afin de permettre au groupe de trouver un joueur pour
+              me remplacer.
+            </Text>
+          </View>
+          <View style={styles.btnContainer}>
+            <Button
+              title="Je reserve"
+              accessibilityLabel="Confirmer la réservation"
+              onPress={confirmBooking}
+            />
+            <TouchableWithoutFeedback onPress={handleBackLinkClick}>
+              <Text style={styles.backLink}>Retour</Text>
+            </TouchableWithoutFeedback>
+          </View>
+        </CustomBottomSheet>
+      </GestureHandlerRootView>
     )
   }
 )
