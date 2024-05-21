@@ -24,7 +24,7 @@ const SignIn = () => {
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
 
-  const { login, loading, error } = useAccountStore() // Utilisez la fonction login et l'état loading depuis le store
+  const { login, loading, error } = useAccountStore()
   const navigation = useNavigation<SignInNavigationProp>()
 
   useEffect(() => {

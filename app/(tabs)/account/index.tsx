@@ -6,52 +6,41 @@ import { ArrowLeftStartOnRectangleIcon } from 'react-native-heroicons/outline'
 import Button from '@/components/Button'
 import Title from '@/components/Title'
 import { getProfilesDetails, signOut } from '@/services/account'
+import { useAccountStore } from '@/stores/account.store'
 
 const Account = () => {
-  const [profileDetails, setProfileDetails] = useState(null)
+  const { user } = useAccountStore()
 
   const editProfil = () => {
     // Logique pour l'édition du profil
   }
 
-  const fetchProfileDetails = async () => {
-    try {
-      const details = await getProfilesDetails()
-      setProfileDetails(details)
-    } catch (error) {
-      console.error('Erreur lors de la récupération des détails du profil :', error.message)
-    }
-  }
-
-  useEffect(() => {
-    fetchProfileDetails()
-  }, [])
-
   return (
     <View style={styles.container}>
       <Title variant="pageTitle">Profil</Title>
-      {profileDetails ? (
-        <View style={styles.header}>
-          <View style={styles.profilePictureContainer}>
-            <Image style={styles.profilePicture} source={require('@/assets/images/profile.png')} />
-          </View>
-          <View>
-            {profileDetails && (
+      {user ? (
+        <>
+          <View style={styles.header}>
+            <View style={styles.profilePictureContainer}>
+              <Image
+                style={styles.profilePicture}
+                source={require('@/assets/images/profile.png')}
+              />
+            </View>
+            <View>
               <Text style={styles.name}>
-                <Text style={styles.name}>
-                  {profileDetails.lastName} {profileDetails.firstName}
-                </Text>
+                {/* {profileDetails.lastName} {profileDetails.firstName} */}
               </Text>
-            )}
-            <Text style={styles.email}>{profileDetails.email}</Text>
+              <Text style={styles.email}>{user.email}</Text>
+            </View>
           </View>
-        </View>
+          <Link href="/account/accountDetailList" asChild>
+            <Button title="Editer mon profil" onPress={editProfil} />
+          </Link>
+        </>
       ) : (
         <Text>Chargement des détails du profil...</Text>
       )}
-      <Link href="/account/accountDetailList" asChild>
-        <Button title="Editer mon profil" onPress={editProfil} />
-      </Link>
       <Pressable style={styles.disconnectLinkContainer} onPress={signOut}>
         <ArrowLeftStartOnRectangleIcon color="#182A60" />
         <Text style={styles.disconnectLink}>Se deconnecter</Text>
