@@ -67,8 +67,10 @@ export const getProfilesDetails = async () => {
       .select('*')
       .eq('id', (await supabase.auth.getUser()).data.user.id)
 
-    const email = (await supabase.auth.getUser()).data.user.email
-    return { ...profileData[0], email }
+    return {
+      firstName: profileData[0].firstName,
+      lastName: profileData[0].lastName
+    }
   } catch (error) {
     console.error('Erreur lors de la récupération des données:', error.message)
     throw error

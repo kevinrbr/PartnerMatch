@@ -29,7 +29,7 @@ const Account = () => {
             </View>
             <View>
               <Text style={styles.name}>
-                {/* {profileDetails.lastName} {profileDetails.firstName} */}
+                {user.lastName} {user.firstName}
               </Text>
               <Text style={styles.email}>{user.email}</Text>
             </View>
