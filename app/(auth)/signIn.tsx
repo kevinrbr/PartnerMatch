@@ -11,7 +11,7 @@ import TextError from '@/components/TextError'
 import Title from '@/components/Title'
 import PasswordInput from '@/components/input/PasswordInput'
 import TextInput from '@/components/input/TextInput'
-import { useAccountStore } from '@/stores/account.store' // importez votre store Zustand
+import { accountStore } from '@/stores/account.store'
 import { RootStackParamList } from '@/types/routes'
 
 type SignInNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignIn'>
@@ -24,7 +24,7 @@ const SignIn = () => {
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
 
-  const { login, loading, error } = useAccountStore()
+  const { login, loading, error } = accountStore()
   const navigation = useNavigation<SignInNavigationProp>()
 
   useEffect(() => {

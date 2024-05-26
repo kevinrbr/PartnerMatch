@@ -4,7 +4,7 @@ import Header from '@/components/Header'
 
 export default function Layout() {
   return (
-    <Stack>
+    <Stack screenOptions={{ contentStyle: { backgroundColor: '#fff' } }}>
       <Stack.Screen
         name="index"
         options={{
@@ -15,6 +15,12 @@ export default function Layout() {
         name="accountDetailList"
         options={{
           header: () => <Header title="Informations personnelles" />
+        }}
+      />
+      <Stack.Screen
+        name="FirstName"
+        options={{
+          header: () => <Header title="Quel est votre prénom ?" />
         }}
       />
     </Stack>

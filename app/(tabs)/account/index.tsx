@@ -1,15 +1,14 @@
 import { Link } from 'expo-router'
-import { useEffect, useState } from 'react'
 import { StyleSheet, View, Text, Image, Pressable } from 'react-native'
 import { ArrowLeftStartOnRectangleIcon } from 'react-native-heroicons/outline'
 
 import Button from '@/components/Button'
 import Title from '@/components/Title'
-import { getProfilesDetails, signOut } from '@/services/account'
-import { useAccountStore } from '@/stores/account.store'
+import { signOut } from '@/services/account'
+import { accountStore } from '@/stores/account.store'
 
 const Account = () => {
-  const { user } = useAccountStore()
+  const { user } = accountStore()
 
   const editProfil = () => {
     // Logique pour l'édition du profil
@@ -19,7 +18,7 @@ const Account = () => {
     <View style={styles.container}>
       <Title variant="pageTitle">Profil</Title>
       {user ? (
-        <>
+        <View>
           <View style={styles.header}>
             <View style={styles.profilePictureContainer}>
               <Image
@@ -37,7 +36,7 @@ const Account = () => {
           <Link href="/account/accountDetailList" asChild>
             <Button title="Editer mon profil" onPress={editProfil} />
           </Link>
-        </>
+        </View>
       ) : (
         <Text>Chargement des détails du profil...</Text>
       )}
@@ -54,7 +53,6 @@ export default Account
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     paddingTop: 80
   },
   header: {

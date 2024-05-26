@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Tabs } from 'expo-router'
-import { View, StyleSheet } from 'react-native'
+import { View } from 'react-native'
 import {
   HomeIcon,
   ChatBubbleOvalLeftIcon,
@@ -9,12 +9,13 @@ import {
   BookmarkIcon
 } from 'react-native-heroicons/outline'
 const queryClient = new QueryClient()
+
 const StackLayout = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1, marginHorizontal: 16 }}>
-          <Tabs initialRouteName="home">
+          <Tabs initialRouteName="home" sceneContainerStyle={{ backgroundColor: 'white' }}>
             <Tabs.Screen
               name="home"
               options={{
@@ -45,6 +46,7 @@ const StackLayout = () => {
                 tabBarIcon: () => <UserCircleIcon color="#182A60" strokeWidth="1" />,
                 tabBarShowLabel: false,
                 headerShown: false
+                // tabBarStyle: { display: route.name === 'account' ? 'flex' : 'none' }
               }}
             />
             <Tabs.Screen
