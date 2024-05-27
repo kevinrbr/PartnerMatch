@@ -17,7 +17,7 @@ export const signInWithEmail = async (email: string, password: string) => {
   }
 }
 
-export const signUpWithEmail = async (email: string, password: string) => {
+export const signUpWithEmail = async (email, password) => {
   try {
     const { data, error } = await supabaseAuth.signUp({
       email,
@@ -28,7 +28,7 @@ export const signUpWithEmail = async (email: string, password: string) => {
       throw error
     }
 
-    return data.user
+    return data.user.id
   } catch (error) {
     throw error
   }
@@ -42,6 +42,24 @@ export const signOut = async () => {
   }
 }
 
+export const updateProfileFirstName = async (userId: string, firstName: string) => {
+  const { data, error } = await supabase.from('profiles').update({ firstName }).eq('id', userId)
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  return data
+}
+
+export const updateProfileLastName = async (userId: string, lastName: string) => {
+  const { data, error } = await supabase.from('profiles').update({ lastName }).eq('id', userId)
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  return data
+}
+
 export const updateProfile = async (firstName: string, lastName: string, userId: string) => {
   const updates = {
     id: userId,
@@ -50,8 +68,7 @@ export const updateProfile = async (firstName: string, lastName: string, userId:
   }
 
   try {
-    const { error } = await supabase.from('profiles').upsert(updates)
-    console.log(error)
+    const { data, error } = await supabase.from('profiles').upsert(updates)
     if (error) {
       throw error
     }
@@ -62,16 +79,16 @@ export const updateProfile = async (firstName: string, lastName: string, userId:
 
 export const getProfilesDetails = async () => {
   try {
-    const { data, error } = await supabase
+    const { data: profileData } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', (await supabase.auth.getUser()).data.user.id)
 
-    if (error) {
-      throw error
+    return {
+      id: profileData[0].id,
+      firstName: profileData[0].firstName,
+      lastName: profileData[0].lastName
     }
-
-    return data
   } catch (error) {
     console.error('Erreur lors de la récupération des données:', error.message)
     throw error

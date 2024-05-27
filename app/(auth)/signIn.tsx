@@ -1,6 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { AuthApiError } from '@supabase/supabase-js'
 import { Link } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { Text, SafeAreaView, View, StyleSheet, Alert, Pressable } from 'react-native'
@@ -12,7 +11,7 @@ import TextError from '@/components/TextError'
 import Title from '@/components/Title'
 import PasswordInput from '@/components/input/PasswordInput'
 import TextInput from '@/components/input/TextInput'
-import { signInWithEmail } from '@/services/account'
+import { accountStore } from '@/stores/account.store'
 import { RootStackParamList } from '@/types/routes'
 
 type SignInNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignIn'>
@@ -22,10 +21,10 @@ const PASSWORD_MINIMUM_LENGTH = 6
 const SignIn = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
 
+  const { login, loading, error } = accountStore()
   const navigation = useNavigation<SignInNavigationProp>()
 
   useEffect(() => {
@@ -40,7 +39,6 @@ const SignIn = () => {
   }, [navigation])
 
   const handleLogin = async () => {
-    setLoading(true)
     setEmailError('')
     setPasswordError('')
     let hasError = false
@@ -55,21 +53,18 @@ const SignIn = () => {
       hasError = true
     }
 
-    if (hasError) {
-      setLoading(false)
-    } else {
-      signInWithEmail(email, password)
-        .catch(error => {
-          if (error instanceof AuthApiError) {
-            Alert.alert(
-              'Connexion',
-              'Identifiants invalides. Veuillez vérifier votre email et votre mot de passe.'
-            )
-          } else {
-            Alert.alert('Connexion', "Une erreur s'est produite lors de la connexion.")
-          }
-        })
-        .finally(() => setLoading(false))
+    if (!hasError) {
+      await login(email, password)
+      if (error) {
+        if (error.includes('Invalid login credentials')) {
+          Alert.alert(
+            'Connexion',
+            'Identifiants invalides. Veuillez vérifier votre email et votre mot de passe.'
+          )
+        } else {
+          Alert.alert('Connexion', "Une erreur s'est produite lors de la connexion.")
+        }
+      }
     }
   }
 
@@ -107,7 +102,7 @@ const SignIn = () => {
             />
             <Text style={styles.forgottenPwd}>Mot de passe oublié</Text>
             <View style={styles.loginButton}>
-              <Button title="Se connecter" onPress={handleLogin} />
+              <Button title="Se connecter" onPress={handleLogin} disabled={loading} />
             </View>
             <Link href="/signUp" asChild>
               <Pressable style={styles.redirectSignUpTextContainer}>

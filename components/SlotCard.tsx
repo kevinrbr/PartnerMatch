@@ -1,5 +1,4 @@
-import { StyleSheet, View, Text, Image } from 'react-native'
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
+import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native'
 import { ClockIcon } from 'react-native-heroicons/outline'
 
 import { getDateHours } from '@/common/date'
@@ -24,32 +23,37 @@ const SlotCard = ({ slot, onClick }: SlotCardProps) => {
   }
 
   return (
-    <TouchableWithoutFeedback style={styles.cardContainer} onPress={handlePress}>
-      <View style={styles.cardContent}>
-        <View>
-          <Text style={styles.club}>
-            {slot.city} - {slot.club}
-          </Text>
-          <View style={styles.hourContainer}>
-            <ClockIcon color="#FF7131" size={16} />
-            <Text style={styles.hour}>{getDateHours(slot.date.toString())}</Text>
-          </View>
-        </View>
-        <View>
-          <Text style={styles.dispo}>{numberOfPlacesLabel(slot)}</Text>
-        </View>
-      </View>
-      <View style={styles.footerContent}>
-        <View style={styles.profileInfoContainer}>
-          <View style={styles.profilePictureContainer}>
-            <Image style={styles.profilePicture} source={require('@/assets/images/profile.png')} />
+    <TouchableWithoutFeedback onPress={handlePress}>
+      <View style={styles.cardContainer}>
+        <View style={styles.cardContent}>
+          <View>
+            <Text style={styles.club}>
+              {slot.city} - {slot.club}
+            </Text>
+            <View style={styles.hourContainer}>
+              <ClockIcon color="#FF7131" size={16} />
+              <Text style={styles.hour}>{getDateHours(slot.date.toString())}</Text>
+            </View>
           </View>
           <View>
-            <Text style={styles.name}>{slot.name}</Text>
+            <Text style={styles.dispo}>{numberOfPlacesLabel(slot)}</Text>
           </View>
         </View>
-        <View style={styles.levelContainer}>
-          <Text style={styles.level}>niv {slot.level}</Text>
+        <View style={styles.footerContent}>
+          <View style={styles.profileInfoContainer}>
+            <View style={styles.profilePictureContainer}>
+              <Image
+                style={styles.profilePicture}
+                source={require('@/assets/images/profile.png')}
+              />
+            </View>
+            <View>
+              <Text style={styles.name}>{slot.name}</Text>
+            </View>
+          </View>
+          <View style={styles.levelContainer}>
+            <Text style={styles.level}>niv {slot.level}</Text>
+          </View>
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -61,7 +65,7 @@ export default SlotCard
 const styles = StyleSheet.create({
   cardContainer: {
     borderRadius: 8,
-    marginBottom: 32,
+    marginBottom: 24,
     padding: 10,
     shadowColor: 'rgba(189, 189, 189, 0.24)',
     shadowOffset: { width: -1, height: 3 },

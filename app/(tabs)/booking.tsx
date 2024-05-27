@@ -2,7 +2,7 @@ import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSh
 import { Session } from '@supabase/supabase-js'
 import { useQuery } from '@tanstack/react-query'
 import { useRef, useState } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 import BottomSheetRemoveBooking from '@/components/BottomSheetRemoveBooking'
 import DismissKeyboard from '@/components/DismissKeyboard'
@@ -82,7 +82,8 @@ export default Booking
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    paddingTop: 80,
+    paddingHorizontal: 16
   },
   bookingContainer: {
     marginTop: 32,

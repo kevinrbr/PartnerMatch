@@ -49,8 +49,6 @@ export const updateSlotAvailability = async ({
     if (error) {
       throw error
     }
-
-    console.log('Slot availability updated successfully:', data)
   } catch (error) {
     console.error('Error updating slot availability:', error.message)
   }

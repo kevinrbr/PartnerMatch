@@ -1,55 +1,43 @@
-import { useEffect, useState } from 'react'
+import { router } from 'expo-router'
 import { StyleSheet, View, Text, Image, Pressable } from 'react-native'
 import { ArrowLeftStartOnRectangleIcon } from 'react-native-heroicons/outline'
 
 import Button from '@/components/Button'
 import Title from '@/components/Title'
-import { getProfilesDetails, signOut } from '@/services/account'
+import { accountStore } from '@/stores/account.store'
 
 const Account = () => {
-  const [profileDetails, setProfileDetails] = useState(null)
+  const { user, logout } = accountStore()
 
   const editProfil = () => {
-    // Logique pour l'édition du profil
+    router.push({ pathname: '/account/accountDetailList/' })
   }
-
-  const fetchProfileDetails = async () => {
-    try {
-      const details = await getProfilesDetails()
-      setProfileDetails(details[0])
-    } catch (error) {
-      console.error('Erreur lors de la récupération des détails du profil :', error.message)
-    }
-  }
-
-  useEffect(() => {
-    fetchProfileDetails()
-  }, [])
 
   return (
     <View style={styles.container}>
       <Title variant="pageTitle">Profil</Title>
-      {profileDetails ? (
-        <View style={styles.header}>
-          <View style={styles.profilePictureContainer}>
-            <Image style={styles.profilePicture} source={require('@/assets/images/profile.png')} />
-          </View>
-          <View>
-            {profileDetails && (
+      {user ? (
+        <View>
+          <View style={styles.header}>
+            <View style={styles.profilePictureContainer}>
+              <Image
+                style={styles.profilePicture}
+                source={require('@/assets/images/profile.png')}
+              />
+            </View>
+            <View>
               <Text style={styles.name}>
-                <Text style={styles.name}>
-                  {profileDetails.lastName} {profileDetails.firstName}
-                </Text>
+                {user.lastName} {user.firstName}
               </Text>
-            )}
-            <Text style={styles.email}>kevinrbr16@gmail.com</Text>
+              <Text style={styles.email}>{user.email}</Text>
+            </View>
           </View>
+          <Button title="Editer mon profil" onPress={editProfil} />
         </View>
       ) : (
         <Text>Chargement des détails du profil...</Text>
       )}
-      <Button title="Editer mon profil" onPress={editProfil} />
-      <Pressable style={styles.disconnectLinkContainer} onPress={signOut}>
+      <Pressable style={styles.disconnectLinkContainer} onPress={logout}>
         <ArrowLeftStartOnRectangleIcon color="#182A60" />
         <Text style={styles.disconnectLink}>Se deconnecter</Text>
       </Pressable>
@@ -62,7 +50,8 @@ export default Account
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    paddingTop: 80,
+    paddingHorizontal: 16
   },
   header: {
     display: 'flex',
@@ -88,7 +77,7 @@ const styles = StyleSheet.create({
   },
   email: {
     fontFamily: 'Satoshi-Regular',
-    fontSize: 12,
+    fontSize: 14,
     color: '#4E5D6B'
   },
   disconnectLinkContainer: {

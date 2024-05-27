@@ -1,7 +1,7 @@
 import { Text, StyleSheet, TextProps } from 'react-native'
 
 type TitleProps = TextProps & {
-  variant?: 'mainTitle' | 'subTitle' | 'pageTitle'
+  variant?: 'mainTitle' | 'subTitle' | 'pageTitle' | 'headerTitle'
   hasSubtitle?: boolean
 }
 
@@ -26,6 +26,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold',
     color: '#191822',
     marginBottom: 24
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontFamily: 'Poppins-Bold',
+    color: '#191822',
+    marginBottom: 0
   },
   subTitle: {
     fontSize: 16,

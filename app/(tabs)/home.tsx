@@ -96,7 +96,8 @@ export default Home
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: 'white'
+    paddingTop: 80,
+    paddingHorizontal: 16
   },
   slotContainer: {
     backgroundColor: 'white',
