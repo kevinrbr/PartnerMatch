@@ -7,38 +7,38 @@ import TextError from '@/components/TextError'
 import TextInput from '@/components/input/TextInput'
 import { accountStore } from '@/stores/account.store'
 
-const FirstName = () => {
-  const { user, updateProfileFirstName } = accountStore()
-  const [firstName, setFirstName] = useState(user.firstName)
-  const [firstNameError, setFirstNameError] = useState('')
+const LastName = () => {
+  const { user, updateProfileLastName } = accountStore()
+  const [lastName, setLastName] = useState(user.lastName)
+  const [lastNameError, setLastNameError] = useState('')
 
   const handleChange = () => {
-    if (firstName.length === 0) {
-      setFirstNameError('Veuillez renseignez votre prénom.')
+    if (lastName.length === 0) {
+      setLastNameError('Veuillez renseignez votre nom.')
       return
     }
-    updateProfileFirstName(firstName)
-    router.navigate({ pathname: '/account/accountDetailList/' })
+    updateProfileLastName(lastName)
+    router.push({ pathname: '/account/accountDetailList/' })
   }
   return (
     <View style={styles.container}>
       <View>
         <TextInput
           onInputChange={v => {
-            setFirstName(v)
-            setFirstNameError('')
+            setLastName(v)
+            setLastNameError('')
           }}
-          value={firstName}
-          errorMessage={firstNameError}
+          value={lastName}
+          errorMessage={lastNameError}
         />
-        {firstNameError && <TextError errorMsg={firstNameError} />}
+        {lastNameError && <TextError errorMsg={lastNameError} />}
       </View>
       <Button title="Enregistrer" onPress={() => handleChange()} />
     </View>
   )
 }
 
-export default FirstName
+export default LastName
 
 const styles = StyleSheet.create({
   container: {

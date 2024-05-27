@@ -52,6 +52,16 @@ export const updateProfileFirstName = async (userId: string, firstName: string) 
   return data
 }
 
+export const updateProfileLastName = async (userId: string, lastName: string) => {
+  const { data, error } = await supabase.from('profiles').update({ lastName }).eq('id', userId)
+  if (error) {
+    console.log(error)
+    throw new Error(error.message)
+  }
+
+  return data
+}
+
 export const updateProfile = async (firstName: string, lastName: string, userId: string) => {
   const updates = {
     id: userId,

@@ -15,10 +15,12 @@ const AccountDetailList = () => {
               <Text style={styles.detail}>{user.firstName}</Text>
             </Pressable>
           </Link>
-          <Pressable style={styles.infoContainer}>
-            <Text style={styles.label}>Nom</Text>
-            <Text style={styles.detail}>{user.lastName}</Text>
-          </Pressable>
+          <Link href="/account/lastName" style={styles.infoContainer} asChild>
+            <Pressable style={styles.infoContainer}>
+              <Text style={styles.label}>Nom</Text>
+              <Text style={styles.detail}>{user.lastName}</Text>
+            </Pressable>
+          </Link>
           <Pressable style={styles.infoContainer}>
             <Text style={styles.label}>Email</Text>
             <Text style={styles.detail}>{user.email}</Text>
@@ -35,7 +37,8 @@ export default AccountDetailList
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    paddingHorizontal: 16
   },
   infoContainer: {
     marginTop: 24

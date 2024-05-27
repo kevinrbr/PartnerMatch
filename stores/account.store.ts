@@ -1,10 +1,13 @@
-// store/accountStore.ts
-
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
-import { getProfilesDetails, signInWithEmail, updateProfileFirstName } from '@/services/account'
+import {
+  getProfilesDetails,
+  signInWithEmail,
+  updateProfileFirstName,
+  updateProfileLastName
+} from '@/services/account'
 import { userType } from '@/types/user'
 
 interface AccountStore {
@@ -13,6 +16,7 @@ interface AccountStore {
   error: string | null
   login: (email: string, password: string) => Promise<void>
   updateProfileFirstName: (firstName: string) => Promise<void>
+  updateProfileLastName: (lastName: string) => Promise<void>
   logout: () => void
 }
 
@@ -43,6 +47,22 @@ export const accountStore = create<AccountStore>()(
 
           set(state => ({
             user: state.user ? { ...state.user, firstName } : null,
+            loading: false
+          }))
+        } catch (error: any) {
+          set({ error: error.message, loading: false })
+        }
+      },
+      updateProfileLastName: async lastName => {
+        set({ loading: true, error: null })
+        try {
+          const user = get().user
+          if (!user) throw new Error('User not logged in')
+
+          await updateProfileLastName(user.id, lastName)
+
+          set(state => ({
+            user: state.user ? { ...state.user, lastName } : null,
             loading: false
           }))
         } catch (error: any) {

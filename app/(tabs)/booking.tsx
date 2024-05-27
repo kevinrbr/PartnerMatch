@@ -82,7 +82,8 @@ export default Booking
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 80
+    paddingTop: 80,
+    paddingHorizontal: 16
   },
   bookingContainer: {
     marginTop: 32,

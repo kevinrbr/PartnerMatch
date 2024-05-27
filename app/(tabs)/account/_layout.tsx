@@ -2,7 +2,7 @@ import { Stack } from 'expo-router/stack'
 
 import Header from '@/components/Header'
 
-export default function Layout() {
+export default function AccountLayout() {
   return (
     <Stack screenOptions={{ contentStyle: { backgroundColor: '#fff' } }}>
       <Stack.Screen
@@ -18,9 +18,15 @@ export default function Layout() {
         }}
       />
       <Stack.Screen
-        name="FirstName"
+        name="firstName"
         options={{
           header: () => <Header title="Quel est votre prénom ?" />
+        }}
+      />
+      <Stack.Screen
+        name="lastName"
+        options={{
+          header: () => <Header title="Quel est votre nom ?" />
         }}
       />
     </Stack>

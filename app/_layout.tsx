@@ -1,5 +1,6 @@
 import { useFonts } from 'expo-font'
 import { Slot } from 'expo-router'
+import { View, StyleSheet } from 'react-native'
 
 export default function Root() {
   const [fontsLoaded] = useFonts({
@@ -11,6 +12,16 @@ export default function Root() {
   if (!fontsLoaded) {
     return null
   } else {
-    return <Slot />
+    return (
+      <View style={styles.container}>
+        <Slot />
+      </View>
+    )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  }
+})

@@ -1,4 +1,4 @@
-import { Link } from 'expo-router'
+import { router } from 'expo-router'
 import { StyleSheet, View, Text, Image, Pressable } from 'react-native'
 import { ArrowLeftStartOnRectangleIcon } from 'react-native-heroicons/outline'
 
@@ -11,7 +11,7 @@ const Account = () => {
   const { user } = accountStore()
 
   const editProfil = () => {
-    // Logique pour l'édition du profil
+    router.push({ pathname: '/account/accountDetailList/' })
   }
 
   return (
@@ -33,9 +33,7 @@ const Account = () => {
               <Text style={styles.email}>{user.email}</Text>
             </View>
           </View>
-          <Link href="/account/accountDetailList" asChild>
-            <Button title="Editer mon profil" onPress={editProfil} />
-          </Link>
+          <Button title="Editer mon profil" onPress={editProfil} />
         </View>
       ) : (
         <Text>Chargement des détails du profil...</Text>
@@ -53,7 +51,8 @@ export default Account
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 80
+    paddingTop: 80,
+    paddingHorizontal: 16
   },
   header: {
     display: 'flex',
