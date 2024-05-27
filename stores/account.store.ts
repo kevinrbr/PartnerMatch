@@ -6,6 +6,7 @@ import {
   getProfilesDetails,
   signInWithEmail,
   signOut,
+  signUpWithEmail,
   updateProfileFirstName,
   updateProfileLastName
 } from '@/services/account'
@@ -16,6 +17,7 @@ interface AccountStore {
   loading: boolean
   error: string | null
   login: (email: string, password: string) => Promise<void>
+  register: (email: string, password: string) => Promise<string>
   updateProfileFirstName: (firstName: string) => Promise<void>
   updateProfileLastName: (lastName: string) => Promise<void>
   logout: () => void
@@ -34,6 +36,15 @@ export const accountStore = create<AccountStore>()(
           const profileDetails = await getProfilesDetails()
           set({ user: { ...profileDetails, email }, loading: false })
         } catch (error: any) {
+          set({ error: error.message, loading: false })
+        }
+      },
+      register: async (email, password) => {
+        set({ loading: true, error: null })
+        try {
+          const userId = await signUpWithEmail(email, password)
+          return userId // Retourner l'ID utilisateur
+        } catch (error) {
           set({ error: error.message, loading: false })
         }
       },

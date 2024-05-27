@@ -9,7 +9,8 @@ import TextError from '@/components/TextError'
 import Title from '@/components/Title'
 import PasswordInput from '@/components/input/PasswordInput'
 import TextInput from '@/components/input/TextInput'
-import { signUpWithEmail, updateProfile } from '@/services/account'
+import { updateProfile } from '@/services/account'
+import { accountStore } from '@/stores/account.store'
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState('')
@@ -19,10 +20,10 @@ const SignUp = () => {
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
   const [nameError, setNameError] = useState('')
-  const [loading, setLoading] = useState<boolean>()
+
+  const { register, error } = accountStore()
 
   const handleRegister = async () => {
-    setLoading(true)
     setEmailError('')
     setPasswordError('')
     setNameError('')
@@ -43,29 +44,22 @@ const SignUp = () => {
       hasError = true
     }
 
-    if (hasError) {
-      setLoading(false)
-      return
-    }
+    if (!hasError) {
+      const userId = await register(email, password)
+      Alert.alert(
+        'Veuillez vérifier votre boîte de réception pour la vérification de votre e-mail !'
+      )
 
-    if (hasError) {
-      setLoading(false)
-    } else {
-      signUpWithEmail(email, password)
-        .then(userData => {
-          const userId = userData.id
-          Alert.alert('Please check your inbox for email verification!')
-          updateProfile(firstName, lastName, userId)
-        })
-        .catch(() => {
-          Alert.alert(
-            'Inscription',
-            "Une erreur s'est produite lors de l'inscription. Réessayez plus tard."
-          )
-        })
-        .finally(() => {
-          setLoading(false)
-        })
+      if (userId) {
+        await updateProfile(firstName, lastName, userId)
+      }
+
+      if (error) {
+        Alert.alert(
+          'Inscription',
+          "Une erreur s'est produite lors de l'inscription. Réessayez plus tard."
+        )
+      }
     }
   }
 
