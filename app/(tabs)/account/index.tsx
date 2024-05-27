@@ -4,11 +4,10 @@ import { ArrowLeftStartOnRectangleIcon } from 'react-native-heroicons/outline'
 
 import Button from '@/components/Button'
 import Title from '@/components/Title'
-import { signOut } from '@/services/account'
 import { accountStore } from '@/stores/account.store'
 
 const Account = () => {
-  const { user } = accountStore()
+  const { user, logout } = accountStore()
 
   const editProfil = () => {
     router.push({ pathname: '/account/accountDetailList/' })
@@ -38,7 +37,7 @@ const Account = () => {
       ) : (
         <Text>Chargement des détails du profil...</Text>
       )}
-      <Pressable style={styles.disconnectLinkContainer} onPress={signOut}>
+      <Pressable style={styles.disconnectLinkContainer} onPress={logout}>
         <ArrowLeftStartOnRectangleIcon color="#182A60" />
         <Text style={styles.disconnectLink}>Se deconnecter</Text>
       </Pressable>

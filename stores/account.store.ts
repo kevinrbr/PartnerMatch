@@ -5,6 +5,7 @@ import { persist, createJSONStorage } from 'zustand/middleware'
 import {
   getProfilesDetails,
   signInWithEmail,
+  signOut,
   updateProfileFirstName,
   updateProfileLastName
 } from '@/services/account'
@@ -69,7 +70,10 @@ export const accountStore = create<AccountStore>()(
           set({ error: error.message, loading: false })
         }
       },
-      logout: () => set({ user: null })
+      logout: () => {
+        set({ user: null })
+        signOut()
+      }
     }),
     {
       name: 'account-storage',
