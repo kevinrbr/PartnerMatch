@@ -32,7 +32,6 @@ export const accountStore = create<AccountStore>()(
         try {
           await signInWithEmail(email, password)
           const profileDetails = await getProfilesDetails()
-          console.log('Profile Details:', profileDetails)
           set({ user: { ...profileDetails, email }, loading: false })
         } catch (error: any) {
           set({ error: error.message, loading: false })

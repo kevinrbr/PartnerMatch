@@ -56,7 +56,6 @@ const SignIn = () => {
     if (!hasError) {
       await login(email, password)
       if (error) {
-        console.log(error)
         if (error.includes('Invalid login credentials')) {
           Alert.alert(
             'Connexion',

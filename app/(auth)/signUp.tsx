@@ -53,7 +53,6 @@ const SignUp = () => {
     } else {
       signUpWithEmail(email, password)
         .then(userData => {
-          console.log('vue', userData.id)
           const userId = userData.id
           Alert.alert('Please check your inbox for email verification!')
           updateProfile(firstName, lastName, userId)

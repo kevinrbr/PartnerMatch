@@ -45,7 +45,6 @@ export const signOut = async () => {
 export const updateProfileFirstName = async (userId: string, firstName: string) => {
   const { data, error } = await supabase.from('profiles').update({ firstName }).eq('id', userId)
   if (error) {
-    console.log(error)
     throw new Error(error.message)
   }
 
@@ -55,7 +54,6 @@ export const updateProfileFirstName = async (userId: string, firstName: string) 
 export const updateProfileLastName = async (userId: string, lastName: string) => {
   const { data, error } = await supabase.from('profiles').update({ lastName }).eq('id', userId)
   if (error) {
-    console.log(error)
     throw new Error(error.message)
   }
 
@@ -71,8 +69,6 @@ export const updateProfile = async (firstName: string, lastName: string, userId:
 
   try {
     const { data, error } = await supabase.from('profiles').upsert(updates)
-    console.log('iciiiiii', data)
-    console.log(error)
     if (error) {
       throw error
     }
