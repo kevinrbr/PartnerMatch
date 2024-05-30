@@ -2,10 +2,10 @@ import BottomSheet from '@gorhom/bottom-sheet'
 import { useQuery } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
 import { useEffect, useRef, useState } from 'react'
-import { ScrollView, StyleSheet, View, Text } from 'react-native'
+import { ScrollView, StyleSheet, View, Text, FlatList } from 'react-native'
 
 import HomeBottomSheetBooking from '@/components/HomeBottomSheetBooking'
-import SlotList from '@/components/SlotList'
+import SlotCard from '@/components/SlotCard'
 import Toast from '@/components/Toast'
 import { getUserId } from '@/services/account'
 import { getBookingByUserId, getSlots } from '@/services/slot'
@@ -77,16 +77,26 @@ const Home = () => {
           <Text style={styles.title}>Nantes, Loire-Atlantique</Text>
         </View>
       </View>
-      <ScrollView style={styles.slotContainer}>
-        <SlotList slots={slotsQuery} onClick={handleOnClick} />
-      </ScrollView>
-      <HomeBottomSheetBooking
-        ref={bottomSheetRef}
-        closeBottomSheet={closeBottomSheet}
-        confirmBook={confirmBook}
-        slotId={bookingSlotId}
-        slotAvailability={slotAvailability}
-      />
+      {slotsQuery.data && slotsQuery.data.length !== 0 ? (
+        <View style={styles.slotContainer}>
+          <FlatList
+            data={slotsQuery.data}
+            renderItem={({ item }) => <SlotCard slot={item} onClick={handleOnClick} />}
+            keyExtractor={item => item.id}
+          />
+          <HomeBottomSheetBooking
+            ref={bottomSheetRef}
+            closeBottomSheet={closeBottomSheet}
+            confirmBook={confirmBook}
+            slotId={bookingSlotId}
+            slotAvailability={slotAvailability}
+          />
+        </View>
+      ) : (
+        <View style={styles.emptyContainer}>
+          <Text>Aucun créneau disponible</Text>
+        </View>
+      )}
     </View>
   )
 }
@@ -102,6 +112,12 @@ const styles = StyleSheet.create({
   slotContainer: {
     backgroundColor: 'white',
     marginTop: 44
+  },
+  emptyContainer: {
+    display: 'flex',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   btnContainer: {
     width: '100%',

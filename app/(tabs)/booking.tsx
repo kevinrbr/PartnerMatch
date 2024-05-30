@@ -2,12 +2,12 @@ import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSh
 import { Session } from '@supabase/supabase-js'
 import { useQuery } from '@tanstack/react-query'
 import { useRef, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { FlatList, StyleSheet, View } from 'react-native'
 
 import BottomSheetRemoveBooking from '@/components/BottomSheetRemoveBooking'
 import DismissKeyboard from '@/components/DismissKeyboard'
 import RedirectLink from '@/components/RedirectLink'
-import SlotList from '@/components/SlotList'
+import SlotCard from '@/components/SlotCard'
 import Title from '@/components/Title'
 import Toast from '@/components/Toast'
 import { supabaseAuth } from '@/services/constants'
@@ -60,8 +60,16 @@ const Booking = () => {
         <Title variant="subTitle">Réservations à venir</Title>
         <Toast message={toastMessage} showToast={showToast} setShowToast={setShowToast} />
         <View style={styles.bookingContainer}>
-          <SlotList slots={slotsByUserId} onClick={handleOnClick} />
-          <SlotList slots={bookingByUserId} />
+          <FlatList
+            data={slotsByUserId.data}
+            renderItem={({ item }) => <SlotCard slot={item} onClick={handleOnClick} />}
+            keyExtractor={item => item.id}
+          />
+          <FlatList
+            data={bookingByUserId.data}
+            renderItem={({ item }) => <SlotCard slot={item} />}
+            keyExtractor={item => item.id}
+          />
         </View>
         <RedirectLink text="Gérer mes annonces" />
         <RedirectLink text="Gérer mes réservations" />
@@ -83,7 +91,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 80,
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
+    backgroundColor: 'white'
   },
   bookingContainer: {
     marginTop: 32,
