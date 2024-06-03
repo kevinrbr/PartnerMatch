@@ -2,7 +2,7 @@ import BottomSheet from '@gorhom/bottom-sheet'
 import { useQuery } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
 import { useEffect, useRef, useState } from 'react'
-import { ScrollView, StyleSheet, View, Text, FlatList } from 'react-native'
+import { StyleSheet, View, Text, FlatList } from 'react-native'
 
 import HomeBottomSheetBooking from '@/components/HomeBottomSheetBooking'
 import SlotCard from '@/components/SlotCard'
@@ -21,7 +21,7 @@ const Home = () => {
   const [isErrorToast, setIsErrorToast] = useState(false)
 
   useEffect(() => {
-    if (showToastParams === 'true') {
+    if (showToastParams) {
       setShowToast(true)
       setToastMessage(message as string)
     }

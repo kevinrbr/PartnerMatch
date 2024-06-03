@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     bottom: 20,
     alignSelf: 'center',
     zIndex: 999,
-    width: '90%',
+    width: '100%',
     margin: 'auto',
     display: 'flex',
     flexDirection: 'row',

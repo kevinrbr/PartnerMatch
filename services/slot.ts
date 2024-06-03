@@ -56,13 +56,38 @@ export const updateSlotAvailability = async ({
 
 export const getSlots = async () => {
   try {
-    const { data, error } = await supabase.from('slot').select('*')
-
-    if (error) {
-      throw error
+    const { data: userData, error: userError } = await supabase.auth.getUser()
+    if (userError) {
+      throw userError
     }
 
-    return data
+    const { data: nameData, error: nameError } = await supabase
+      .from('profiles')
+      .select('firstName')
+      .eq('id', userData.user.id)
+    if (nameError) {
+      throw nameError
+    }
+
+    // Vérifier si le nom est récupéré
+    if (!nameData || nameData.length === 0) {
+      throw new Error("Nom d'utilisateur non trouvé")
+    }
+    const name = nameData[0].firstName
+
+    // Récupérer les slots
+    const { data: slotsData, error: slotsError } = await supabase.from('slot').select('*')
+    if (slotsError) {
+      throw slotsError
+    }
+
+    // Ajouter le nom de l'utilisateur à chaque slot
+    const slotsWithNames = slotsData.map(slot => ({
+      ...slot,
+      name
+    }))
+
+    return slotsWithNames
   } catch (error) {
     console.error('Erreur lors de la récupération des données:', error.message)
     throw error
