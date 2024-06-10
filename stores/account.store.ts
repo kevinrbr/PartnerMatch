@@ -22,7 +22,6 @@ interface AccountStore {
   updateProfileLastName: (lastName: string) => Promise<void>
   logout: () => void
 }
-
 export const accountStore = create<AccountStore>()(
   persist(
     (set, get) => ({
@@ -70,7 +69,8 @@ export const accountStore = create<AccountStore>()(
           const user = get().user
           if (!user) throw new Error('User not logged in')
 
-          await updateProfileLastName(user.id, lastName)
+          // await updateProfileLastName(user.id, lastName)
+          await updateProfileFirstName
 
           set(state => ({
             user: state.user ? { ...state.user, lastName } : null,

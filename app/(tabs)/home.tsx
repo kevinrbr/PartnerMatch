@@ -1,5 +1,4 @@
 import BottomSheet from '@gorhom/bottom-sheet'
-import { useQuery } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
 import { useEffect, useRef, useState } from 'react'
 import { StyleSheet, View, Text, FlatList } from 'react-native'
@@ -8,7 +7,8 @@ import HomeBottomSheetBooking from '@/components/HomeBottomSheetBooking'
 import SlotCard from '@/components/SlotCard'
 import Toast from '@/components/Toast'
 import { getUserId } from '@/services/account'
-import { getBookingByUserId, getSlots } from '@/services/slot'
+import { getBookingByUserId } from '@/services/slot'
+import { useSlots } from '@/services/slots/useSlots'
 import { ISlot } from '@/types/slot'
 
 const Home = () => {
@@ -16,8 +16,8 @@ const Home = () => {
 
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
-  const [bookingSlotId, setBookingSlotId] = useState<number | null>()
-  const [slotAvailability, setSlotAvailability] = useState<string | null>()
+  const [bookingSlotId, setBookingSlotId] = useState<number | null>(null)
+  const [slotAvailability, setSlotAvailability] = useState<string | null>(null)
   const [isErrorToast, setIsErrorToast] = useState(false)
 
   useEffect(() => {
@@ -27,10 +27,7 @@ const Home = () => {
     }
   }, [showToastParams, message])
 
-  const slotsQuery = useQuery({
-    queryKey: ['slots'],
-    queryFn: getSlots
-  })
+  const slots = useSlots()
 
   const bottomSheetRef = useRef<BottomSheet>(null)
 
@@ -77,26 +74,32 @@ const Home = () => {
           <Text style={styles.title}>Nantes, Loire-Atlantique</Text>
         </View>
       </View>
-      {slotsQuery.data && slotsQuery.data.length !== 0 ? (
-        <View style={styles.slotContainer}>
-          <FlatList
-            data={slotsQuery.data}
-            renderItem={({ item }) => <SlotCard slot={item} onClick={handleOnClick} />}
-            keyExtractor={item => item.id}
-          />
-          <HomeBottomSheetBooking
-            ref={bottomSheetRef}
-            closeBottomSheet={closeBottomSheet}
-            confirmBook={confirmBook}
-            slotId={bookingSlotId}
-            slotAvailability={slotAvailability}
-          />
-        </View>
-      ) : (
+      {slots.isFetching && (
         <View style={styles.emptyContainer}>
-          <Text>Aucun créneau disponible</Text>
+          <Text>Récupération des informations..</Text>
         </View>
       )}
+      {slots.isSuccess &&
+        (slots.data && slots.data.length !== 0 ? (
+          <View style={styles.slotContainer}>
+            <FlatList
+              data={slots.data}
+              renderItem={({ item }) => <SlotCard slot={item} onClick={handleOnClick} />}
+              keyExtractor={item => item.id}
+            />
+            <HomeBottomSheetBooking
+              ref={bottomSheetRef}
+              closeBottomSheet={closeBottomSheet}
+              confirmBook={confirmBook}
+              slotId={bookingSlotId}
+              slotAvailability={slotAvailability}
+            />
+          </View>
+        ) : (
+          <View style={styles.emptyContainer}>
+            <Text>Aucun créneau disponible</Text>
+          </View>
+        ))}
     </View>
   )
 }

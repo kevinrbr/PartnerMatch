@@ -5,12 +5,14 @@ import { StyleSheet, View } from 'react-native'
 import Button from '@/components/Button'
 import TextError from '@/components/TextError'
 import TextInput from '@/components/input/TextInput'
+import { useEditProfile } from '@/services/account/useEditProfile'
 import { accountStore } from '@/stores/account.store'
 
 const FirstName = () => {
   const { user, updateProfileFirstName } = accountStore()
   const [firstName, setFirstName] = useState(user.firstName)
   const [firstNameError, setFirstNameError] = useState('')
+  const editProfile = useEditProfile()
 
   const handleChange = () => {
     if (firstName.length === 0) {
