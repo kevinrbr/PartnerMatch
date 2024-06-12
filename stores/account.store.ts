@@ -7,8 +7,7 @@ import {
   signInWithEmail,
   signOut,
   signUpWithEmail,
-  updateProfileFirstName,
-  updateProfileLastName
+  updateProfileFirstName
 } from '@/services/account'
 import { userType } from '@/types/user'
 
@@ -16,10 +15,8 @@ interface AccountStore {
   user: userType | null
   loading: boolean
   error: string | null
-  login: (email: string, password: string) => Promise<void>
+  // login: (email: string, password: string) => Promise<void>
   register: (email: string, password: string) => Promise<string>
-  updateProfileFirstName: (firstName: string) => Promise<void>
-  updateProfileLastName: (lastName: string) => Promise<void>
   logout: () => void
 }
 export const accountStore = create<AccountStore>()(
@@ -28,16 +25,16 @@ export const accountStore = create<AccountStore>()(
       user: null,
       loading: false,
       error: null,
-      login: async (email, password) => {
-        set({ loading: true, error: null })
-        try {
-          await signInWithEmail(email, password)
-          const profileDetails = await getProfilesDetails()
-          set({ user: { ...profileDetails, email }, loading: false })
-        } catch (error: any) {
-          set({ error: error.message, loading: false })
-        }
-      },
+      // login: async (email, password) => {
+      //   set({ loading: true, error: null })
+      //   try {
+      //     await signInWithEmail(email, password)
+      //     const profileDetails = await getProfilesDetails()
+      //     set({ user: { ...profileDetails, email }, loading: false })
+      //   } catch (error: any) {
+      //     set({ error: error.message, loading: false })
+      //   }
+      // },
       register: async (email, password) => {
         set({ loading: true, error: null })
         try {
@@ -47,39 +44,39 @@ export const accountStore = create<AccountStore>()(
           set({ error: error.message, loading: false })
         }
       },
-      updateProfileFirstName: async firstName => {
-        set({ loading: true, error: null })
-        try {
-          const user = get().user
-          if (!user) throw new Error('User not logged in')
+      // updateProfileFirstName: async firstName => {
+      //   set({ loading: true, error: null })
+      //   try {
+      //     const user = get().user
+      //     if (!user) throw new Error('User not logged in')
 
-          await updateProfileFirstName(user.id, firstName)
+      //     await updateProfileFirstName(user.id, firstName)
 
-          set(state => ({
-            user: state.user ? { ...state.user, firstName } : null,
-            loading: false
-          }))
-        } catch (error: any) {
-          set({ error: error.message, loading: false })
-        }
-      },
-      updateProfileLastName: async lastName => {
-        set({ loading: true, error: null })
-        try {
-          const user = get().user
-          if (!user) throw new Error('User not logged in')
+      //     set(state => ({
+      //       user: state.user ? { ...state.user, firstName } : null,
+      //       loading: false
+      //     }))
+      //   } catch (error: any) {
+      //     set({ error: error.message, loading: false })
+      //   }
+      // },
+      // updateProfileLastName: async lastName => {
+      //   set({ loading: true, error: null })
+      //   try {
+      //     const user = get().user
+      //     if (!user) throw new Error('User not logged in')
 
-          // await updateProfileLastName(user.id, lastName)
-          await updateProfileFirstName
+      //     // await updateProfileLastName(user.id, lastName)
+      //     await updateProfileFirstName
 
-          set(state => ({
-            user: state.user ? { ...state.user, lastName } : null,
-            loading: false
-          }))
-        } catch (error: any) {
-          set({ error: error.message, loading: false })
-        }
-      },
+      //     set(state => ({
+      //       user: state.user ? { ...state.user, lastName } : null,
+      //       loading: false
+      //     }))
+      //   } catch (error: any) {
+      //     set({ error: error.message, loading: false })
+      //   }
+      // },
       logout: () => {
         set({ user: null })
         signOut()

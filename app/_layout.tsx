@@ -1,6 +1,9 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useFonts } from 'expo-font'
 import { Slot } from 'expo-router'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
+
+const queryClient = new QueryClient()
 
 export default function Root() {
   const [fontsLoaded] = useFonts({
@@ -11,13 +14,15 @@ export default function Root() {
 
   if (!fontsLoaded) {
     return null
-  } else {
-    return (
+  }
+
+  return (
+    <QueryClientProvider client={queryClient}>
       <View style={styles.container}>
         <Slot />
       </View>
-    )
-  }
+    </QueryClientProvider>
+  )
 }
 
 const styles = StyleSheet.create({

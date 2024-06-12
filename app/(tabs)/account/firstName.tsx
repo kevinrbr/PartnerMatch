@@ -5,21 +5,21 @@ import { StyleSheet, View } from 'react-native'
 import Button from '@/components/Button'
 import TextError from '@/components/TextError'
 import TextInput from '@/components/input/TextInput'
-import { useEditProfile } from '@/services/account/useEditProfile'
+import { useEditUserFirstName } from '@/services/account/useEditUserFirstName'
 import { accountStore } from '@/stores/account.store'
 
 const FirstName = () => {
-  const { user, updateProfileFirstName } = accountStore()
+  const { user } = accountStore()
   const [firstName, setFirstName] = useState(user.firstName)
   const [firstNameError, setFirstNameError] = useState('')
-  const editProfile = useEditProfile()
+  const editProfile = useEditUserFirstName()
 
   const handleChange = () => {
     if (firstName.length === 0) {
       setFirstNameError('Veuillez renseignez votre prénom.')
       return
     }
-    updateProfileFirstName(firstName)
+    editProfile.mutate(firstName)
     router.navigate({ pathname: '/account/accountDetailList/' })
   }
   return (

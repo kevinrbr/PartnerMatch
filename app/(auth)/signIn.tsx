@@ -11,7 +11,7 @@ import TextError from '@/components/TextError'
 import Title from '@/components/Title'
 import PasswordInput from '@/components/input/PasswordInput'
 import TextInput from '@/components/input/TextInput'
-import { accountStore } from '@/stores/account.store'
+import { useLogin } from '@/services/account/useLogin'
 import { RootStackParamList } from '@/types/routes'
 
 type SignInNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SignIn'>
@@ -23,8 +23,9 @@ const SignIn = () => {
   const [password, setPassword] = useState('')
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
+  const { mutate: login, isError, error } = useLogin()
 
-  const { login, loading, error } = accountStore()
+  // const { login, loading, error } = accountStore()
   const navigation = useNavigation<SignInNavigationProp>()
 
   useEffect(() => {
@@ -54,16 +55,9 @@ const SignIn = () => {
     }
 
     if (!hasError) {
-      await login(email, password)
-      if (error) {
-        if (error.includes('Invalid login credentials')) {
-          Alert.alert(
-            'Connexion',
-            'Identifiants invalides. Veuillez vérifier votre email et votre mot de passe.'
-          )
-        } else {
-          Alert.alert('Connexion', "Une erreur s'est produite lors de la connexion.")
-        }
+      await login({ email, password })
+      if (isError) {
+        Alert.alert('Connexion', error.message)
       }
     }
   }
@@ -102,7 +96,7 @@ const SignIn = () => {
             />
             <Text style={styles.forgottenPwd}>Mot de passe oublié</Text>
             <View style={styles.loginButton}>
-              <Button title="Se connecter" onPress={handleLogin} disabled={loading} />
+              <Button title="Se connecter" onPress={handleLogin} />
             </View>
             <Link href="/signUp" asChild>
               <Pressable style={styles.redirectSignUpTextContainer}>
