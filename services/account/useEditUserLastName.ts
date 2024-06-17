@@ -22,6 +22,7 @@ export function useEditUserLastName() {
     mutationFn: updateProfileLastName,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: slotsQueryKey.all })
+      queryClient.invalidateQueries({ queryKey: ['user'] })
     }
   })
 }

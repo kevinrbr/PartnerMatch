@@ -25,7 +25,6 @@ const SignIn = () => {
   const [passwordError, setPasswordError] = useState('')
   const { mutate: login, isError, error } = useLogin()
 
-  // const { login, loading, error } = accountStore()
   const navigation = useNavigation<SignInNavigationProp>()
 
   useEffect(() => {

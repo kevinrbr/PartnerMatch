@@ -6,10 +6,10 @@ import Button from '@/components/Button'
 import TextError from '@/components/TextError'
 import TextInput from '@/components/input/TextInput'
 import { useEditUserLastName } from '@/services/account/useEditUserLastName'
-import { accountStore } from '@/stores/account.store'
+import { useUser } from '@/services/account/useUser'
 
 const LastName = () => {
-  const { user } = accountStore()
+  const { data: user } = useUser()
   const [lastName, setLastName] = useState(user.lastName)
   const [lastNameError, setLastNameError] = useState('')
   const editUser = useEditUserLastName()

@@ -1,10 +1,10 @@
 import { Link } from 'expo-router'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 
-import { accountStore } from '@/stores/account.store'
+import { useUser } from '@/services/account/useUser'
 
 const AccountDetailList = () => {
-  const { user } = accountStore()
+  const { data: user, isLoading, isError } = useUser()
   return (
     <View style={styles.container}>
       {user ? (

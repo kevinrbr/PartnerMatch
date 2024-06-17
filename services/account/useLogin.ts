@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { supabaseAuth } from '../constants'
-import { slotsQueryKey } from '../slots/slots-query-key'
+import { supabaseAuth } from '@/services/constants'
 
 type LoginInput = {
   email: string
@@ -9,7 +8,7 @@ type LoginInput = {
 }
 
 const signInWithEmail = async ({ email, password }: LoginInput) => {
-  const { error } = await supabaseAuth.signInWithPassword({
+  const { data: user, error } = await supabaseAuth.signInWithPassword({
     email,
     password
   })
@@ -23,6 +22,8 @@ const signInWithEmail = async ({ email, password }: LoginInput) => {
       throw new Error('Une erreur inconnue est survenue. Veuillez réessayer plus tard.')
     }
   }
+
+  return user
 }
 
 export function useLogin() {
@@ -30,8 +31,8 @@ export function useLogin() {
 
   return useMutation({
     mutationFn: signInWithEmail,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: slotsQueryKey.all })
+    onSuccess: user => {
+      queryClient.setQueryData(['user'], user)
     }
   })
 }
