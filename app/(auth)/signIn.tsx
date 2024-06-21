@@ -23,7 +23,8 @@ const SignIn = () => {
   const [password, setPassword] = useState('')
   const [emailError, setEmailError] = useState('')
   const [passwordError, setPasswordError] = useState('')
-  const { mutate: login, isError, error } = useLogin()
+  const [nameError, setNameError] = useState('')
+  const { mutate: login } = useLogin()
 
   const navigation = useNavigation<SignInNavigationProp>()
 
@@ -54,10 +55,18 @@ const SignIn = () => {
     }
 
     if (!hasError) {
-      await login({ email, password })
-      if (isError) {
-        Alert.alert('Connexion', error.message)
-      }
+      login(
+        { email, password },
+        {
+          onSuccess: () => {
+            Alert.alert('Connexion réussie', 'Bienvenue!')
+            // Rediriger vers une autre page ou effectuer une autre action
+          },
+          onError: error => {
+            Alert.alert('Connexion', error.message)
+          }
+        }
+      )
     }
   }
 

@@ -6,12 +6,10 @@ import Button from '@/components/Button'
 import Title from '@/components/Title'
 import { useLogout } from '@/services/account/useLogout'
 import { useUser } from '@/services/account/useUser'
-import { accountStore } from '@/stores/account.store'
 
 const Account = () => {
   const { mutate: logout } = useLogout()
   const { data: user, isLoading, isError } = useUser()
-  console.log(user)
   const editProfil = () => {
     router.push({ pathname: '/account/accountDetailList/' })
   }

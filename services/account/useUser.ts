@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { supabase } from '@/supabase'
-import { userType } from '@/types/user'
 
 const getProfilesDetails = async () => {
   try {
@@ -32,7 +31,7 @@ const getProfilesDetails = async () => {
 }
 
 export function useUser() {
-  return useQuery<userType | null>({
+  return useQuery({
     queryKey: ['user'],
     queryFn: () => getProfilesDetails()
   })
