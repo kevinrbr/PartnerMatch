@@ -1,6 +1,6 @@
 import BottomSheet, { BottomSheetBackdrop, BottomSheetView } from '@gorhom/bottom-sheet'
 import React, { ReactNode, forwardRef, useCallback } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 
 interface CustomBottomSheetProps {
   children: ReactNode
@@ -15,6 +15,7 @@ const CustomBottomSheet = forwardRef<Ref, CustomBottomSheetProps>(
       (props: any) => <BottomSheetBackdrop appearsOnIndex={0} disappearsOnIndex={-1} {...props} />,
       []
     )
+    console.log('ok')
 
     return (
       <BottomSheet

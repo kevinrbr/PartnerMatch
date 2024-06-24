@@ -19,7 +19,8 @@ interface BottomSheetRemoveBookingProps {
 type Ref = BottomSheet
 
 const BottomSheetRemoveBooking = forwardRef<Ref, BottomSheetRemoveBookingProps>(
-  ({ closeBottomSheet, slotId }: BottomSheetRemoveBookingProps, ref) => {
+  ({ closeBottomSheet, slotId, confirmBook }: BottomSheetRemoveBookingProps, ref) => {
+    const queryClient = useQueryClient()
     const { mutate: remove } = useRemoveSlot()
 
     const confirmBooking = async () => {

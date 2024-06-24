@@ -1,5 +1,5 @@
 import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet'
-import { useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import React, { forwardRef } from 'react'
 import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -27,10 +27,8 @@ const HomeBottomSheetBooking = forwardRef<Ref, HomeBottomSheetBookingProps>(
     { closeBottomSheet, slotId, slotAvailability, confirmBook }: HomeBottomSheetBookingProps,
     ref
   ) => {
-    const queryClient = useQueryClient()
     const { mutate: book } = useBookSlot()
     const { mutate: updateSlotAvailability } = useUpdateSlotAvailability()
-
     const confirmBooking = async () => {
       try {
         await updateSlotAvailability({ id: slotId, slotAvailability })

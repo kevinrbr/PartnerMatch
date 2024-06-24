@@ -7,6 +7,7 @@ import HomeBottomSheetBooking from '@/components/HomeBottomSheetBooking'
 import SlotCard from '@/components/SlotCard'
 import Toast from '@/components/Toast'
 import { getUserId } from '@/services/account/useUser'
+import { useBooksByUserId } from '@/services/slots/useBooksByUserId'
 import { useSlots } from '@/services/slots/useSlots'
 import { ISlot } from '@/types/slot'
 
@@ -27,7 +28,7 @@ const Home = () => {
   }, [showToastParams, message])
 
   const { data: slots, isSuccess, isFetching } = useSlots()
-  const { data: booksByUuid } = useSlots()
+  const { data: booksByUuid } = useBooksByUserId()
 
   const bottomSheetRef = useRef<BottomSheet>(null)
 
@@ -42,14 +43,19 @@ const Home = () => {
   }
 
   const handleOnClick = async (value: ISlot) => {
+    console.log('ici')
     const userId = await getUserId()
     const isNotBookable = booksByUuid.find(book => book.id === value.id)
 
     if (userId === value.user_id || !!isNotBookable) {
+      console.log(userId)
+      console.log(value.user_id)
+      console.log(!!isNotBookable)
       setToastMessage('Vous participez déjà')
       setIsErrorToast(true)
       setShowToast(true)
     } else if (+value.nbPlaces > 0) {
+      console.log('ici2')
       setIsErrorToast(false)
       setBookingSlotId(value.id)
       setSlotAvailability(value.nbPlaces)
