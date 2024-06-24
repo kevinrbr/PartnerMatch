@@ -1,5 +1,5 @@
 import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import React, { forwardRef } from 'react'
 import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -9,7 +9,8 @@ import Button from './Button'
 import CustomBottomSheet from './CustomBottomSheet'
 import Separator from './Separator'
 
-import { bookASlot, updateSlotAvailability } from '@/services/slot'
+import { useBookSlot } from '@/services/slots/useBookSlot'
+import { useUpdateSlotAvailability } from '@/services/slots/useUpdateSlotAvailability'
 
 interface HomeBottomSheetBookingProps {
   ref: any
@@ -27,27 +28,16 @@ const HomeBottomSheetBooking = forwardRef<Ref, HomeBottomSheetBookingProps>(
     ref
   ) => {
     const queryClient = useQueryClient()
+    const { mutate: book } = useBookSlot()
+    const { mutate: updateSlotAvailability } = useUpdateSlotAvailability()
 
     const confirmBooking = async () => {
       try {
-        await addMutation.mutate({ id: slotId, slotAvailability })
-        await bookASlot(slotId)
+        await updateSlotAvailability({ id: slotId, slotAvailability })
+        await book(slotId)
         confirmBook()
       } catch (e) {}
     }
-
-    const addMutation = useMutation({
-      mutationFn: (variables: { id: number; slotAvailability: string }) =>
-        updateSlotAvailability(variables),
-      onSuccess: data => {
-        queryClient.invalidateQueries({
-          queryKey: ['slots']
-        })
-        queryClient.invalidateQueries({
-          queryKey: ['bookingByUserId']
-        })
-      }
-    })
 
     const handleBackLinkClick = () => {
       closeBottomSheet()

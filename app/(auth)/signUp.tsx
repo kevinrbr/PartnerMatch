@@ -9,7 +9,7 @@ import TextError from '@/components/TextError'
 import Title from '@/components/Title'
 import PasswordInput from '@/components/input/PasswordInput'
 import TextInput from '@/components/input/TextInput'
-import { updateProfile } from '@/services/account'
+import { useEditProfile } from '@/services/account/useEditProfile'
 import { useRegister } from '@/services/account/useRegister'
 
 const SignUp = () => {
@@ -22,7 +22,7 @@ const SignUp = () => {
   const [nameError, setNameError] = useState('')
 
   const { mutate: register } = useRegister()
-
+  const { mutate: editProfile } = useEditProfile()
   const handleRegister = async () => {
     setEmailError('')
     setPasswordError('')
@@ -50,7 +50,7 @@ const SignUp = () => {
         {
           onSuccess: async userId => {
             if (userId) {
-              await updateProfile(firstName, lastName, userId)
+              editProfile({ firstName, lastName, userId })
             }
             Alert.alert(
               'Inscription',

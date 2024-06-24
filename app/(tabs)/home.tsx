@@ -6,8 +6,7 @@ import { StyleSheet, View, Text, FlatList } from 'react-native'
 import HomeBottomSheetBooking from '@/components/HomeBottomSheetBooking'
 import SlotCard from '@/components/SlotCard'
 import Toast from '@/components/Toast'
-import { getUserId } from '@/services/account'
-import { getBookingByUserId } from '@/services/slot'
+import { getUserId } from '@/services/account/useUser'
 import { useSlots } from '@/services/slots/useSlots'
 import { ISlot } from '@/types/slot'
 
@@ -27,7 +26,8 @@ const Home = () => {
     }
   }, [showToastParams, message])
 
-  const slots = useSlots()
+  const { data: slots, isSuccess, isFetching } = useSlots()
+  const { data: booksByUuid } = useSlots()
 
   const bottomSheetRef = useRef<BottomSheet>(null)
 
@@ -43,8 +43,7 @@ const Home = () => {
 
   const handleOnClick = async (value: ISlot) => {
     const userId = await getUserId()
-    const bookingByUserId = await getBookingByUserId()
-    const isNotBookable = bookingByUserId.find(book => book.id === value.id)
+    const isNotBookable = booksByUuid.find(book => book.id === value.id)
 
     if (userId === value.user_id || !!isNotBookable) {
       setToastMessage('Vous participez déjà')
@@ -74,16 +73,16 @@ const Home = () => {
           <Text style={styles.title}>Nantes, Loire-Atlantique</Text>
         </View>
       </View>
-      {slots.isFetching && (
+      {isFetching && (
         <View style={styles.emptyContainer}>
           <Text>Récupération des informations..</Text>
         </View>
       )}
-      {slots.isSuccess &&
-        (slots.data && slots.data.length !== 0 ? (
+      {isSuccess &&
+        (slots && slots.length !== 0 ? (
           <View style={styles.slotContainer}>
             <FlatList
-              data={slots.data}
+              data={slots}
               renderItem={({ item }) => <SlotCard slot={item} onClick={handleOnClick} />}
               keyExtractor={item => item.id}
             />

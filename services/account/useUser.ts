@@ -36,3 +36,7 @@ export function useUser() {
     queryFn: () => getProfilesDetails()
   })
 }
+
+export async function getUserId() {
+  return (await supabase.auth.getUser()).data.user.id
+}

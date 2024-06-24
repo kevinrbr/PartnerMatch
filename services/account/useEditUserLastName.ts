@@ -4,7 +4,7 @@ import { slotsQueryKey } from '@/services/slots/slots-query-key'
 import { supabase } from '@/supabase'
 
 export function useEditUserLastName() {
-  const queryClient = useQueryClient() // Utilise le client existant
+  const queryClient = useQueryClient()
 
   const updateProfileLastName = async (lastName: string) => {
     const { data, error } = await supabase

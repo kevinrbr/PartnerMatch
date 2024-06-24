@@ -11,7 +11,8 @@ import SlotCard from '@/components/SlotCard'
 import Title from '@/components/Title'
 import Toast from '@/components/Toast'
 import { supabaseAuth } from '@/services/constants'
-import { getBookingByUserId, getSlotsByUserId } from '@/services/slot'
+import { useBooksByUserId } from '@/services/slots/useBooksByUserId'
+import { useSlotsByUserId } from '@/services/slots/useSlotsByUserId'
 import { ISlot } from '@/types/slot'
 
 const Booking = () => {
@@ -21,15 +22,8 @@ const Booking = () => {
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
 
-  const slotsByUserId = useQuery({
-    queryKey: ['slotsByUserId'],
-    queryFn: getSlotsByUserId
-  })
-
-  const bookingByUserId = useQuery({
-    queryKey: ['bookingByUserId'],
-    queryFn: getBookingByUserId
-  })
+  const { data: slotsByUserId } = useSlotsByUserId()
+  const { data: booksByUserId } = useBooksByUserId()
 
   supabaseAuth.getSession().then(({ data: { session } }) => {
     setSession(session)
@@ -61,12 +55,12 @@ const Booking = () => {
         <Toast message={toastMessage} showToast={showToast} setShowToast={setShowToast} />
         <View style={styles.bookingContainer}>
           <FlatList
-            data={slotsByUserId.data}
+            data={slotsByUserId}
             renderItem={({ item }) => <SlotCard slot={item} onClick={handleOnClick} />}
             keyExtractor={item => item.id}
           />
           <FlatList
-            data={bookingByUserId.data}
+            data={booksByUserId}
             renderItem={({ item }) => <SlotCard slot={item} />}
             keyExtractor={item => item.id}
           />

@@ -8,10 +8,11 @@ import DismissKeyboard from '@/components/DismissKeyboard'
 import TextError from '@/components/TextError'
 import DateInput from '@/components/input/DateInput'
 import TextInput from '@/components/input/TextInput'
-import { postSlot } from '@/services/slot'
+import { usePostSlot } from '@/services/slots/usePostSlot'
 import { ISlot, ESlot, ERROR_MESSAGES } from '@/types/slot'
 
 const ResearchForm = () => {
+  const { mutate: post } = usePostSlot()
   const [reservation, setReservation] = useState<ISlot>({
     city: '',
     club: '',
@@ -34,18 +35,6 @@ const ResearchForm = () => {
     queryKey: ['slots']
   })
 
-  const addMutation = useMutation({
-    mutationFn: postSlot,
-    onSuccess: data => {
-      queryClient.invalidateQueries({
-        queryKey: ['slots']
-      })
-      queryClient.invalidateQueries({
-        queryKey: ['slotsByUserId']
-      })
-    }
-  })
-
   const handleChange = (field: string, value: string) => {
     setIsErrorForm(!validateField(field, value))
     setErrorField(field, isErrorForm)
@@ -65,13 +54,7 @@ const ResearchForm = () => {
 
   const handleSubmit = (reservation: ISlot) => {
     if (!isError()) {
-      queryClient.invalidateQueries({
-        queryKey: ['slots']
-      })
-      addMutation.mutate(reservation)
-      queryClient.invalidateQueries({
-        queryKey: ['slots']
-      })
+      post(reservation)
       const i = { showToastParams: 'true', message: 'Publié avec succès' }
       router.push({ pathname: '/(tabs)/home/', params: i })
     }
