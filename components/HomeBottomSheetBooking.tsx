@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
   backLink: {
     color: '#FF7131',
     alignItems: 'center',
-    textAlign: 'center'
+    textAlign: 'center',
+    marginTop: 12
   }
 })

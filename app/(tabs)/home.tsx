@@ -5,6 +5,7 @@ import { StyleSheet, View, Text, FlatList } from 'react-native'
 import { Button } from 'react-native-elements'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 
+import CustomBottomSheet from '@/components/CustomBottomSheet'
 import HomeBottomSheetBooking from '@/components/HomeBottomSheetBooking'
 import SlotCard from '@/components/SlotCard'
 import Toast from '@/components/Toast'
@@ -12,7 +13,6 @@ import { getUserId } from '@/services/account/useUser'
 import { useBooksByUserId } from '@/services/slots/useBooksByUserId'
 import { useSlots } from '@/services/slots/useSlots'
 import { ISlot } from '@/types/slot'
-import CustomBottomSheet from '@/components/CustomBottomSheet'
 
 const Home = () => {
   const { showToastParams, message } = useLocalSearchParams()
@@ -135,7 +135,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16
   },
   slotContainer: {
-    flex: 1
+    flex: 1,
+    marginTop: 40
   },
   emptyContainer: {
     display: 'flex',
