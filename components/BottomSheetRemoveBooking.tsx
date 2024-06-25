@@ -1,12 +1,11 @@
 import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet'
-import { useQueryClient } from '@tanstack/react-query'
-import React, { forwardRef, useState } from 'react'
+import React, { forwardRef } from 'react'
 import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { XMarkIcon } from 'react-native-heroicons/outline'
 
 import Button from './Button'
-import CustomBottomSheet from './CustomBottomSheet'
 
+import CustomBottomSheet from '@/components/CustomBottomSheet'
 import { useRemoveSlot } from '@/services/slots/useRemoveSlot'
 
 interface BottomSheetRemoveBookingProps {
@@ -19,8 +18,7 @@ interface BottomSheetRemoveBookingProps {
 type Ref = BottomSheet
 
 const BottomSheetRemoveBooking = forwardRef<Ref, BottomSheetRemoveBookingProps>(
-  ({ closeBottomSheet, slotId, confirmBook }: BottomSheetRemoveBookingProps, ref) => {
-    const queryClient = useQueryClient()
+  ({ closeBottomSheet, slotId }: BottomSheetRemoveBookingProps, ref) => {
     const { mutate: remove } = useRemoveSlot()
 
     const confirmBooking = async () => {
@@ -34,21 +32,26 @@ const BottomSheetRemoveBooking = forwardRef<Ref, BottomSheetRemoveBookingProps>(
     }
 
     return (
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <CustomBottomSheet ref={ref}>
-          <Text style={styles.title}>Annuler ma partie</Text>
-          <View style={styles.btnContainer}>
-            <Button
-              title="J'annule la partie"
-              accessibilityLabel="Annuler la partie"
-              onPress={confirmBooking}
-            />
-            <TouchableWithoutFeedback onPress={handleBackLinkClick}>
-              <Text style={styles.backLink}>Retour</Text>
-            </TouchableWithoutFeedback>
-          </View>
-        </CustomBottomSheet>
-      </GestureHandlerRootView>
+      <CustomBottomSheet ref={ref}>
+        <Text style={styles.title}>Annuler ma partie</Text>
+        <View style={styles.textContainer}>
+          <XMarkIcon style={styles.icon} color="#FF0000" />
+          <Text style={styles.text}>
+            L'annulation entrainera la suppression du créneau et l'annulation automatique pour tous
+            les participants.
+          </Text>
+        </View>
+        <View style={styles.btnContainer}>
+          <Button
+            title="J'annule la partie"
+            accessibilityLabel="Annuler la partie"
+            onPress={confirmBooking}
+          />
+          <TouchableWithoutFeedback onPress={handleBackLinkClick}>
+            <Text style={styles.backLink}>Retour</Text>
+          </TouchableWithoutFeedback>
+        </View>
+      </CustomBottomSheet>
     )
   }
 )
@@ -83,6 +86,7 @@ const styles = StyleSheet.create({
   backLink: {
     color: '#FF7131',
     alignItems: 'center',
-    textAlign: 'center'
+    textAlign: 'center',
+    marginTop: 12
   }
 })
