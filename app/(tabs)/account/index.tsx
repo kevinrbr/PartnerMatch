@@ -4,13 +4,18 @@ import { ArrowLeftStartOnRectangleIcon } from 'react-native-heroicons/outline'
 
 import Button from '@/components/Button'
 import Title from '@/components/Title'
-import { accountStore } from '@/stores/account.store'
+import { useLogout } from '@/services/account/useLogout'
+import { useUser } from '@/services/account/useUser'
 
 const Account = () => {
-  const { user, logout } = accountStore()
-
+  const { mutate: logout } = useLogout()
+  const { data: user, isLoading, isError } = useUser()
   const editProfil = () => {
     router.push({ pathname: '/account/accountDetailList/' })
+  }
+
+  const handleLogout = async () => {
+    await logout()
   }
 
   return (
@@ -37,7 +42,7 @@ const Account = () => {
       ) : (
         <Text>Chargement des détails du profil...</Text>
       )}
-      <Pressable style={styles.disconnectLinkContainer} onPress={logout}>
+      <Pressable style={styles.disconnectLinkContainer} onPress={handleLogout}>
         <ArrowLeftStartOnRectangleIcon color="#182A60" />
         <Text style={styles.disconnectLink}>Se deconnecter</Text>
       </Pressable>

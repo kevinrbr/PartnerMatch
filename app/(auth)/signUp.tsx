@@ -9,8 +9,8 @@ import TextError from '@/components/TextError'
 import Title from '@/components/Title'
 import PasswordInput from '@/components/input/PasswordInput'
 import TextInput from '@/components/input/TextInput'
-import { updateProfile } from '@/services/account'
-import { accountStore } from '@/stores/account.store'
+import { useEditProfile } from '@/services/account/useEditProfile'
+import { useRegister } from '@/services/account/useRegister'
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState('')
@@ -21,8 +21,8 @@ const SignUp = () => {
   const [passwordError, setPasswordError] = useState('')
   const [nameError, setNameError] = useState('')
 
-  const { register, error } = accountStore()
-
+  const { mutate: register } = useRegister()
+  const { mutate: editProfile } = useEditProfile()
   const handleRegister = async () => {
     setEmailError('')
     setPasswordError('')
@@ -40,26 +40,28 @@ const SignUp = () => {
     }
 
     if (firstName.length === 0 || lastName.length === 0) {
-      setNameError('Veuillez renseignez votre nom et prénom')
+      setNameError('Veuillez renseigner votre nom et prénom')
       hasError = true
     }
 
     if (!hasError) {
-      const userId = await register(email, password)
-      Alert.alert(
-        'Veuillez vérifier votre boîte de réception pour la vérification de votre e-mail !'
+      register(
+        { email, password },
+        {
+          onSuccess: async userId => {
+            if (userId) {
+              editProfile({ firstName, lastName, userId })
+            }
+            Alert.alert(
+              'Inscription',
+              'Veuillez vérifier votre boîte de réception pour la vérification de votre e-mail !'
+            )
+          },
+          onError: error => {
+            Alert.alert('Inscription', error.message)
+          }
+        }
       )
-
-      if (userId) {
-        await updateProfile(firstName, lastName, userId)
-      }
-
-      if (error) {
-        Alert.alert(
-          'Inscription',
-          "Une erreur s'est produite lors de l'inscription. Réessayez plus tard."
-        )
-      }
     }
   }
 
@@ -125,7 +127,7 @@ const SignUp = () => {
             />
           </View>
           <View style={styles.loginButton}>
-            <Button title="S'inscrire" onPress={() => handleRegister()} />
+            <Button title="S'inscrire" onPress={handleRegister} />
           </View>
           <Link href="/signIn" asChild>
             <Pressable style={styles.redirectSignUpTextContainer}>

@@ -1,5 +1,5 @@
 import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import React, { forwardRef, useState } from 'react'
 import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -7,13 +7,12 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import Button from './Button'
 import CustomBottomSheet from './CustomBottomSheet'
 
-import { removeSlot } from '@/services/slot'
+import { useRemoveSlot } from '@/services/slots/useRemoveSlot'
 
 interface BottomSheetRemoveBookingProps {
   ref: any
   closeBottomSheet: () => void
   slotId: number
-  // slotAvailability: string
   confirmBook: () => void
 }
 
@@ -22,22 +21,11 @@ type Ref = BottomSheet
 const BottomSheetRemoveBooking = forwardRef<Ref, BottomSheetRemoveBookingProps>(
   ({ closeBottomSheet, slotId, confirmBook }: BottomSheetRemoveBookingProps, ref) => {
     const queryClient = useQueryClient()
-
-    const addMutation = useMutation({
-      mutationFn: removeSlot,
-      onSuccess: data => {
-        queryClient.invalidateQueries({
-          queryKey: ['slots']
-        })
-        queryClient.invalidateQueries({
-          queryKey: ['slotsByUserId']
-        })
-      }
-    })
+    const { mutate: remove } = useRemoveSlot()
 
     const confirmBooking = async () => {
       try {
-        await addMutation.mutate(slotId)
+        await remove(slotId)
       } catch (e) {}
     }
 

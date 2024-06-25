@@ -5,12 +5,14 @@ import { View, StyleSheet } from 'react-native'
 
 import Button from '@/components/Button'
 import DismissKeyboard from '@/components/DismissKeyboard'
+import TextError from '@/components/TextError'
 import DateInput from '@/components/input/DateInput'
 import TextInput from '@/components/input/TextInput'
-import { postSlot } from '@/services/slot'
+import { usePostSlot } from '@/services/slots/usePostSlot'
 import { ISlot, ESlot, ERROR_MESSAGES } from '@/types/slot'
 
 const ResearchForm = () => {
+  const { mutate: post } = usePostSlot()
   const [reservation, setReservation] = useState<ISlot>({
     city: '',
     club: '',
@@ -26,26 +28,16 @@ const ResearchForm = () => {
     level: false
   })
 
+  const [isErrorForm, setIsErrorForm] = useState(false)
+
   const queryClient = useQueryClient()
   queryClient.invalidateQueries({
     queryKey: ['slots']
   })
 
-  const addMutation = useMutation({
-    mutationFn: postSlot,
-    onSuccess: data => {
-      queryClient.invalidateQueries({
-        queryKey: ['slots']
-      })
-      queryClient.invalidateQueries({
-        queryKey: ['slotsByUserId']
-      })
-    }
-  })
-
   const handleChange = (field: string, value: string) => {
-    const isError = !validateField(field, value)
-    setErrorField(field, isError)
+    setIsErrorForm(!validateField(field, value))
+    setErrorField(field, isErrorForm)
 
     setReservation(prevReservation => ({
       ...prevReservation,
@@ -62,13 +54,7 @@ const ResearchForm = () => {
 
   const handleSubmit = (reservation: ISlot) => {
     if (!isError()) {
-      queryClient.invalidateQueries({
-        queryKey: ['slots']
-      })
-      addMutation.mutate(reservation)
-      queryClient.invalidateQueries({
-        queryKey: ['slots']
-      })
+      post(reservation)
       const i = { showToastParams: 'true', message: 'Publié avec succès' }
       router.push({ pathname: '/(tabs)/home/', params: i })
     }
@@ -111,8 +97,9 @@ const ResearchForm = () => {
             onInputChange={city => handleChange(ESlot.CITY, city)}
             label="Ville"
             value={reservation.city}
-            errorMessage={errorFields.city && ERROR_MESSAGES.CITY}
+            errorMessage={errorFields.city ? ERROR_MESSAGES.CITY : ''}
           />
+          {errorFields.city && <TextError errorMsg={ERROR_MESSAGES.CITY} />}
         </View>
         <View style={styles.inputContainer}>
           <TextInput
@@ -120,8 +107,9 @@ const ResearchForm = () => {
             onInputChange={club => handleChange(ESlot.CLUB, club)}
             label="Club"
             value={reservation.club}
-            errorMessage={errorFields.club && ERROR_MESSAGES.CLUB}
+            errorMessage={errorFields.club ? ERROR_MESSAGES.CLUB : ''}
           />
+          {errorFields.club && <TextError errorMsg={ERROR_MESSAGES.CLUB} />}
         </View>
         <View style={styles.inputContainer}>
           <TextInput
@@ -131,8 +119,9 @@ const ResearchForm = () => {
             value={reservation.nbPlaces}
             inputMode="numeric"
             keyboardType="numeric"
-            errorMessage={errorFields.nbPlaces && ERROR_MESSAGES.NUMBER_PLACES}
+            errorMessage={errorFields.nbPlaces ? ERROR_MESSAGES.NUMBER_PLACES : ''}
           />
+          {errorFields.nbPlaces && <TextError errorMsg={ERROR_MESSAGES.NUMBER_PLACES} />}
         </View>
         <View style={styles.inputContainer}>
           <TextInput
@@ -142,8 +131,9 @@ const ResearchForm = () => {
             value={reservation.level}
             inputMode="numeric"
             keyboardType="numeric"
-            errorMessage={errorFields.level && ERROR_MESSAGES.LEVEL}
+            errorMessage={errorFields.level ? ERROR_MESSAGES.LEVEL : ''}
           />
+          {errorFields.level && <TextError errorMsg={ERROR_MESSAGES.LEVEL} />}
         </View>
         <View style={styles.inputContainer}>
           <DateInput
@@ -155,7 +145,6 @@ const ResearchForm = () => {
         <Button
           title="Valider"
           accessibilityLabel="Bouton pour se connecter"
-          disabled={isError()}
           onPress={() => handleSubmit(reservation)}
         />
       </View>
@@ -169,7 +158,7 @@ const styles = StyleSheet.create({
     paddingTop: 80
   },
   inputContainer: {
-    marginBottom: 6
+    marginBottom: 24
   }
 })
 

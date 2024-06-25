@@ -5,19 +5,22 @@ import { StyleSheet, View } from 'react-native'
 import Button from '@/components/Button'
 import TextError from '@/components/TextError'
 import TextInput from '@/components/input/TextInput'
-import { accountStore } from '@/stores/account.store'
+import { useEditUserLastName } from '@/services/account/useEditUserLastName'
+import { useUser } from '@/services/account/useUser'
 
 const LastName = () => {
-  const { user, updateProfileLastName } = accountStore()
+  const { data: user } = useUser()
   const [lastName, setLastName] = useState(user.lastName)
   const [lastNameError, setLastNameError] = useState('')
+  const editUser = useEditUserLastName()
 
   const handleChange = () => {
     if (lastName.length === 0) {
       setLastNameError('Veuillez renseignez votre nom.')
       return
     }
-    updateProfileLastName(lastName)
+
+    editUser.mutate(lastName)
     router.push({ pathname: '/account/accountDetailList/' })
   }
   return (
