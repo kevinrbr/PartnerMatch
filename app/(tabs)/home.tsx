@@ -2,10 +2,8 @@ import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
 import { useLocalSearchParams } from 'expo-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { StyleSheet, View, Text, FlatList } from 'react-native'
-import { Button } from 'react-native-elements'
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 
-import CustomBottomSheet from '@/components/CustomBottomSheet'
 import HomeBottomSheetBooking from '@/components/HomeBottomSheetBooking'
 import SlotCard from '@/components/SlotCard'
 import Toast from '@/components/Toast'
@@ -101,13 +99,6 @@ const Home = () => {
                 renderItem={({ item }) => <SlotCard slot={item} onClick={handleOnClick} />}
                 keyExtractor={item => item.id}
               />
-              {/* <HomeBottomSheetBooking
-              ref={bottomSheetRef}
-              closeBottomSheet={closeBottomSheet}
-              confirmBook={confirmBook}
-              slotId={bookingSlotId}
-              slotAvailability={slotAvailability}
-            /> */}
             </View>
           ) : (
             <View style={styles.emptyContainer}>

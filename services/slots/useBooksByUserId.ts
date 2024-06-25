@@ -1,22 +1,41 @@
 import { useQuery } from '@tanstack/react-query'
 
+import { addNamesToSlots } from '@/common/addNameToSlot'
 import { supabase } from '@/supabase'
 
 export function useBooksByUserId() {
   const getBookingByUserId = async () => {
-    const { data: slotIdArray, error } = await supabase
-      .from('booking')
-      .select('slot_id')
-      .eq('user_id', (await supabase.auth.getUser()).data.user.id)
-
-    const slotId = slotIdArray.map(item => item.slot_id)
     try {
-      const { data, error } = await supabase.from('slot').select().in('id', slotId)
-
-      if (error) {
-        throw error
+      const { data: userData, error: userError } = await supabase.auth.getUser()
+      if (userError) {
+        throw userError
       }
-      return data
+
+      const userId = userData.user.id
+
+      const { data: slotIdArray, error: slotIdError } = await supabase
+        .from('booking')
+        .select('slot_id')
+        .eq('user_id', userId)
+
+      if (slotIdError) {
+        throw slotIdError
+      }
+
+      const slotIds = slotIdArray.map(item => item.slot_id)
+
+      const { data: slots, error: slotsError } = await supabase
+        .from('slot')
+        .select('*')
+        .in('id', slotIds)
+
+      if (slotsError) {
+        throw slotsError
+      }
+
+      const slotsWithNames = addNamesToSlots(slots)
+
+      return slotsWithNames
     } catch (error) {
       console.error('Erreur lors de la récupération des données:', error.message)
       throw error

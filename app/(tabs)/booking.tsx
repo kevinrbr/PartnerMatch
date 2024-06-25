@@ -1,6 +1,5 @@
 import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet'
 import { Session } from '@supabase/supabase-js'
-import { useQuery } from '@tanstack/react-query'
 import { useRef, useState } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 

@@ -1,38 +1,19 @@
 import { useQuery } from '@tanstack/react-query'
 
+import { addNamesToSlots } from '@/common/addNameToSlot'
 import { slotsQueryKey } from '@/services/slots/slots-query-key'
 import { supabase } from '@/supabase'
 
 export function useSlots() {
   const getSlots = async () => {
     try {
-      const { data: userData, error: userError } = await supabase.auth.getUser()
-      if (userError) {
-        throw userError
+      const { data: allSlots, error: allSlotsError } = await supabase.from('slot').select('*')
+
+      if (allSlotsError) {
+        throw allSlotsError
       }
 
-      const { data: nameData, error: nameError } = await supabase
-        .from('profiles')
-        .select('firstName')
-        .eq('id', userData.user.id)
-      if (nameError) {
-        throw nameError
-      }
-
-      if (!nameData || nameData.length === 0) {
-        throw new Error("Nom d'utilisateur non trouvé")
-      }
-      const name = nameData[0].firstName
-
-      const { data: slotsData, error: slotsError } = await supabase.from('slot').select('*')
-      if (slotsError) {
-        throw slotsError
-      }
-
-      const slotsWithNames = slotsData.map(slot => ({
-        ...slot,
-        name
-      }))
+      const slotsWithNames = addNamesToSlots(allSlots)
 
       return slotsWithNames
     } catch (error) {
