@@ -2,6 +2,7 @@ import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSh
 import { Session } from '@supabase/supabase-js'
 import { useRef, useState } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import BottomSheetRemoveBooking from '@/components/BottomSheetRemoveBooking'
 import DismissKeyboard from '@/components/DismissKeyboard'
@@ -46,34 +47,36 @@ const Booking = () => {
 
   return (
     <DismissKeyboard>
-      <View style={styles.container}>
-        <Title variant="pageTitle" hasSubtitle>
-          Parties et réservations
-        </Title>
-        <Title variant="subTitle">Réservations à venir</Title>
-        <Toast message={toastMessage} showToast={showToast} setShowToast={setShowToast} />
-        <View style={styles.bookingContainer}>
-          <FlatList
-            data={slotsByUserId}
-            renderItem={({ item }) => <SlotCard slot={item} onClick={handleOnClick} />}
-            keyExtractor={item => item.id}
-          />
-          <FlatList
-            data={booksByUserId}
-            renderItem={({ item }) => <SlotCard slot={item} />}
-            keyExtractor={item => item.id}
-          />
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <Title variant="pageTitle" hasSubtitle>
+            Parties et réservations
+          </Title>
+          <Title variant="subTitle">Réservations à venir</Title>
+          <Toast message={toastMessage} showToast={showToast} setShowToast={setShowToast} />
+          <View style={styles.bookingContainer}>
+            <FlatList
+              data={slotsByUserId}
+              renderItem={({ item }) => <SlotCard slot={item} onClick={handleOnClick} />}
+              keyExtractor={item => item.id}
+            />
+            <FlatList
+              data={booksByUserId}
+              renderItem={({ item }) => <SlotCard slot={item} />}
+              keyExtractor={item => item.id}
+            />
+          </View>
+          <RedirectLink text="Gérer mes annonces" />
+          <RedirectLink text="Gérer mes réservations" />
+          <RedirectLink text="Parties archivées" />
         </View>
-        <RedirectLink text="Gérer mes annonces" />
-        <RedirectLink text="Gérer mes réservations" />
-        <RedirectLink text="Parties archivées" />
         <BottomSheetRemoveBooking
           ref={bottomSheetRef}
           closeBottomSheet={closeBottomSheet}
           slotId={slotId}
           confirmBook={confirmBook}
         />
-      </View>
+      </GestureHandlerRootView>
     </DismissKeyboard>
   )
 }

@@ -1,8 +1,8 @@
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
+import BottomSheet from '@gorhom/bottom-sheet'
 import { useLocalSearchParams } from 'expo-router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { StyleSheet, View, Text, FlatList } from 'react-native'
-import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import HomeBottomSheetBooking from '@/components/HomeBottomSheetBooking'
 import SlotCard from '@/components/SlotCard'
@@ -70,7 +70,7 @@ const Home = () => {
   }, [])
 
   return (
-    <GestureHandlerRootView style={{ flex: 1, height: '100%' }}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.mainContainer}>
         {showToast && (
           <Toast

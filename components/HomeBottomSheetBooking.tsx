@@ -1,14 +1,11 @@
 import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import React, { forwardRef } from 'react'
 import { StyleSheet, Text, View, TouchableWithoutFeedback } from 'react-native'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { CalendarDaysIcon, XMarkIcon } from 'react-native-heroicons/outline'
 
-import Button from './Button'
-import CustomBottomSheet from './CustomBottomSheet'
-import Separator from './Separator'
-
+import Button from '@/components/Button'
+import CustomBottomSheet from '@/components/CustomBottomSheet'
+import Separator from '@/components/Separator'
 import { useBookSlot } from '@/services/slots/useBookSlot'
 import { useUpdateSlotAvailability } from '@/services/slots/useUpdateSlotAvailability'
 
