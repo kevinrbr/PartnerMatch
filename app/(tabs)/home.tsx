@@ -1,7 +1,9 @@
-import BottomSheet from '@gorhom/bottom-sheet'
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
 import { useLocalSearchParams } from 'expo-router'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { StyleSheet, View, Text, FlatList } from 'react-native'
+import { Button } from 'react-native-elements'
+import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler'
 
 import HomeBottomSheetBooking from '@/components/HomeBottomSheetBooking'
 import SlotCard from '@/components/SlotCard'
@@ -10,6 +12,7 @@ import { getUserId } from '@/services/account/useUser'
 import { useBooksByUserId } from '@/services/slots/useBooksByUserId'
 import { useSlots } from '@/services/slots/useSlots'
 import { ISlot } from '@/types/slot'
+import CustomBottomSheet from '@/components/CustomBottomSheet'
 
 const Home = () => {
   const { showToastParams, message } = useLocalSearchParams()
@@ -43,19 +46,14 @@ const Home = () => {
   }
 
   const handleOnClick = async (value: ISlot) => {
-    console.log('ici')
     const userId = await getUserId()
     const isNotBookable = booksByUuid.find(book => book.id === value.id)
 
     if (userId === value.user_id || !!isNotBookable) {
-      console.log(userId)
-      console.log(value.user_id)
-      console.log(!!isNotBookable)
       setToastMessage('Vous participez déjà')
       setIsErrorToast(true)
       setShowToast(true)
     } else if (+value.nbPlaces > 0) {
-      console.log('ici2')
       setIsErrorToast(false)
       setBookingSlotId(value.id)
       setSlotAvailability(value.nbPlaces)
@@ -63,49 +61,68 @@ const Home = () => {
     }
   }
 
+  const snapPoints = useMemo(() => ['25%', '50%', '90%'], [])
+
+  const handleSnapPress = useCallback(index => {
+    bottomSheetRef.current?.snapToIndex(index)
+  }, [])
+
+  const handleClosePress = useCallback(() => {
+    bottomSheetRef.current?.close()
+  }, [])
+
   return (
-    <View style={styles.mainContainer}>
-      {showToast && (
-        <Toast
-          message={toastMessage}
-          showToast={showToast}
-          setShowToast={setShowToast}
-          error={isErrorToast}
-        />
-      )}
-      <View>
+    <GestureHandlerRootView style={{ flex: 1, height: '100%' }}>
+      <View style={styles.mainContainer}>
+        {showToast && (
+          <Toast
+            message={toastMessage}
+            showToast={showToast}
+            setShowToast={setShowToast}
+            error={isErrorToast}
+          />
+        )}
         <View>
-          <Text style={styles.labelTitle}>Ville</Text>
-          <Text style={styles.title}>Nantes, Loire-Atlantique</Text>
+          <View>
+            <Text style={styles.labelTitle}>Ville</Text>
+            <Text style={styles.title}>Nantes, Loire-Atlantique</Text>
+          </View>
         </View>
-      </View>
-      {isFetching && (
-        <View style={styles.emptyContainer}>
-          <Text>Récupération des informations..</Text>
-        </View>
-      )}
-      {isSuccess &&
-        (slots && slots.length !== 0 ? (
-          <View style={styles.slotContainer}>
-            <FlatList
-              data={slots}
-              renderItem={({ item }) => <SlotCard slot={item} onClick={handleOnClick} />}
-              keyExtractor={item => item.id}
-            />
-            <HomeBottomSheetBooking
+        {isFetching && (
+          <View style={styles.emptyContainer}>
+            <Text>Récupération des informations..</Text>
+          </View>
+        )}
+        {isSuccess &&
+          (slots && slots.length !== 0 ? (
+            <View style={styles.slotContainer}>
+              <FlatList
+                data={slots}
+                renderItem={({ item }) => <SlotCard slot={item} onClick={handleOnClick} />}
+                keyExtractor={item => item.id}
+              />
+              {/* <HomeBottomSheetBooking
               ref={bottomSheetRef}
               closeBottomSheet={closeBottomSheet}
               confirmBook={confirmBook}
               slotId={bookingSlotId}
               slotAvailability={slotAvailability}
-            />
-          </View>
-        ) : (
-          <View style={styles.emptyContainer}>
-            <Text>Aucun créneau disponible</Text>
-          </View>
-        ))}
-    </View>
+            /> */}
+            </View>
+          ) : (
+            <View style={styles.emptyContainer}>
+              <Text>Aucun créneau disponible</Text>
+            </View>
+          ))}
+      </View>
+      <HomeBottomSheetBooking
+        ref={bottomSheetRef}
+        closeBottomSheet={closeBottomSheet}
+        confirmBook={confirmBook}
+        slotId={bookingSlotId}
+        slotAvailability={slotAvailability}
+      />
+    </GestureHandlerRootView>
   )
 }
 
@@ -118,8 +135,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16
   },
   slotContainer: {
-    backgroundColor: 'white',
-    marginTop: 44
+    flex: 1
   },
   emptyContainer: {
     display: 'flex',

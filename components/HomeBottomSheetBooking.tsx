@@ -42,34 +42,32 @@ const HomeBottomSheetBooking = forwardRef<Ref, HomeBottomSheetBookingProps>(
     }
 
     return (
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <CustomBottomSheet ref={ref}>
-          <Text style={styles.title}>Avant de reserver</Text>
-          <View style={styles.textContainer}>
-            <CalendarDaysIcon style={styles.icon} color="#000" />
-            <Text style={styles.text}>Je m'engage à être présent au moment de la réservation</Text>
-          </View>
-          <Separator />
-          <View style={styles.textContainer}>
-            <XMarkIcon style={styles.icon} color="#FF0000" />
-            <Text style={styles.text}>
-              En cas d’indisponibilité, j’annule ma réservation et je préviens la personne à
-              l’initiative de la réservation afin de permettre au groupe de trouver un joueur pour
-              me remplacer.
-            </Text>
-          </View>
-          <View style={styles.btnContainer}>
-            <Button
-              title="Je reserve"
-              accessibilityLabel="Confirmer la réservation"
-              onPress={confirmBooking}
-            />
-            <TouchableWithoutFeedback onPress={handleBackLinkClick}>
-              <Text style={styles.backLink}>Retour</Text>
-            </TouchableWithoutFeedback>
-          </View>
-        </CustomBottomSheet>
-      </GestureHandlerRootView>
+      <CustomBottomSheet ref={ref}>
+        <Text style={styles.title}>Avant de reserver</Text>
+        <View style={styles.textContainer}>
+          <CalendarDaysIcon style={styles.icon} color="#000" />
+          <Text style={styles.text}>Je m'engage à être présent au moment de la réservation</Text>
+        </View>
+        <Separator />
+        <View style={styles.textContainer}>
+          <XMarkIcon style={styles.icon} color="#FF0000" />
+          <Text style={styles.text}>
+            En cas d’indisponibilité, j’annule ma réservation et je préviens la personne à
+            l’initiative de la réservation afin de permettre au groupe de trouver un joueur pour me
+            remplacer.
+          </Text>
+        </View>
+        <View style={styles.btnContainer}>
+          <Button
+            title="Je reserve"
+            accessibilityLabel="Confirmer la réservation"
+            onPress={confirmBooking}
+          />
+          <TouchableWithoutFeedback onPress={handleBackLinkClick}>
+            <Text style={styles.backLink}>Retour</Text>
+          </TouchableWithoutFeedback>
+        </View>
+      </CustomBottomSheet>
     )
   }
 )
