@@ -1,6 +1,6 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { useLocalSearchParams } from 'expo-router'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { StyleSheet, View, Text, FlatList } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
@@ -59,16 +59,6 @@ const Home = () => {
     }
   }
 
-  const snapPoints = useMemo(() => ['25%', '50%', '90%'], [])
-
-  const handleSnapPress = useCallback(index => {
-    bottomSheetRef.current?.snapToIndex(index)
-  }, [])
-
-  const handleClosePress = useCallback(() => {
-    bottomSheetRef.current?.close()
-  }, [])
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.mainContainer}>
@@ -92,6 +82,7 @@ const Home = () => {
           </View>
         )}
         {isSuccess &&
+          !isFetching &&
           (slots && slots.length !== 0 ? (
             <View style={styles.slotContainer}>
               <FlatList
