@@ -66,9 +66,9 @@ const Booking = () => {
               keyExtractor={item => item.id}
             />
           </View>
-          <RedirectLink text="Gérer mes annonces" />
-          <RedirectLink text="Gérer mes réservations" />
-          <RedirectLink text="Parties archivées" />
+          <RedirectLink text="Gérer mes annonces" link="/booking/manageMySlots" />
+          <RedirectLink text="Gérer mes réservations" link="/booking/manageMyBookings" />
+          <RedirectLink text="Parties archivées" link="/booking/manageMySlots" />
         </View>
         <BottomSheetRemoveBooking
           ref={bottomSheetRef}
