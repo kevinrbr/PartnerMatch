@@ -1,6 +1,6 @@
 import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet'
 import React, { useRef, useState } from 'react'
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { FlatList, StyleSheet, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import BottomSheetRemoveBooking from '@/components/BottomSheetRemoveBooking'
@@ -26,10 +26,9 @@ const ManageMySlots = () => {
   }
 
   const confirmBook = () => {
+    closeBottomSheet()
     setToastMessage('Supprimé avec succès')
     setShowToast(true)
-    closeBottomSheet()
-    bottomSheetRef.current?.close()
   }
 
   return (

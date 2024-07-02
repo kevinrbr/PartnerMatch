@@ -1,6 +1,6 @@
 import BottomSheet from '@gorhom/bottom-sheet'
 import { useLocalSearchParams } from 'expo-router'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { StyleSheet, View, Text, FlatList } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
@@ -23,12 +23,13 @@ const Home = () => {
 
   useEffect(() => {
     if (showToastParams) {
+      setIsErrorToast(false)
       setShowToast(true)
       setToastMessage(message as string)
     }
   }, [showToastParams, message])
 
-  const { data: slots, isSuccess, isFetching } = useSlots()
+  const { data: slots, isSuccess, isLoading } = useSlots()
   const { data: booksByUuid } = useBooksByUserId()
 
   const bottomSheetRef = useRef<BottomSheet>(null)
@@ -59,16 +60,6 @@ const Home = () => {
     }
   }
 
-  const snapPoints = useMemo(() => ['25%', '50%', '90%'], [])
-
-  const handleSnapPress = useCallback(index => {
-    bottomSheetRef.current?.snapToIndex(index)
-  }, [])
-
-  const handleClosePress = useCallback(() => {
-    bottomSheetRef.current?.close()
-  }, [])
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.mainContainer}>
@@ -86,9 +77,9 @@ const Home = () => {
             <Text style={styles.title}>Nantes, Loire-Atlantique</Text>
           </View>
         </View>
-        {isFetching && (
+        {isLoading && (
           <View style={styles.emptyContainer}>
-            <Text>Récupération des informations..</Text>
+            <Text style={styles.loadingText}>Récupération des informations..</Text>
           </View>
         )}
         {isSuccess &&
@@ -102,7 +93,7 @@ const Home = () => {
             </View>
           ) : (
             <View style={styles.emptyContainer}>
-              <Text>Aucun créneau disponible</Text>
+              <Text style={styles.emptyText}>Aucun créneau disponible</Text>
             </View>
           ))}
       </View>
@@ -134,6 +125,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  emptyText: {
+    fontSize: 18
+  },
+  loadingText: {
+    fontSize: 18
   },
   btnContainer: {
     width: '100%',

@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { router } from 'expo-router'
 import { useState } from 'react'
 import { View, StyleSheet } from 'react-native'
@@ -55,8 +55,8 @@ const ResearchForm = () => {
   const handleSubmit = (reservation: ISlot) => {
     if (!isError()) {
       post(reservation)
-      const i = { showToastParams: 'true', message: 'Publié avec succès' }
-      router.push({ pathname: '/(tabs)/home/', params: i })
+      const toast = { showToastParams: 'true', message: 'Publié avec succès' }
+      router.push({ pathname: '/(tabs)/home/', params: toast })
     }
   }
 

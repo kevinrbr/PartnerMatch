@@ -18,13 +18,16 @@ interface BottomSheetRemoveBookingProps {
 type Ref = BottomSheet
 
 const BottomSheetRemoveBooking = forwardRef<Ref, BottomSheetRemoveBookingProps>(
-  ({ closeBottomSheet, slotId }: BottomSheetRemoveBookingProps, ref) => {
+  ({ closeBottomSheet, slotId, confirmBook }: BottomSheetRemoveBookingProps, ref) => {
     const { mutate: remove } = useRemoveSlot()
 
     const confirmBooking = async () => {
       try {
         await remove(slotId)
-      } catch (e) {}
+        confirmBook()
+      } catch (e) {
+        console.error(e)
+      }
     }
 
     const handleBackLinkClick = () => {
@@ -45,7 +48,7 @@ const BottomSheetRemoveBooking = forwardRef<Ref, BottomSheetRemoveBookingProps>(
           <Button
             title="J'annule la partie"
             accessibilityLabel="Annuler la partie"
-            onPress={confirmBooking}
+            onPress={confirmBooking} // Ensure confirmBooking is called
           />
           <TouchableWithoutFeedback onPress={handleBackLinkClick}>
             <Text style={styles.backLink}>Retour</Text>

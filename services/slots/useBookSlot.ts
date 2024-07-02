@@ -29,6 +29,7 @@ export function useBookSlot() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: slotsQueryKey.all })
       queryClient.invalidateQueries({ queryKey: ['slotsByUserId'] })
+      queryClient.invalidateQueries({ queryKey: ['bookingByUserId'] })
     }
   })
 }
