@@ -22,7 +22,11 @@ export function useSlotsByUserId() {
         throw slotsError
       }
 
-      const slotsWithNames = addNamesToSlots(slotsData)
+      const sortedSlots = slotsData
+        .slice()
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+
+      const slotsWithNames = addNamesToSlots(sortedSlots)
 
       return slotsWithNames
     } catch (error) {

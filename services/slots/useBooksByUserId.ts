@@ -33,7 +33,11 @@ export function useBooksByUserId() {
         throw slotsError
       }
 
-      const slotsWithNames = addNamesToSlots(slots)
+      const sortedSlots = slots
+        .slice()
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+
+      const slotsWithNames = addNamesToSlots(sortedSlots)
 
       return slotsWithNames
     } catch (error) {
