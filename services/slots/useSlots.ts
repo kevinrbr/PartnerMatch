@@ -13,8 +13,10 @@ export function useSlots() {
         throw allSlotsError
       }
 
-      const sortedSlots = allSlots.slice().sort((a, b) => b.date - a.date)
-
+      const sortedSlots = allSlots
+        .slice()
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+      console.log('ici', sortedSlots)
       const slotsWithNames = addNamesToSlots(sortedSlots)
 
       return slotsWithNames
