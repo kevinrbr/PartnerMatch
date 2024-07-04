@@ -30,8 +30,8 @@ export function useBooksByUserId() {
         .from('slot')
         .select('*')
         .in('id', slotIds)
-        .gte('date', currentDate) // Filtre pour récupérer les slots futurs
-        .order('date', { ascending: true }) // Trie les résultats par date ascendante
+        .gte('date', currentDate)
+        .order('date', { ascending: true })
 
       if (slotsError) {
         throw slotsError
