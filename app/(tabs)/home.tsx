@@ -127,10 +127,10 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   emptyText: {
-    fontSize: 18
+    fontSize: 16
   },
   loadingText: {
-    fontSize: 18
+    fontSize: 16
   },
   btnContainer: {
     width: '100%',

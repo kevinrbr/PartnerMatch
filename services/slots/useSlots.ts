@@ -7,7 +7,12 @@ import { supabase } from '@/supabase'
 export function useSlots() {
   const getSlots = async () => {
     try {
-      const { data: allSlots, error: allSlotsError } = await supabase.from('slot').select('*')
+      const currentDate = new Date().toISOString()
+
+      const { data: allSlots, error: allSlotsError } = await supabase
+        .from('slot')
+        .select('*')
+        .gte('date', currentDate)
 
       if (allSlotsError) {
         throw allSlotsError

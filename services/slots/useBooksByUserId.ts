@@ -24,20 +24,20 @@ export function useBooksByUserId() {
 
       const slotIds = slotIdArray.map(item => item.slot_id)
 
+      const currentDate = new Date().toISOString()
+
       const { data: slots, error: slotsError } = await supabase
         .from('slot')
         .select('*')
         .in('id', slotIds)
+        .gte('date', currentDate) // Filtre pour récupérer les slots futurs
+        .order('date', { ascending: true }) // Trie les résultats par date ascendante
 
       if (slotsError) {
         throw slotsError
       }
 
-      const sortedSlots = slots
-        .slice()
-        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-
-      const slotsWithNames = addNamesToSlots(sortedSlots)
+      const slotsWithNames = addNamesToSlots(slots)
 
       return slotsWithNames
     } catch (error) {

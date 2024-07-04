@@ -47,7 +47,7 @@ const Booking = () => {
 
   const combinedAndSortedSlots = [...(slotsByUserId || []), ...(booksByUserId || [])]
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-    .slice(0, 3) // Display a maximum of 3 items
+    .slice(0, 3)
 
   return (
     <DismissKeyboard>
@@ -67,7 +67,7 @@ const Booking = () => {
           </View>
           <RedirectLink text="Gérer mes annonces" link="/booking/manageMySlots" />
           <RedirectLink text="Gérer mes réservations" link="/booking/manageMyBookings" />
-          <RedirectLink text="Parties archivées" link="/booking/manageMySlots" />
+          {/* <RedirectLink text="Parties archivées" link="/booking/manageMySlots" /> */}
         </View>
         <BottomSheetRemoveBooking
           ref={bottomSheetRef}
