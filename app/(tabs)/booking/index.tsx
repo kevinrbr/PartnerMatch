@@ -45,6 +45,10 @@ const Booking = () => {
     bottomSheetRef.current?.close()
   }
 
+  const combinedAndSortedSlots = [...(slotsByUserId || []), ...(booksByUserId || [])]
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .slice(0, 3)
+
   return (
     <DismissKeyboard>
       <GestureHandlerRootView style={{ flex: 1 }}>
@@ -56,19 +60,14 @@ const Booking = () => {
           <Toast message={toastMessage} showToast={showToast} setShowToast={setShowToast} />
           <View style={styles.bookingContainer}>
             <FlatList
-              data={slotsByUserId}
+              data={combinedAndSortedSlots}
               renderItem={({ item }) => <SlotCard slot={item} onClick={handleOnClick} />}
-              keyExtractor={item => item.id}
-            />
-            <FlatList
-              data={booksByUserId}
-              renderItem={({ item }) => <SlotCard slot={item} />}
-              keyExtractor={item => item.id}
+              keyExtractor={item => item.id.toString()}
             />
           </View>
-          <RedirectLink text="Gérer mes annonces" />
-          <RedirectLink text="Gérer mes réservations" />
-          <RedirectLink text="Parties archivées" />
+          <RedirectLink text="Gérer mes annonces" link="/booking/manageMySlots" />
+          <RedirectLink text="Gérer mes réservations" link="/booking/manageMyBookings" />
+          {/* <RedirectLink text="Parties archivées" link="/booking/manageMySlots" /> */}
         </View>
         <BottomSheetRemoveBooking
           ref={bottomSheetRef}

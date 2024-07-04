@@ -7,13 +7,22 @@ import { supabase } from '@/supabase'
 export function useSlots() {
   const getSlots = async () => {
     try {
-      const { data: allSlots, error: allSlotsError } = await supabase.from('slot').select('*')
+      const currentDate = new Date().toISOString()
+
+      const { data: allSlots, error: allSlotsError } = await supabase
+        .from('slot')
+        .select('*')
+        .gte('date', currentDate)
 
       if (allSlotsError) {
         throw allSlotsError
       }
 
-      const slotsWithNames = addNamesToSlots(allSlots)
+      const sortedSlots = allSlots
+        .slice()
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+
+      const slotsWithNames = addNamesToSlots(sortedSlots)
 
       return slotsWithNames
     } catch (error) {

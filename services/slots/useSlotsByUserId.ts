@@ -12,11 +12,14 @@ export function useSlotsByUserId() {
       }
 
       const userId = userData.user.id
+      const currentDate = new Date().toISOString()
 
       const { data: slotsData, error: slotsError } = await supabase
         .from('slot')
         .select('*')
         .eq('user_id', userId)
+        .gte('date', currentDate)
+        .order('date', { ascending: true })
 
       if (slotsError) {
         throw slotsError

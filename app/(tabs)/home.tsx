@@ -23,12 +23,13 @@ const Home = () => {
 
   useEffect(() => {
     if (showToastParams) {
+      setIsErrorToast(false)
       setShowToast(true)
       setToastMessage(message as string)
     }
   }, [showToastParams, message])
 
-  const { data: slots, isSuccess, isFetching } = useSlots()
+  const { data: slots, isSuccess, isLoading } = useSlots()
   const { data: booksByUuid } = useBooksByUserId()
 
   const bottomSheetRef = useRef<BottomSheet>(null)
@@ -76,9 +77,9 @@ const Home = () => {
             <Text style={styles.title}>Nantes, Loire-Atlantique</Text>
           </View>
         </View>
-        {isFetching && (
+        {isLoading && (
           <View style={styles.emptyContainer}>
-            <Text>Récupération des informations..</Text>
+            <Text style={styles.loadingText}>Récupération des informations..</Text>
           </View>
         )}
         {isSuccess &&
@@ -93,7 +94,7 @@ const Home = () => {
             </View>
           ) : (
             <View style={styles.emptyContainer}>
-              <Text>Aucun créneau disponible</Text>
+              <Text style={styles.emptyText}>Aucun créneau disponible</Text>
             </View>
           ))}
       </View>
@@ -125,6 +126,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  emptyText: {
+    fontSize: 16
+  },
+  loadingText: {
+    fontSize: 16
   },
   btnContainer: {
     width: '100%',

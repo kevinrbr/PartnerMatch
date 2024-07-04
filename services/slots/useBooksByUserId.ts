@@ -24,10 +24,14 @@ export function useBooksByUserId() {
 
       const slotIds = slotIdArray.map(item => item.slot_id)
 
+      const currentDate = new Date().toISOString()
+
       const { data: slots, error: slotsError } = await supabase
         .from('slot')
         .select('*')
         .in('id', slotIds)
+        .gte('date', currentDate)
+        .order('date', { ascending: true })
 
       if (slotsError) {
         throw slotsError

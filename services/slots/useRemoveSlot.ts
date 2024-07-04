@@ -25,6 +25,7 @@ export function useRemoveSlot() {
     mutationFn: removeSlot,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: slotsQueryKey.all })
+      queryClient.invalidateQueries({ queryKey: ['slotsByUserId'] })
     }
   })
 }
