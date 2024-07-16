@@ -28,7 +28,7 @@ const HomeBottomSheetBooking = forwardRef<Ref, HomeBottomSheetBookingProps>(
     const { mutate: updateSlotAvailability } = useUpdateSlotAvailability()
     const confirmBooking = async () => {
       try {
-        await updateSlotAvailability({ id: slotId, slotAvailability })
+        await updateSlotAvailability({ id: slotId, slotAvailability, count: -1 })
         await book(slotId)
         confirmBook()
       } catch (e) {}

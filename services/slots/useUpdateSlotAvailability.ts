@@ -5,16 +5,21 @@ import { supabase } from '@/supabase'
 type UpdateSlotAvailabilityInput = {
   id: number
   slotAvailability: string
+  count: number
 }
 
 export function useUpdateSlotAvailability() {
   const queryClient = useQueryClient()
 
-  const updateSlotAvailability = async ({ id, slotAvailability }: UpdateSlotAvailabilityInput) => {
+  const updateSlotAvailability = async ({
+    id,
+    slotAvailability,
+    count
+  }: UpdateSlotAvailabilityInput) => {
     try {
       const { error } = await supabase
         .from('slot')
-        .update({ nbPlaces: +slotAvailability - 1 })
+        .update({ nbPlaces: +slotAvailability + count })
         .eq('id', id)
 
       if (error) {

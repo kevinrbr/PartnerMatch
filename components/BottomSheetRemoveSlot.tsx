@@ -8,23 +8,23 @@ import Button from './Button'
 import CustomBottomSheet from '@/components/CustomBottomSheet'
 import { useRemoveSlot } from '@/services/slots/useRemoveSlot'
 
-interface BottomSheetRemoveBookingProps {
+interface BottomSheetRemoveSlotProps {
   ref: any
   closeBottomSheet: () => void
   slotId: number
-  confirmBook: () => void
+  deleteSlot: () => void
 }
 
 type Ref = BottomSheet
 
-const BottomSheetRemoveBooking = forwardRef<Ref, BottomSheetRemoveBookingProps>(
-  ({ closeBottomSheet, slotId, confirmBook }: BottomSheetRemoveBookingProps, ref) => {
+const BottomSheetRemoveSlot = forwardRef<Ref, BottomSheetRemoveSlotProps>(
+  ({ closeBottomSheet, slotId, deleteSlot }: BottomSheetRemoveSlotProps, ref) => {
     const { mutate: remove } = useRemoveSlot()
 
-    const confirmBooking = async () => {
+    const handleDeleteSlot = async () => {
       try {
         await remove(slotId)
-        confirmBook()
+        deleteSlot()
       } catch (e) {
         console.error(e)
       }
@@ -48,7 +48,7 @@ const BottomSheetRemoveBooking = forwardRef<Ref, BottomSheetRemoveBookingProps>(
           <Button
             title="J'annule la partie"
             accessibilityLabel="Annuler la partie"
-            onPress={confirmBooking} // Ensure confirmBooking is called
+            onPress={handleDeleteSlot}
           />
           <TouchableWithoutFeedback onPress={handleBackLinkClick}>
             <Text style={styles.backLink}>Retour</Text>
@@ -59,7 +59,7 @@ const BottomSheetRemoveBooking = forwardRef<Ref, BottomSheetRemoveBookingProps>(
   }
 )
 
-export default BottomSheetRemoveBooking
+export default BottomSheetRemoveSlot
 
 const styles = StyleSheet.create({
   btnContainer: {
