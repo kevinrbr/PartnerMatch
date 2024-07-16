@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
-import BottomSheetRemoveBooking from '@/components/BottomSheetRemoveBooking'
+import BottomSheetCancelBooking from '@/components/BottomSheetCancelBooking'
 import SlotCard from '@/components/SlotCard'
 import { useBooksByUserId } from '@/services/slots/useBooksByUserId'
 import { ISlot } from '@/types/slot'
@@ -13,19 +13,21 @@ const ManageMySlots = () => {
   const bottomSheetRef = useRef<BottomSheet>(null)
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
+  const [slotAvailability, setSlotAvailability] = useState<string | null>(null)
 
   const { data: booksByUserId } = useBooksByUserId()
 
   const handleOnClick = (value: ISlot) => {
     setSlotId(value.id)
     bottomSheetRef.current?.expand()
+    setSlotAvailability(value.nbPlaces)
   }
 
   const closeBottomSheet = () => {
     bottomSheetRef.current?.close()
   }
 
-  const confirmBook = () => {
+  const handleCancelSlot = () => {
     setToastMessage('Supprimé avec succès')
     setShowToast(true)
     closeBottomSheet()
@@ -41,11 +43,12 @@ const ManageMySlots = () => {
           keyExtractor={item => item.id}
         />
       </View>
-      <BottomSheetRemoveBooking
+      <BottomSheetCancelBooking
         ref={bottomSheetRef}
         closeBottomSheet={closeBottomSheet}
         slotId={slotId}
-        confirmBook={confirmBook}
+        slotAvailability={slotAvailability}
+        cancelBook={handleCancelSlot}
       />
     </GestureHandlerRootView>
   )

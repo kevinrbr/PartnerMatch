@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
-import BottomSheetRemoveBooking from '@/components/BottomSheetRemoveBooking'
+import BottomSheetRemoveSlot from '@/components/BottomSheetRemoveSlot'
 import SlotCard from '@/components/SlotCard'
 import { useSlotsByUserId } from '@/services/slots/useSlotsByUserId'
 import { ISlot } from '@/types/slot'
@@ -25,7 +25,7 @@ const ManageMySlots = () => {
     bottomSheetRef.current?.close()
   }
 
-  const confirmBook = () => {
+  const handleDeleteSlot = () => {
     closeBottomSheet()
     setToastMessage('Supprimé avec succès')
     setShowToast(true)
@@ -40,11 +40,11 @@ const ManageMySlots = () => {
           keyExtractor={item => item.id}
         />
       </View>
-      <BottomSheetRemoveBooking
+      <BottomSheetRemoveSlot
         ref={bottomSheetRef}
         closeBottomSheet={closeBottomSheet}
         slotId={slotId}
-        confirmBook={confirmBook}
+        deleteSlot={handleDeleteSlot}
       />
     </GestureHandlerRootView>
   )

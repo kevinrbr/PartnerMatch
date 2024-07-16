@@ -83,7 +83,7 @@ const Home = () => {
           </View>
         )}
         {isSuccess &&
-          !isFetching &&
+          !isLoading &&
           (slots && slots.length !== 0 ? (
             <View style={styles.slotContainer}>
               <FlatList
