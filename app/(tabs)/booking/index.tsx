@@ -1,7 +1,6 @@
-import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet'
 import { Session } from '@supabase/supabase-js'
-import { useRef, useState } from 'react'
-import { FlatList, StyleSheet, View } from 'react-native'
+import { useState, useEffect } from 'react'
+import { FlatList, StyleSheet, View, Text } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import DismissKeyboard from '@/components/DismissKeyboard'
@@ -18,14 +17,16 @@ const Booking = () => {
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
 
-  const { data: slotsByUserId } = useSlotsByUserId()
-  const { data: booksByUserId } = useBooksByUserId()
+  const { data: slotsByUserId = [] } = useSlotsByUserId()
+  const { data: booksByUserId = [] } = useBooksByUserId()
 
-  supabaseAuth.getSession().then(({ data: { session } }) => {
-    setSession(session)
-  })
+  useEffect(() => {
+    supabaseAuth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+    })
+  }, [])
 
-  const combinedAndSortedSlots = [...(slotsByUserId || []), ...(booksByUserId || [])]
+  const combinedAndSortedSlots = [...slotsByUserId, ...booksByUserId]
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .slice(0, 3)
 
@@ -38,16 +39,30 @@ const Booking = () => {
           </Title>
           <Title variant="subTitle">Réservations à venir</Title>
           <Toast message={toastMessage} showToast={showToast} setShowToast={setShowToast} />
-          <View style={styles.bookingContainer}>
-            <FlatList
-              data={combinedAndSortedSlots}
-              renderItem={({ item }) => <SlotCard slot={item} />}
-              keyExtractor={item => item.id.toString()}
-            />
-          </View>
-          <RedirectLink text="Gérer mes annonces" link="/booking/manageMySlots" />
-          <RedirectLink text="Gérer mes réservations" link="/booking/manageMyBookings" />
-          {/* <RedirectLink text="Parties archivées" link="/booking/manageMySlots" /> */}
+          {booksByUserId.length > 0 || slotsByUserId.length > 0 ? (
+            <View style={styles.bookingContainer}>
+              <FlatList
+                data={combinedAndSortedSlots}
+                renderItem={({ item }) => <SlotCard slot={item} />}
+                keyExtractor={item => item.id.toString()}
+              />
+            </View>
+          ) : (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>Vos parties à venir apparaîtront ici</Text>
+              <Text style={styles.emptyDescription}>
+                Trouvez des partenaires parmis des centaines de joueurs ou publiez vos créneaux et
+                partager une partie.
+              </Text>
+            </View>
+          )}
+          {slotsByUserId.length > 0 && (
+            <RedirectLink text="Gérer mes annonces" link="/booking/manageMySlots" />
+          )}
+          {booksByUserId.length > 0 && (
+            <RedirectLink text="Gérer mes réservations" link="/booking/manageMyBookings" />
+          )}
+          <RedirectLink text="Parties archivées" link="/booking/manageMySlots" />
         </View>
       </GestureHandlerRootView>
     </DismissKeyboard>
@@ -66,5 +81,21 @@ const styles = StyleSheet.create({
   bookingContainer: {
     marginTop: 32,
     marginBottom: 16
+  },
+  emptyContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    marginVertical: 48
+  },
+  emptyText: {
+    fontFamily: 'Poppins-Bold',
+    fontSize: 24
+  },
+  emptyDescription: {
+    marginTop: 12,
+    fontSize: 14,
+    fontFamily: 'Satoshi-Regular',
+    color: '#4E5D6B'
   }
 })
