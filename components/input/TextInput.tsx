@@ -10,7 +10,7 @@ import {
 
 type TextInputProps = NativeTextInputProps & {
   label?: string
-  onInputChange: (value: string) => void
+  onInputChange?: (value: string) => void
   children?: ReactNode
   errorMessage?: string
 }

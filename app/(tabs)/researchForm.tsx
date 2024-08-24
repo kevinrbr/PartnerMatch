@@ -8,11 +8,13 @@ import DismissKeyboard from '@/components/DismissKeyboard'
 import TextError from '@/components/TextError'
 import DateInput from '@/components/input/DateInput'
 import TextInput from '@/components/input/TextInput'
+import { useCreateRoom } from '@/services/messages/useCreateRoom'
 import { usePostSlot } from '@/services/slots/usePostSlot'
 import { ISlot, ESlot, ERROR_MESSAGES } from '@/types/slot'
 
 const ResearchForm = () => {
   const { mutate: post } = usePostSlot()
+  const { mutate: createRoom } = useCreateRoom()
   const [reservation, setReservation] = useState<ISlot>({
     city: '',
     club: '',
@@ -54,9 +56,15 @@ const ResearchForm = () => {
 
   const handleSubmit = (reservation: ISlot) => {
     if (!isError()) {
-      post(reservation)
-      const toast = { showToastParams: 'true', message: 'Publié avec succès' }
-      router.push({ pathname: '/(tabs)/home/', params: toast })
+      post(reservation, {
+        onSuccess: data => {
+          if (data && data.id) {
+            createRoom(data.id)
+            const toast = { showToastParams: 'true', message: 'Publié avec succès' }
+            router.push({ pathname: '/(tabs)/home/', params: toast })
+          }
+        }
+      })
     }
   }
 

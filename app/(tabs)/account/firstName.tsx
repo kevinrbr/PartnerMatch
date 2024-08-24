@@ -7,7 +7,6 @@ import TextError from '@/components/TextError'
 import TextInput from '@/components/input/TextInput'
 import { useEditUserFirstName } from '@/services/account/useEditUserFirstName'
 import { useUser } from '@/services/account/useUser'
-import { accountStore } from '@/stores/account.store'
 
 const FirstName = () => {
   const { data: user } = useUser()

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { StyleSheet, View, Text, FlatList } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
+import EmptyContent from '@/components/EmptyContent'
 import HomeBottomSheetBooking from '@/components/HomeBottomSheetBooking'
 import SlotCard from '@/components/SlotCard'
 import Toast from '@/components/Toast'
@@ -94,7 +95,10 @@ const Home = () => {
             </View>
           ) : (
             <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>Aucun créneau disponible</Text>
+              <EmptyContent
+                title="Pas de parties"
+                content="Aucune partie disponibles, revenez plus tard ou proposez un créneau pour trouver des joueurs."
+              />
             </View>
           ))}
       </View>

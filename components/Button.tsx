@@ -1,11 +1,5 @@
 import { ReactNode } from 'react'
-import {
-  Pressable,
-  StyleSheet,
-  Button as NativeButton,
-  ButtonProps as NativeButtonProps,
-  TouchableWithoutFeedback
-} from 'react-native'
+import { Pressable, StyleSheet, ButtonProps as NativeButtonProps } from 'react-native'
 import { Text } from 'react-native-elements'
 
 type ButtonProps = NativeButtonProps & {
