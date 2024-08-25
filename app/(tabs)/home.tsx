@@ -78,11 +78,7 @@ const Home = () => {
             <Text style={styles.title}>Nantes, Loire-Atlantique</Text>
           </View>
         </View>
-        {isLoading && (
-          <View style={styles.emptyContainer}>
-            <Text style={styles.loadingText}>Récupération des informations..</Text>
-          </View>
-        )}
+        {isLoading && <Text style={styles.loadingText}>Récupération des informations..</Text>}
         {isSuccess &&
           !isLoading &&
           (slots && slots.length !== 0 ? (
@@ -94,12 +90,10 @@ const Home = () => {
               />
             </View>
           ) : (
-            <View style={styles.emptyContainer}>
-              <EmptyContent
-                title="Pas de parties"
-                content="Aucune partie disponibles, revenez plus tard ou proposez un créneau pour trouver des joueurs."
-              />
-            </View>
+            <EmptyContent
+              title="Pas de parties"
+              content="Aucune partie disponibles, revenez plus tard ou proposez un créneau pour trouver des joueurs."
+            />
           ))}
       </View>
       <HomeBottomSheetBooking
@@ -124,12 +118,6 @@ const styles = StyleSheet.create({
   slotContainer: {
     flex: 1,
     marginTop: 40
-  },
-  emptyContainer: {
-    display: 'flex',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   emptyText: {
     fontSize: 16

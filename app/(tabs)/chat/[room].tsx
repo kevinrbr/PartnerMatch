@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 import { ArrowRightCircleIcon } from 'react-native-heroicons/outline'
 
+import EmptyContent from '@/components/EmptyContent'
+import Title from '@/components/Title'
 import MessageCard from '@/components/chat/MessageCard'
 import TextInput from '@/components/input/TextInput'
 import { getUserId } from '@/services/account/useUser'
@@ -41,17 +43,26 @@ const Room = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.messagesContainer}>
-        <FlatList
-          ref={flatListRef}
-          data={messages}
-          keyExtractor={message => message.id.toString()}
-          renderItem={({ item: message }) => (
-            <MessageCard message={message} isOwnMessage={userId === message.sender_id} />
-          )}
-          onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: false })}
-        />
-      </View>
+      {messages.length === 0 ? (
+        <View style={styles.messagesContainer}>
+          <EmptyContent
+            title="Pas de message"
+            content="Envoyez un message pour commencer la discussion"
+          />
+        </View>
+      ) : (
+        <View style={styles.messagesContainer}>
+          <FlatList
+            ref={flatListRef}
+            data={messages}
+            keyExtractor={message => message.id.toString()}
+            renderItem={({ item: message }) => (
+              <MessageCard message={message} isOwnMessage={userId === message.sender_id} />
+            )}
+            onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: false })}
+          />
+        </View>
+      )}
       <View style={styles.inputMessageContainer}>
         <View style={styles.inputContainer}>
           <TextInput
