@@ -4,6 +4,7 @@ import { FlatList, StyleSheet, View, Text } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import DismissKeyboard from '@/components/DismissKeyboard'
+import EmptyContent from '@/components/EmptyContent'
 import RedirectLink from '@/components/RedirectLink'
 import SlotCard from '@/components/SlotCard'
 import Title from '@/components/Title'
@@ -48,13 +49,10 @@ const Booking = () => {
               />
             </View>
           ) : (
-            <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>Vos parties à venir apparaîtront ici</Text>
-              <Text style={styles.emptyDescription}>
-                Trouvez des partenaires parmis des centaines de joueurs ou publiez vos créneaux et
-                partager une partie.
-              </Text>
-            </View>
+            <EmptyContent
+              title="Vos discussions apparaîtront ici"
+              content="Rejoignez une partie pour échanger avec vos futurs partenaires"
+            />
           )}
           {slotsByUserId.length > 0 && (
             <RedirectLink text="Gérer mes annonces" link="/booking/manageMySlots" />
@@ -62,7 +60,7 @@ const Booking = () => {
           {booksByUserId.length > 0 && (
             <RedirectLink text="Gérer mes réservations" link="/booking/manageMyBookings" />
           )}
-          <RedirectLink text="Parties archivées" link="/booking/manageMySlots" />
+          {/* TODO <RedirectLink text="Parties archivées" link="/booking/manageMySlots" /> */}
         </View>
       </GestureHandlerRootView>
     </DismissKeyboard>

@@ -22,7 +22,7 @@ const StackLayout = () => {
           }}
         />
         <Tabs.Screen
-          name="messaging"
+          name="chat"
           options={{
             tabBarIcon: () => <ChatBubbleOvalLeftIcon color="#182A60" strokeWidth="1" />,
             tabBarShowLabel: false,

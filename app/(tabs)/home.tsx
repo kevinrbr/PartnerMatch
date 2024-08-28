@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { StyleSheet, View, Text, FlatList } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
+import EmptyContent from '@/components/EmptyContent'
 import HomeBottomSheetBooking from '@/components/HomeBottomSheetBooking'
 import SlotCard from '@/components/SlotCard'
 import Toast from '@/components/Toast'
@@ -77,11 +78,7 @@ const Home = () => {
             <Text style={styles.title}>Nantes, Loire-Atlantique</Text>
           </View>
         </View>
-        {isLoading && (
-          <View style={styles.emptyContainer}>
-            <Text style={styles.loadingText}>Récupération des informations..</Text>
-          </View>
-        )}
+        {isLoading && <Text style={styles.loadingText}>Récupération des informations..</Text>}
         {isSuccess &&
           !isLoading &&
           (slots && slots.length !== 0 ? (
@@ -93,9 +90,10 @@ const Home = () => {
               />
             </View>
           ) : (
-            <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>Aucun créneau disponible</Text>
-            </View>
+            <EmptyContent
+              title="Pas de parties"
+              content="Aucune partie disponibles, revenez plus tard ou proposez un créneau pour trouver des joueurs."
+            />
           ))}
       </View>
       <HomeBottomSheetBooking
@@ -120,12 +118,6 @@ const styles = StyleSheet.create({
   slotContainer: {
     flex: 1,
     marginTop: 40
-  },
-  emptyContainer: {
-    display: 'flex',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   emptyText: {
     fontSize: 16
