@@ -4,12 +4,12 @@ import { FlatList, StyleSheet, View } from 'react-native'
 import { ArrowRightCircleIcon } from 'react-native-heroicons/outline'
 
 import EmptyContent from '@/components/EmptyContent'
-import Title from '@/components/Title'
 import MessageCard from '@/components/chat/MessageCard'
 import TextInput from '@/components/input/TextInput'
 import { getUserId } from '@/services/account/useUser'
 import { useMessagesByRoomId } from '@/services/messages/useMessagesByRoomId'
 import { useSendMessage } from '@/services/messages/useSendMessage'
+import { supabase } from '@/supabase'
 
 const Room = () => {
   const flatListRef = useRef(null)
@@ -21,6 +21,36 @@ const Room = () => {
   const { data: messages, isLoading: isLoadingMessages } = useMessagesByRoomId({
     roomId: roomIdAsString
   })
+
+  useEffect(() => {
+    const channel = supabase.channel(`room-id-${roomIdAsString}`).on(
+      'postgres_changes',
+      {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'messages',
+        filter: `room_id=eq.${roomIdAsString}`
+      },
+      payload => {
+        console.log('Change received!', payload)
+      }
+    )
+
+    const subscription = channel.subscribe(status => {
+      if (status === 'SUBSCRIBED') {
+        console.log('Successfully subscribed to room:', roomIdAsString)
+      } else if (status === 'TIMED_OUT') {
+        console.error('Subscription timed out for room:', roomIdAsString)
+      } else if (status === 'CHANNEL_ERROR') {
+        console.error('Channel error for room:', roomIdAsString)
+      }
+    })
+
+    // Nettoyage : désabonnement lors du démontage du composant
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [roomIdAsString])
 
   useEffect(() => {
     const fetchUserId = async () => {

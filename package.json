@@ -17,7 +17,7 @@
     "@react-native-community/datetimepicker": "8.0.1",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
-    "@supabase/supabase-js": "^2.38.4",
+    "@supabase/supabase-js": "^2.43.5",
     "@tanstack/react-query": "^5.21.4",
     "@types/react": "~18.2.14",
     "date-fns": "^3.3.0",
@@ -44,7 +44,8 @@
     "react-native-url-polyfill": "^2.0.0",
     "react-native-web": "^0.19.11",
     "typescript": "~5.3.3",
-    "validator": "^13.11.0"
+    "validator": "^13.11.0",
+    "zustand": "^4.5.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
