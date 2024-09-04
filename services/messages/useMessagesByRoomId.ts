@@ -9,6 +9,7 @@ type UseMessagesParams = {
 }
 
 export function useMessagesByRoomId({ roomId }: UseMessagesParams) {
+  console.log('use', roomId)
   const getMessagesByRoomId = async () => {
     try {
       const { data, error } = await supabase.from('messages').select('*').eq('room_id', roomId)
@@ -16,7 +17,6 @@ export function useMessagesByRoomId({ roomId }: UseMessagesParams) {
       if (error) {
         throw error
       }
-
       return data
     } catch (error) {
       console.error('Erreur lors de la récupération des messages:', error.message)
@@ -25,7 +25,8 @@ export function useMessagesByRoomId({ roomId }: UseMessagesParams) {
   }
 
   return useQuery({
-    queryKey: messagesQueryKey.all,
-    queryFn: getMessagesByRoomId
+    queryKey: [messagesQueryKey.all, roomId],
+    queryFn: getMessagesByRoomId,
+    enabled: !!roomId
   })
 }

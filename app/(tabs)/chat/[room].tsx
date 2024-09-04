@@ -2,6 +2,7 @@ import { useLocalSearchParams } from 'expo-router'
 import React, { useEffect, useRef, useState } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 import { ArrowRightCircleIcon } from 'react-native-heroicons/outline'
+import { v4 as uuidv4 } from 'uuid'
 
 import EmptyContent from '@/components/EmptyContent'
 import MessageCard from '@/components/chat/MessageCard'
@@ -9,7 +10,10 @@ import TextInput from '@/components/input/TextInput'
 import { getUserId } from '@/services/account/useUser'
 import { useMessagesByRoomId } from '@/services/messages/useMessagesByRoomId'
 import { useSendMessage } from '@/services/messages/useSendMessage'
+import InitMessage from '@/stores/initMessage'
+import { useMessage } from '@/stores/messages'
 import { supabase } from '@/supabase'
+import 'react-native-get-random-values'
 
 const Room = () => {
   const flatListRef = useRef(null)
@@ -18,39 +22,15 @@ const Room = () => {
   const { roomId } = useLocalSearchParams()
   const { mutate: sendMessage } = useSendMessage()
   const roomIdAsString = Array.isArray(roomId) ? roomId[0] : roomId
-  const { data: messages, isLoading: isLoadingMessages } = useMessagesByRoomId({
+
+  const {
+    data: messages,
+    isFetched,
+    isLoading
+  } = useMessagesByRoomId({
     roomId: roomIdAsString
   })
-
-  useEffect(() => {
-    const channel = supabase.channel(`room-id-${roomIdAsString}`).on(
-      'postgres_changes',
-      {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'messages',
-        filter: `room_id=eq.${roomIdAsString}`
-      },
-      payload => {
-        console.log('Change received!', payload)
-      }
-    )
-
-    const subscription = channel.subscribe(status => {
-      if (status === 'SUBSCRIBED') {
-        console.log('Successfully subscribed to room:', roomIdAsString)
-      } else if (status === 'TIMED_OUT') {
-        console.error('Subscription timed out for room:', roomIdAsString)
-      } else if (status === 'CHANNEL_ERROR') {
-        console.error('Channel error for room:', roomIdAsString)
-      }
-    })
-
-    // Nettoyage : désabonnement lors du démontage du composant
-    return () => {
-      subscription.unsubscribe()
-    }
-  }, [roomIdAsString])
+  console.log('message', messages)
 
   useEffect(() => {
     const fetchUserId = async () => {
@@ -64,16 +44,35 @@ const Room = () => {
     flatListRef.current?.scrollToEnd({ animated: false })
   }, [messages])
 
+  const addMessage = useMessage(state => state.addMessage)
+
   const handleSendMessage = async () => {
     if (message) {
-      await sendMessage({ roomId: roomIdAsString, senderId: await getUserId(), message })
+      const newMessage = {
+        id: uuidv4(),
+        sender_id: userId,
+        message,
+        room_id: roomIdAsString
+      }
+      addMessage(newMessage)
+      await sendMessage({ roomId: roomIdAsString, senderId: userId, message })
       setMessage('')
     }
   }
 
+  const test = useMessage(state => state.messages)
+  console.log({ test })
+
   return (
     <View style={styles.container}>
-      {messages.length === 0 ? (
+      {isLoading ? (
+        <View style={styles.messagesContainer}>
+          <EmptyContent
+            title="Chargement des messages..."
+            content="Veuillez patienter pendant que les messages se chargent."
+          />
+        </View>
+      ) : messages.length === 0 ? (
         <View style={styles.messagesContainer}>
           <EmptyContent
             title="Pas de message"
@@ -84,13 +83,14 @@ const Room = () => {
         <View style={styles.messagesContainer}>
           <FlatList
             ref={flatListRef}
-            data={messages}
+            data={test}
             keyExtractor={message => message.id.toString()}
             renderItem={({ item: message }) => (
               <MessageCard message={message} isOwnMessage={userId === message.sender_id} />
             )}
             onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: false })}
           />
+          {isFetched && <InitMessage messages={messages} />}
         </View>
       )}
       <View style={styles.inputMessageContainer}>
