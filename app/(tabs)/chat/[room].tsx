@@ -1,36 +1,30 @@
 import { useLocalSearchParams } from 'expo-router'
 import React, { useEffect, useRef, useState } from 'react'
-import { FlatList, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { ArrowRightCircleIcon } from 'react-native-heroicons/outline'
 import { v4 as uuidv4 } from 'uuid'
 
 import EmptyContent from '@/components/EmptyContent'
-import MessageCard from '@/components/chat/MessageCard'
+import ChatMessages from '@/components/chat/ChatMessages'
 import TextInput from '@/components/input/TextInput'
 import { getUserId } from '@/services/account/useUser'
 import { useMessagesByRoomId } from '@/services/messages/useMessagesByRoomId'
 import { useSendMessage } from '@/services/messages/useSendMessage'
-import InitMessage from '@/stores/initMessage'
 import { useMessage } from '@/stores/messages'
 import { supabase } from '@/supabase'
 import 'react-native-get-random-values'
+import { IMessage } from '@/types/message'
 
 const Room = () => {
-  const flatListRef = useRef(null)
   const [message, setMessage] = useState('')
   const [userId, setUserId] = useState('')
   const { roomId } = useLocalSearchParams()
   const { mutate: sendMessage } = useSendMessage()
   const roomIdAsString = Array.isArray(roomId) ? roomId[0] : roomId
-
-  const {
-    data: messages,
-    isFetched,
-    isLoading
-  } = useMessagesByRoomId({
+  const { addMessage, optimisticsIds, messages } = useMessage(state => state)
+  const { data, isFetched, isLoading } = useMessagesByRoomId({
     roomId: roomIdAsString
   })
-  console.log('message', messages)
 
   useEffect(() => {
     const fetchUserId = async () => {
@@ -41,10 +35,39 @@ const Room = () => {
   }, [])
 
   useEffect(() => {
-    flatListRef.current?.scrollToEnd({ animated: false })
-  }, [messages])
+    console.log('useEffect')
+    const channel = supabase.channel(`room-id-${roomIdAsString}`).on(
+      'postgres_changes',
+      {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'messages',
+        filter: `room_id=eq.${roomIdAsString}`
+      },
+      async payload => {
+        console.log({ payload })
+        console.log({ optimisticsIds })
+        if (!optimisticsIds.includes(payload.new.id)) {
+          await addMessage(payload.new as IMessage)
+        }
+      }
+    )
 
-  const addMessage = useMessage(state => state.addMessage)
+    const subscription = channel.subscribe(status => {
+      // if (status === 'SUBSCRIBED') {
+      //   console.log('Successfully subscribed to room:', roomIdAsString)
+      // } else if (status === 'TIMED_OUT') {
+      //   console.error('Subscription timed out for room:', roomIdAsString)
+      // } else if (status === 'CHANNEL_ERROR') {
+      //   console.error('Channel error for room:', roomIdAsString)
+      // }
+    })
+
+    // Nettoyage : désabonnement lors du démontage du composant
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [messages])
 
   const handleSendMessage = async () => {
     if (message) {
@@ -55,13 +78,11 @@ const Room = () => {
         room_id: roomIdAsString
       }
       addMessage(newMessage)
+      console.log('2, handleMsg', optimisticsIds)
       await sendMessage({ roomId: roomIdAsString, senderId: userId, message })
       setMessage('')
     }
   }
-
-  const test = useMessage(state => state.messages)
-  console.log({ test })
 
   return (
     <View style={styles.container}>
@@ -72,7 +93,7 @@ const Room = () => {
             content="Veuillez patienter pendant que les messages se chargent."
           />
         </View>
-      ) : messages.length === 0 ? (
+      ) : data.length === 0 ? (
         <View style={styles.messagesContainer}>
           <EmptyContent
             title="Pas de message"
@@ -81,16 +102,7 @@ const Room = () => {
         </View>
       ) : (
         <View style={styles.messagesContainer}>
-          <FlatList
-            ref={flatListRef}
-            data={test}
-            keyExtractor={message => message.id.toString()}
-            renderItem={({ item: message }) => (
-              <MessageCard message={message} isOwnMessage={userId === message.sender_id} />
-            )}
-            onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: false })}
-          />
-          {isFetched && <InitMessage messages={messages} />}
+          <ChatMessages />
         </View>
       )}
       <View style={styles.inputMessageContainer}>

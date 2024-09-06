@@ -5,8 +5,8 @@ import { useMessage } from './messages'
 import { IMessage } from '@/types/message'
 
 export default function InitMessage({ messages }: { messages: IMessage[] }) {
+  console.log('ALERTE')
   const initState = useRef(false)
-  console.log(messages)
   useEffect(() => {
     if (!initState.current) {
       useMessage.setState({ messages })

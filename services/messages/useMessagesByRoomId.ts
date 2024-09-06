@@ -9,7 +9,6 @@ type UseMessagesParams = {
 }
 
 export function useMessagesByRoomId({ roomId }: UseMessagesParams) {
-  console.log('use', roomId)
   const getMessagesByRoomId = async () => {
     try {
       const { data, error } = await supabase.from('messages').select('*').eq('room_id', roomId)
