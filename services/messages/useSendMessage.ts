@@ -5,6 +5,7 @@ import { messagesQueryKey } from './messages-query-key'
 import { supabase } from '@/supabase'
 
 type SendMessageParams = {
+  id: string
   roomId: string
   senderId: string
   message: string
@@ -13,9 +14,10 @@ type SendMessageParams = {
 export function useSendMessage() {
   const queryClient = useQueryClient()
 
-  const sendMessage = async ({ roomId, senderId, message }: SendMessageParams) => {
+  const sendMessage = async ({ id, roomId, senderId, message }: SendMessageParams) => {
     try {
       const { data, error } = await supabase.from('messages').insert({
+        id,
         room_id: roomId,
         message,
         sender_id: senderId

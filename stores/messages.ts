@@ -17,7 +17,6 @@ export const useMessage = create<MessageState>(set => ({
         messages: [...state.messages, newMessage],
         optimisticsIds: [...state.optimisticsIds, newMessage.id]
       }
-      console.log('2 (after state update)', updatedState.optimisticsIds) // Ici après la mise à jour
       return updatedState
     })
   }
