@@ -66,11 +66,6 @@ const styles = StyleSheet.create({
   cardContainer: {
     borderRadius: 8,
     marginBottom: 36,
-    // padding: 10,
-    // shadowColor: 'rgba(189, 189, 189, 0.24)',
-    // shadowOffset: { width: -1, height: 3 },
-    // shadowOpacity: 1,
-    // shadowRadius: 8,
     backgroundColor: '#fff'
   },
   cardContent: {
