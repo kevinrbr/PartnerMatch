@@ -20,13 +20,11 @@ const ResearchForm = () => {
   })
 
   const onSubmit = data => {
-    console.log(data)
     router.navigate({ pathname: '/addGame/clubForm/' })
   }
 
   const goNext = () => {
     handleSubmit(onSubmit)()
-    console.log(errors.city)
   }
 
   return (
