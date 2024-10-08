@@ -9,7 +9,7 @@ const MoreInformationsForm = () => {
     <View>
       <Title variant="pageTitle">Informations supplémentaires</Title>
       <View style={styles.counterContainer}>
-        <Counter />
+        <Counter min={1} max={3} />
       </View>
       <View style={styles.sliderContainer}>
         <SliderRange />

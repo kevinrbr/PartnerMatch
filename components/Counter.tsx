@@ -1,27 +1,41 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 
-const Counter = () => {
+type CounterProps = {
+  min: number
+  max: number
+}
+
+const Counter = ({ min, max }: CounterProps) => {
   const [count, setCount] = useState(1)
 
   const increment = () => {
-    if (count < 3) setCount(prev => prev + 1)
+    if (count < max) setCount(prev => prev + 1)
   }
 
   const decrement = () => {
-    if (count > 1) setCount(prev => prev - 1)
+    if (count > min) setCount(prev => prev - 1)
   }
+
   return (
     <View style={styles.counterContainer}>
       <Text style={styles.counterLabel}>Nombre de places disponibles :</Text>
       <View style={styles.counter}>
-        <TouchableOpacity onPress={decrement} style={styles.button}>
-          <Text style={styles.buttonText}>-</Text>
-        </TouchableOpacity>
+        {count > min ? (
+          <TouchableOpacity onPress={decrement} style={styles.button}>
+            <Text style={styles.buttonText}>-</Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.invisibleButton} />
+        )}
         <Text style={styles.counterValue}>{count}</Text>
-        <TouchableOpacity onPress={increment} style={styles.button}>
-          <Text style={styles.buttonText}>+</Text>
-        </TouchableOpacity>
+        {count < max ? (
+          <TouchableOpacity onPress={increment} style={styles.button}>
+            <Text style={styles.buttonText}>+</Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.invisibleButton} />
+        )}
       </View>
     </View>
   )
@@ -41,6 +55,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   counterLabel: {
+    fontFamily: 'Satoshi-Regular',
     fontSize: 16
   },
   button: {
@@ -55,5 +70,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Satoshi-Bold',
     fontSize: 26,
     fontWeight: 'bold'
+  },
+  invisibleButton: {
+    width: 22,
+    marginHorizontal: 12
   }
 })

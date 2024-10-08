@@ -2,13 +2,12 @@ import { useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { View, StyleSheet } from 'react-native'
 
-import CityForm from './cityForm'
-import ClubForm from './clubForm'
-import DateForm from './dateForm'
-import MoreInformationsForm from './moreInformationsForm'
-
 import Button from '@/components/Button'
 import DismissKeyboard from '@/components/DismissKeyboard'
+import CityForm from '@/components/addSlotForm/cityForm'
+import ClubForm from '@/components/addSlotForm/clubForm'
+import DateForm from '@/components/addSlotForm/dateForm'
+import MoreInformationsForm from '@/components/addSlotForm/moreInformationsForm'
 
 const ResearchForm = () => {
   const methods = useForm({

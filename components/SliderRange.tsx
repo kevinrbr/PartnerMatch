@@ -119,17 +119,20 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   textContainer: {
-    marginTop: 16,
+    marginTop: 28,
     alignItems: 'center'
   },
   textLabel: {
-    fontSize: 18,
+    color: '#4E5D6B',
+    fontSize: 14,
+    fontFamily: 'Satoshi-Regular',
     textAlign: 'center'
   },
   textValue: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center'
+    fontSize: 16,
+    fontFamily: 'Satoshi-Bold',
+    textAlign: 'center',
+    marginTop: 8
   }
 })
 
