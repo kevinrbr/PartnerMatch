@@ -1,60 +1,49 @@
-import { router } from 'expo-router'
-import { useForm, Controller } from 'react-hook-form'
+import { useState } from 'react'
+import { useForm, FormProvider } from 'react-hook-form'
 import { View, StyleSheet } from 'react-native'
+
+import CityForm from './cityForm'
+import ClubForm from './clubForm'
+import DateForm from './dateForm'
+import MoreInformationsForm from './moreInformationsForm'
 
 import Button from '@/components/Button'
 import DismissKeyboard from '@/components/DismissKeyboard'
-import TextError from '@/components/TextError'
-import Title from '@/components/Title'
-import TextInput from '@/components/input/TextInput'
 
 const ResearchForm = () => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({
+  const methods = useForm({
     defaultValues: {
-      city: ''
+      city: '',
+      club: '',
+      date: new Date(),
+      moreInfo: ''
     }
   })
+  const [step, setStep] = useState(1)
 
-  const onSubmit = data => {
-    router.navigate({ pathname: '/addGame/clubForm/' })
+  const handleNextStep = (data: any) => {
+    setStep(step + 1)
   }
 
-  const goNext = () => {
-    handleSubmit(onSubmit)()
+  const onSubmit = (data: any) => {
+    console.log('Données finales :', data)
+    // Envoi vers la base de données
   }
 
   return (
     <DismissKeyboard>
-      <View style={styles.container}>
-        <View>
-          <Title variant="pageTitle">Dans quelle ville ?</Title>
-          <View style={styles.inputContainer}>
-            <Controller
-              control={control}
-              rules={{
-                required: { value: true, message: 'Le champ est requis' },
-                minLength: { value: 2, message: 'Renseignez une ville' }
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  placeholder="Nantes"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                  errorMessage={errors.city}
-                />
-              )}
-              name="city"
-            />
-            {errors.city && <TextError errorMsg={errors.city.message} />}
-          </View>
+      <FormProvider {...methods}>
+        <View style={styles.container}>
+          {step === 1 && <CityForm />}
+          {step === 2 && <ClubForm />}
+          {step === 3 && <DateForm />}
+          {step === 4 && <MoreInformationsForm />}
+          <Button
+            title={step === 4 ? 'Enregistrer' : 'Suivant'}
+            onPress={methods.handleSubmit(step === 4 ? onSubmit : handleNextStep)}
+          />
         </View>
-        <Button title="Suivant" onPress={goNext} />
-      </View>
+      </FormProvider>
     </DismissKeyboard>
   )
 }
@@ -67,9 +56,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'space-between',
     paddingBottom: 16
-  },
-  inputContainer: {
-    marginBottom: 24
   }
 })
 

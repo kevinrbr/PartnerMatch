@@ -1,11 +1,11 @@
-import { Controller, useFormContext } from 'react-hook-form'
+import { useFormContext, Controller } from 'react-hook-form'
 import { View } from 'react-native'
 
 import TextError from '@/components/TextError'
 import Title from '@/components/Title'
 import TextInput from '@/components/input/TextInput'
 
-const ClubForm = () => {
+const CityForm = () => {
   const {
     control,
     formState: { errors }
@@ -13,31 +13,31 @@ const ClubForm = () => {
 
   return (
     <View>
-      <Title variant="pageTitle">Dans quelle club ?</Title>
+      <Title variant="pageTitle">Dans quelle ville ?</Title>
       <View>
         <Controller
           control={control}
           rules={{
             required: { value: true, message: 'Le champ est requis' },
-            minLength: { value: 2, message: 'Renseignez un club' }
+            minLength: { value: 2, message: 'Renseignez une ville' }
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
-              placeholder="UCPA"
+              placeholder="Nantes"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              errorMessage={errors.club ? errors.club.message?.toString() : undefined}
+              errorMessage={errors.city ? errors.city.message?.toString() : undefined}
             />
           )}
-          name="club"
+          name="city"
         />
-        {errors.club && (
-          <TextError errorMsg={errors.club ? errors.club.message?.toString() : undefined} />
+        {errors.city && (
+          <TextError errorMsg={errors.city ? errors.city.message?.toString() : undefined} />
         )}
       </View>
     </View>
   )
 }
 
-export default ClubForm
+export default CityForm

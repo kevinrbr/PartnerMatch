@@ -9,24 +9,6 @@ export default function AddGameLayout() {
           headerShown: false
         }}
       />
-      <Stack.Screen
-        name="clubForm"
-        options={{
-          headerShown: false
-        }}
-      />
-      <Stack.Screen
-        name="date"
-        options={{
-          headerShown: false
-        }}
-      />
-      <Stack.Screen
-        name="moreInformationsForm"
-        options={{
-          headerShown: false
-        }}
-      />
     </Stack>
   )
 }
