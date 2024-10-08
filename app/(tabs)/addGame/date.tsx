@@ -1,26 +1,32 @@
 import { router } from 'expo-router'
-import { useForm, Controller } from 'react-hook-form'
-import { View, StyleSheet, Text } from 'react-native'
+import React from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { StyleSheet, Text, View } from 'react-native'
 
 import Button from '@/components/Button'
 import DismissKeyboard from '@/components/DismissKeyboard'
 import TextError from '@/components/TextError'
 import Title from '@/components/Title'
-import TextInput from '@/components/input/TextInput'
+import DateInput from '@/components/input/DateInput'
+import { ESlot } from '@/types/slot'
 
-const ClubForm = () => {
+const DateComponent = () => {
   const {
     control,
     handleSubmit,
     formState: { errors }
   } = useForm({
     defaultValues: {
-      club: ''
+      date: new Date('2024-10-01T08:27:24.000Z') // Convertir la chaîne ISO en objet Date
     }
   })
 
-  const onSubmit = data => {
-    router.navigate({ pathname: '/addGame/date/' })
+  const handleChangeDate = (field: string, value: Date) => {
+    console.log('handleChangeDate', value)
+  }
+
+  const onSubmit = (data: any) => {
+    router.navigate({ pathname: '/addGame/moreInformationsForm/' })
   }
 
   const goNext = () => {
@@ -31,7 +37,7 @@ const ClubForm = () => {
     <DismissKeyboard>
       <View style={styles.container}>
         <View>
-          <Title variant="pageTitle">Dans quelle club ?</Title>
+          <Title variant="pageTitle">Quand jouez vous ?</Title>
           <View style={styles.inputContainer}>
             <Controller
               control={control}
@@ -40,17 +46,18 @@ const ClubForm = () => {
                 minLength: { value: 2, message: 'Renseignez un club' }
               }}
               render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  placeholder="UCPA"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                  errorMessage={errors.club}
+                <DateInput
+                  label="Date"
+                  date={value} // Passer l'objet Date directement
+                  onInputChange={date => {
+                    onChange(date) // Mettre à jour le champ dans react-hook-form
+                    handleChangeDate(ESlot.DATE, date) // Gestion personnalisée
+                  }}
                 />
               )}
-              name="club"
+              name="date"
             />
-            {errors.club && <TextError errorMsg={errors.club.message} />}
+            {errors.date && <TextError errorMsg={errors.date.message} />}
           </View>
         </View>
         <Button title="Suivant" onPress={goNext} />
@@ -58,6 +65,8 @@ const ClubForm = () => {
     </DismissKeyboard>
   )
 }
+
+export default DateComponent
 
 const styles = StyleSheet.create({
   container: {
@@ -72,5 +81,3 @@ const styles = StyleSheet.create({
     marginBottom: 24
   }
 })
-
-export default ClubForm

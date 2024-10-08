@@ -1,32 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
-import {
-  TextInput,
-  GestureHandlerRootView,
-  GestureDetector,
-  Gesture
-} from 'react-native-gesture-handler'
-import { ChevronLeftIcon, ChevronRightIcon } from 'react-native-heroicons/solid' // Importer l'icône de Hero Icons
+import { GestureHandlerRootView, GestureDetector, Gesture } from 'react-native-gesture-handler'
+import { ChevronLeftIcon, ChevronRightIcon } from 'react-native-heroicons/solid'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
-  useAnimatedProps
+  withSpring,
+  useDerivedValue,
+  runOnJS
 } from 'react-native-reanimated'
 
 const SLIDER_WIDTH = 300
 const THUMB_SIZE = 28
 
-Animated.addWhitelistedNativeProps({ text: true })
-
-const AnimatedTextInput = Animated.createAnimatedComponent(TextInput)
-
 const Slider = () => {
+  const [selectedValue, setSelectedValue] = useState('0 - 10')
+
   const leftThumbOffset = useSharedValue(0)
   const rightThumbOffset = useSharedValue(SLIDER_WIDTH - THUMB_SIZE)
   const MAX_VALUE = SLIDER_WIDTH - THUMB_SIZE
 
   const leftPan = Gesture.Pan().onChange(event => {
-    // Permettre à la gauche d'aller jusqu'à la droite
     leftThumbOffset.value = Math.min(
       Math.max(0, leftThumbOffset.value + event.changeX),
       rightThumbOffset.value
@@ -34,7 +28,6 @@ const Slider = () => {
   })
 
   const rightPan = Gesture.Pan().onChange(event => {
-    // Permettre à la droite d'aller jusqu'à la gauche
     rightThumbOffset.value = Math.max(
       Math.min(MAX_VALUE, rightThumbOffset.value + event.changeX),
       leftThumbOffset.value
@@ -43,13 +36,13 @@ const Slider = () => {
 
   const leftThumbStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: leftThumbOffset.value }]
+      transform: [{ translateX: withSpring(leftThumbOffset.value) }]
     }
   })
 
   const rightThumbStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ translateX: rightThumbOffset.value }]
+      transform: [{ translateX: withSpring(rightThumbOffset.value) }]
     }
   })
 
@@ -62,20 +55,12 @@ const Slider = () => {
     }
   })
 
-  const animatedProps = useAnimatedProps(() => {
+  useDerivedValue(() => {
     const leftValue = Math.round((leftThumbOffset.value / MAX_VALUE) * 10)
     const rightValue = Math.round((rightThumbOffset.value / MAX_VALUE) * 10)
+    const value = leftValue === rightValue ? `${leftValue}` : `${leftValue} - ${rightValue}`
 
-    // Si les deux poignées sont sur la même valeur, afficher une seule valeur
-    const displayValue =
-      leftValue === rightValue
-        ? `Valeur sélectionnée: ${leftValue}`
-        : `Plage de valeurs: ${leftValue} - ${rightValue}`
-
-    return {
-      text: displayValue,
-      defaultValue: displayValue
-    }
+    runOnJS(setSelectedValue)(value)
   })
 
   return (
@@ -95,11 +80,11 @@ const Slider = () => {
           </Animated.View>
         </GestureDetector>
       </View>
-      <AnimatedTextInput
-        animatedProps={animatedProps}
-        style={styles.boxWidthText}
-        editable={false}
-      />
+
+      <View style={styles.textContainer}>
+        <Text style={styles.textLabel}>Je recherche des joueurs de niveaux :</Text>
+        <Text style={styles.textValue}>{selectedValue}</Text>
+      </View>
     </GestureHandlerRootView>
   )
 }
@@ -110,14 +95,14 @@ const styles = StyleSheet.create({
   },
   sliderTrack: {
     width: SLIDER_WIDTH,
-    height: 1, // Ligne très fine pour la piste
+    height: 1,
     backgroundColor: '#EBEBEB',
     borderRadius: 5,
     justifyContent: 'center',
     position: 'relative'
   },
   rangeTrack: {
-    height: 1, // Même hauteur que la piste
+    height: 1,
     borderRadius: 5,
     position: 'absolute',
     top: 0
@@ -128,15 +113,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF7131',
     borderRadius: THUMB_SIZE / 2,
     position: 'absolute',
-    top: -(THUMB_SIZE / 2) + 0.5, // Centré sur la ligne de 1px
+    top: -(THUMB_SIZE / 2) + 0.5,
     flexDirection: 'row',
-    justifyContent: 'center', // Centrer l'icône horizontalement
-    alignItems: 'center' // Centrer l'icône verticalement
+    justifyContent: 'center',
+    alignItems: 'center'
   },
-  boxWidthText: {
+  textContainer: {
     marginTop: 16,
-    textAlign: 'center',
-    fontSize: 18
+    alignItems: 'center'
+  },
+  textLabel: {
+    fontSize: 18,
+    textAlign: 'center'
+  },
+  textValue: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center'
   }
 })
 
