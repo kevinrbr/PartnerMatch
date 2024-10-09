@@ -43,7 +43,6 @@ const ResearchForm = () => {
         }
       }
     })
-    console.log('Données finales :', data)
   }
 
   return (

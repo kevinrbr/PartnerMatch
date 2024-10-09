@@ -6,7 +6,6 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
-  useDerivedValue,
   runOnJS
 } from 'react-native-reanimated'
 
@@ -18,11 +17,9 @@ const SliderRange = ({ onChange, selectedValues = [] }) => {
   const rightThumbOffset = useSharedValue(SLIDER_WIDTH - THUMB_SIZE)
   const MAX_VALUE = SLIDER_WIDTH - THUMB_SIZE
 
-  // Récupérer les valeurs min et max de selectedValues
   const [minValue, setMinValue] = useState(selectedValues[0] || 0)
   const [maxValue, setMaxValue] = useState(selectedValues[1] || 10)
 
-  // Pan gesture pour le pouce gauche
   const leftPan = Gesture.Pan()
     .onChange(event => {
       leftThumbOffset.value = Math.min(
@@ -31,13 +28,11 @@ const SliderRange = ({ onChange, selectedValues = [] }) => {
       )
     })
     .onEnd(() => {
-      // Mettre à jour la valeur min lorsque le mouvement se termine
       const leftValue = Math.round((leftThumbOffset.value / MAX_VALUE) * 10)
       runOnJS(setMinValue)(leftValue)
-      runOnJS(onChange)([leftValue, maxValue]) // Passer la nouvelle valeur min au parent
+      runOnJS(onChange)([leftValue, maxValue])
     })
 
-  // Pan gesture pour le pouce droit
   const rightPan = Gesture.Pan()
     .onChange(event => {
       rightThumbOffset.value = Math.max(
@@ -46,10 +41,9 @@ const SliderRange = ({ onChange, selectedValues = [] }) => {
       )
     })
     .onEnd(() => {
-      // Mettre à jour la valeur max lorsque le mouvement se termine
       const rightValue = Math.round((rightThumbOffset.value / MAX_VALUE) * 10)
       runOnJS(setMaxValue)(rightValue)
-      runOnJS(onChange)([minValue, rightValue]) // Passer la nouvelle valeur max au parent
+      runOnJS(onChange)([minValue, rightValue])
     })
 
   const leftThumbStyle = useAnimatedStyle(() => {
@@ -73,7 +67,6 @@ const SliderRange = ({ onChange, selectedValues = [] }) => {
     }
   })
 
-  // Synchroniser les positions des pouces avec les valeurs sélectionnées
   useEffect(() => {
     leftThumbOffset.value = (minValue / 10) * MAX_VALUE
     rightThumbOffset.value = (maxValue / 10) * MAX_VALUE

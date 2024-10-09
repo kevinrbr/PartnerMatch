@@ -8,7 +8,6 @@ export function usePostSlot() {
   const queryClient = useQueryClient()
 
   const postSlot = async function (formData: ISlot) {
-    console.log({ formData })
     try {
       const { data, error } = await supabase
         .from('slot')
