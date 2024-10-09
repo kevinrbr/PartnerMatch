@@ -1,12 +1,14 @@
-import { StyleSheet, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { ArrowRightCircleIcon } from 'react-native-heroicons/outline'
-import TextInput from '../input/TextInput'
-import { v4 as uuidv4 } from 'uuid'
-import { getUserId } from '@/services/account/useUser'
 import { useLocalSearchParams } from 'expo-router'
-import { useMessage } from '@/stores/messages'
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, View } from 'react-native'
+import { ArrowRightCircleIcon } from 'react-native-heroicons/outline'
+import { v4 as uuidv4 } from 'uuid'
+
+import TextInput from '../input/TextInput'
+
+import { getUserId } from '@/services/account/useUser'
 import { useSendMessage } from '@/services/messages/useSendMessage'
+import { useMessage } from '@/stores/messages'
 
 const ChatInput = () => {
   const [message, setMessage] = useState('')
@@ -53,9 +55,7 @@ const ChatInput = () => {
           value={message}
         />
       </View>
-      {message && (
-        <ArrowRightCircleIcon color="#182A60" strokeWidth="1" onPress={handleSendMessage} />
-      )}
+      {message && <ArrowRightCircleIcon color="#182A60" onPress={handleSendMessage} />}
     </View>
   )
 }

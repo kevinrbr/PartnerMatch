@@ -49,7 +49,7 @@ const StackLayout = () => {
           }}
         />
         <Tabs.Screen
-          name="researchForm"
+          name="addGame"
           options={{
             tabBarIcon: () => <PlusCircleIcon color="#182A60" strokeWidth="1" />,
             tabBarShowLabel: false,

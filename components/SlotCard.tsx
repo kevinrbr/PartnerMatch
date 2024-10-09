@@ -22,6 +22,10 @@ const SlotCard = ({ slot, onClick }: SlotCardProps) => {
     }
   }
 
+  const formatLevel = (level_min: number, level_max: number): string => {
+    return level_min === level_max ? `${level_min}` : `${level_min} - ${level_max}`
+  }
+
   return (
     <TouchableWithoutFeedback onPress={handlePress}>
       <View style={styles.cardContainer}>
@@ -52,7 +56,7 @@ const SlotCard = ({ slot, onClick }: SlotCardProps) => {
             </View>
           </View>
           <View style={styles.levelContainer}>
-            <Text style={styles.level}>niv {slot.level}</Text>
+            <Text style={styles.level}>niv {formatLevel(slot.level_min, slot.level_max)}</Text>
           </View>
         </View>
       </View>

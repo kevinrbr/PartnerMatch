@@ -6,7 +6,7 @@ import DateTimePicker from 'react-native-modal-datetime-picker'
 import { FR_DATE, local_FR } from '@/types/date'
 
 interface IDateInputProps {
-  label: string
+  label?: string
   date: Date
   onInputChange: (date: Date) => void
 }
@@ -16,7 +16,7 @@ const DateInput = ({ label, date, onInputChange }: IDateInputProps) => {
 
   return (
     <>
-      <Text style={styles.label}>{label}</Text>
+      {label && <Text style={styles.label}>{label}</Text>}
       <Pressable style={styles.input} onPress={() => setIsVisible(true)}>
         <Text>{format(date, FR_DATE)}</Text>
       </Pressable>

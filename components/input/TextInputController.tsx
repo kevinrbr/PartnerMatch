@@ -13,16 +13,10 @@ type TextInputProps = NativeTextInputProps & {
   label?: string
   onInputChange?: (value: string) => void
   children?: ReactNode
-  errorMessage?: string | FieldError
+  hasError?: FieldError
 }
 
-const TextInput = ({
-  children,
-  label,
-  onInputChange,
-  errorMessage = '',
-  ...props
-}: TextInputProps) => {
+const TextInput = ({ children, label, onInputChange, hasError, ...props }: TextInputProps) => {
   const [inputValue, setInputValue] = useState('')
   const [isFocused, setFocused] = useState(false)
 
@@ -37,25 +31,9 @@ const TextInput = ({
 
   return (
     <View>
-      {label && (
-        <Text
-          style={[
-            styles.label,
-            isFocused && styles.labelFocused,
-            errorMessage !== '' && styles.labelError
-          ]}
-        >
-          {label}
-        </Text>
-      )}
+      {label && <Text style={[styles.label, isFocused && styles.labelFocused]}>{label}</Text>}
       <TouchableWithoutFeedback onFocus={handleOnClick}>
-        <View
-          style={[
-            styles.inputTextContainer,
-            isFocused && styles.inputTextFocused,
-            errorMessage !== '' && styles.inputTextError
-          ]}
-        >
+        <View style={[styles.inputTextContainer, isFocused && styles.inputTextFocused]}>
           <NativeInputText
             style={styles.inputText}
             value={inputValue}
