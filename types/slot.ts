@@ -2,7 +2,8 @@ export interface ISlot {
   city: string
   club: string
   nbPlaces: string
-  level: string
+  level_min: number
+  level_max: number
   date: Date
   name?: string
   id?: number

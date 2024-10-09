@@ -9,14 +9,16 @@ import Title from '@/components/Title'
 const MoreInformationsForm = () => {
   const { setValue, watch } = useFormContext()
   const [counterValue, setCounterValue] = useState(1)
-  const level = watch('level') || []
+  const level_min = watch('level_min') || null
+  const level_max = watch('level_max') || null
 
   useEffect(() => {
-    setValue('playersNb', counterValue)
+    setValue('nbPlaces', counterValue)
   }, [counterValue, setValue])
 
   const handleSliderChange = values => {
-    setValue('level', values)
+    setValue('level_min', values[0])
+    setValue('level_max', values[1])
   }
 
   return (
@@ -26,7 +28,7 @@ const MoreInformationsForm = () => {
         <Counter min={1} max={3} value={counterValue} onChange={setCounterValue} />
       </View>
       <View style={styles.sliderContainer}>
-        <SliderRange onChange={handleSliderChange} selectedValues={level} />
+        <SliderRange onChange={handleSliderChange} selectedValues={[level_min, level_max]} />
       </View>
     </View>
   )

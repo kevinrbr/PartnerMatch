@@ -8,6 +8,7 @@ export function usePostSlot() {
   const queryClient = useQueryClient()
 
   const postSlot = async function (formData: ISlot) {
+    console.log({ formData })
     try {
       const { data, error } = await supabase
         .from('slot')
@@ -16,17 +17,18 @@ export function usePostSlot() {
           city: formData.city,
           club: formData.club,
           nbPlaces: formData.nbPlaces,
-          level: formData.level,
+          level_min: formData.level_min,
+          level_max: formData.level_max,
           date: formData.date
         })
         .select('*')
-        .single() // Ajoutez `.select('*').single()` pour sélectionner la première ligne insérée
+        .single()
 
       if (error) {
         throw error
       }
 
-      return data // Assurez-vous que 'data' contient le slot créé avec l'ID
+      return data
     } catch (error) {
       console.error('Erreur lors de la création du créneau:', error.message)
       throw error

@@ -21,8 +21,7 @@ const ResearchForm = () => {
       city: '',
       club: '',
       date: new Date(),
-      playersNb: 1,
-      level: [],
+      nbPlaces: 1,
       level_min: null,
       level_max: null
     }
