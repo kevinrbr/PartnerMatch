@@ -1,35 +1,35 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 
 type CounterProps = {
   min: number
   max: number
+  value: number
+  onChange: (newValue: number) => void
 }
 
-const Counter = ({ min, max }: CounterProps) => {
-  const [count, setCount] = useState(1)
-
+const Counter = ({ min, max, value, onChange }: CounterProps) => {
   const increment = () => {
-    if (count < max) setCount(prev => prev + 1)
+    if (value < max) onChange(value + 1)
   }
 
   const decrement = () => {
-    if (count > min) setCount(prev => prev - 1)
+    if (value > min) onChange(value - 1)
   }
 
   return (
     <View style={styles.counterContainer}>
       <Text style={styles.counterLabel}>Nombre de places disponibles :</Text>
       <View style={styles.counter}>
-        {count > min ? (
+        {value > min ? (
           <TouchableOpacity onPress={decrement} style={styles.button}>
             <Text style={styles.buttonText}>-</Text>
           </TouchableOpacity>
         ) : (
           <View style={styles.invisibleButton} />
         )}
-        <Text style={styles.counterValue}>{count}</Text>
-        {count < max ? (
+        <Text style={styles.counterValue}>{value}</Text>
+        {value < max ? (
           <TouchableOpacity onPress={increment} style={styles.button}>
             <Text style={styles.buttonText}>+</Text>
           </TouchableOpacity>

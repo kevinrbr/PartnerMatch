@@ -1,3 +1,4 @@
+import { router } from 'expo-router'
 import { useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { View, StyleSheet } from 'react-native'
@@ -8,16 +9,25 @@ import CityForm from '@/components/addSlotForm/cityForm'
 import ClubForm from '@/components/addSlotForm/clubForm'
 import DateForm from '@/components/addSlotForm/dateForm'
 import MoreInformationsForm from '@/components/addSlotForm/moreInformationsForm'
+import { useCreateRoom } from '@/services/messages/useCreateRoom'
+import { usePostSlot } from '@/services/slots/usePostSlot'
 
 const ResearchForm = () => {
+  const { mutate: post } = usePostSlot()
+  const { mutate: createRoom } = useCreateRoom()
+
   const methods = useForm({
     defaultValues: {
       city: '',
       club: '',
       date: new Date(),
-      moreInfo: ''
+      playersNb: 1,
+      level: [],
+      level_min: null,
+      level_max: null
     }
   })
+
   const [step, setStep] = useState(1)
 
   const handleNextStep = (data: any) => {
@@ -25,8 +35,16 @@ const ResearchForm = () => {
   }
 
   const onSubmit = (data: any) => {
+    post(data, {
+      onSuccess: data => {
+        if (data && data.id) {
+          createRoom(data.id)
+          const toast = { showToastParams: 'true', message: 'Publié avec succès' }
+          router.push({ pathname: '/(tabs)/home/', params: toast })
+        }
+      }
+    })
     console.log('Données finales :', data)
-    // Envoi vers la base de données
   }
 
   return (

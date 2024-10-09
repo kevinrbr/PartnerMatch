@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
 import { GestureHandlerRootView, GestureDetector, Gesture } from 'react-native-gesture-handler'
 import { ChevronLeftIcon, ChevronRightIcon } from 'react-native-heroicons/solid'
@@ -13,26 +13,44 @@ import Animated, {
 const SLIDER_WIDTH = 300
 const THUMB_SIZE = 28
 
-const Slider = () => {
-  const [selectedValue, setSelectedValue] = useState('0 - 10')
-
+const SliderRange = ({ onChange, selectedValues = [] }) => {
   const leftThumbOffset = useSharedValue(0)
   const rightThumbOffset = useSharedValue(SLIDER_WIDTH - THUMB_SIZE)
   const MAX_VALUE = SLIDER_WIDTH - THUMB_SIZE
 
-  const leftPan = Gesture.Pan().onChange(event => {
-    leftThumbOffset.value = Math.min(
-      Math.max(0, leftThumbOffset.value + event.changeX),
-      rightThumbOffset.value
-    )
-  })
+  // Récupérer les valeurs min et max de selectedValues
+  const [minValue, setMinValue] = useState(selectedValues[0] || 0)
+  const [maxValue, setMaxValue] = useState(selectedValues[1] || 10)
 
-  const rightPan = Gesture.Pan().onChange(event => {
-    rightThumbOffset.value = Math.max(
-      Math.min(MAX_VALUE, rightThumbOffset.value + event.changeX),
-      leftThumbOffset.value
-    )
-  })
+  // Pan gesture pour le pouce gauche
+  const leftPan = Gesture.Pan()
+    .onChange(event => {
+      leftThumbOffset.value = Math.min(
+        Math.max(0, leftThumbOffset.value + event.changeX),
+        rightThumbOffset.value
+      )
+    })
+    .onEnd(() => {
+      // Mettre à jour la valeur min lorsque le mouvement se termine
+      const leftValue = Math.round((leftThumbOffset.value / MAX_VALUE) * 10)
+      runOnJS(setMinValue)(leftValue)
+      runOnJS(onChange)([leftValue, maxValue]) // Passer la nouvelle valeur min au parent
+    })
+
+  // Pan gesture pour le pouce droit
+  const rightPan = Gesture.Pan()
+    .onChange(event => {
+      rightThumbOffset.value = Math.max(
+        Math.min(MAX_VALUE, rightThumbOffset.value + event.changeX),
+        leftThumbOffset.value
+      )
+    })
+    .onEnd(() => {
+      // Mettre à jour la valeur max lorsque le mouvement se termine
+      const rightValue = Math.round((rightThumbOffset.value / MAX_VALUE) * 10)
+      runOnJS(setMaxValue)(rightValue)
+      runOnJS(onChange)([minValue, rightValue]) // Passer la nouvelle valeur max au parent
+    })
 
   const leftThumbStyle = useAnimatedStyle(() => {
     return {
@@ -55,13 +73,11 @@ const Slider = () => {
     }
   })
 
-  useDerivedValue(() => {
-    const leftValue = Math.round((leftThumbOffset.value / MAX_VALUE) * 10)
-    const rightValue = Math.round((rightThumbOffset.value / MAX_VALUE) * 10)
-    const value = leftValue === rightValue ? `${leftValue}` : `${leftValue} - ${rightValue}`
-
-    runOnJS(setSelectedValue)(value)
-  })
+  // Synchroniser les positions des pouces avec les valeurs sélectionnées
+  useEffect(() => {
+    leftThumbOffset.value = (minValue / 10) * MAX_VALUE
+    rightThumbOffset.value = (maxValue / 10) * MAX_VALUE
+  }, [minValue, maxValue])
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -70,12 +86,10 @@ const Slider = () => {
         <GestureDetector gesture={leftPan}>
           <Animated.View style={[styles.sliderHandle, leftThumbStyle]}>
             <ChevronLeftIcon color="#fff" size={12} />
-            <ChevronRightIcon color="#fff" size={12} />
           </Animated.View>
         </GestureDetector>
         <GestureDetector gesture={rightPan}>
           <Animated.View style={[styles.sliderHandle, rightThumbStyle]}>
-            <ChevronLeftIcon color="#fff" size={12} />
             <ChevronRightIcon color="#fff" size={12} />
           </Animated.View>
         </GestureDetector>
@@ -83,7 +97,7 @@ const Slider = () => {
 
       <View style={styles.textContainer}>
         <Text style={styles.textLabel}>Je recherche des joueurs de niveaux :</Text>
-        <Text style={styles.textValue}>{selectedValue}</Text>
+        <Text style={styles.textValue}>{`${minValue} - ${maxValue}`}</Text>
       </View>
     </GestureHandlerRootView>
   )
@@ -119,7 +133,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   textContainer: {
-    marginTop: 28,
+    marginTop: 32,
     alignItems: 'center'
   },
   textLabel: {
@@ -136,4 +150,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Slider
+export default SliderRange

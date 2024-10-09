@@ -5,17 +5,12 @@ import { StyleSheet, View } from 'react-native'
 import TextError from '@/components/TextError'
 import Title from '@/components/Title'
 import DateInput from '@/components/input/DateInput'
-import { ESlot } from '@/types/slot'
 
 const DateForm = () => {
   const {
     control,
     formState: { errors }
   } = useFormContext()
-
-  const handleChangeDate = (field: string, value: Date) => {
-    console.log('handleChangeDate', value)
-  }
 
   return (
     <View>
@@ -32,7 +27,6 @@ const DateForm = () => {
               date={value}
               onInputChange={date => {
                 onChange(date)
-                handleChangeDate(ESlot.DATE, date)
               }}
             />
           )}
@@ -47,5 +41,3 @@ const DateForm = () => {
 }
 
 export default DateForm
-
-const styles = StyleSheet.create({})
