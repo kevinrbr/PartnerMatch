@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'flex-start',
-    marginVertical: 48
+    marginTop: 24
   },
   emptyText: {
     fontFamily: 'Poppins-Bold',

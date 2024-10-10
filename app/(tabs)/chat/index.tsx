@@ -72,21 +72,5 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 80,
     paddingHorizontal: 16
-  },
-  emptyContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    marginVertical: 48
-  },
-  emptyText: {
-    fontFamily: 'Poppins-Bold',
-    fontSize: 24
-  },
-  emptyDescription: {
-    marginTop: 12,
-    fontSize: 14,
-    fontFamily: 'Satoshi-Regular',
-    color: '#4E5D6B'
   }
 })

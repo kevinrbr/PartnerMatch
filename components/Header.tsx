@@ -1,18 +1,32 @@
-import { router, useNavigation } from 'expo-router'
+import { useNavigation } from 'expo-router'
 import React from 'react'
-import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Pressable, StyleSheet, View } from 'react-native'
 import { ChevronLeftIcon } from 'react-native-heroicons/outline'
 
 import Title from '@/components/Title'
 
 type HeaderProps = {
   title: string
+  onBackPress?: () => void
+  layoutHeader?: boolean
 }
-const Header = ({ title }: HeaderProps) => {
+
+const Header = ({ title, onBackPress, layoutHeader }: HeaderProps) => {
   const navigation = useNavigation()
 
+  const handleBackPress = () => {
+    if (onBackPress) {
+      onBackPress()
+    } else {
+      navigation.goBack()
+    }
+  }
+
   return (
-    <Pressable onPress={() => navigation.goBack()} style={styles.headerContainer}>
+    <Pressable
+      onPress={handleBackPress}
+      style={[styles.headerContainer, layoutHeader && styles.layoutHeader]}
+    >
       <ChevronLeftIcon color="#000" size={24} />
       <Title variant="headerTitle">{title}</Title>
     </Pressable>
@@ -27,9 +41,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    paddingTop: 80,
     marginLeft: -6,
     backgroundColor: 'white',
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
+    marginBottom: 32
+  },
+  layoutHeader: {
+    paddingTop: 80
   }
 })

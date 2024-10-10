@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'Poppins-Bold',
     color: '#191822',
-    marginBottom: 24
+    marginBottom: 32
   },
   headerTitle: {
     fontSize: 20,
@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
   subTitle: {
     fontSize: 16,
     fontFamily: 'Satoshi-Regular',
-    color: '#4E5D6B'
+    color: '#4E5D6B',
+    marginBottom: 32
   }
 })
 

@@ -3,10 +3,11 @@ import { useFormContext } from 'react-hook-form'
 import { View, StyleSheet } from 'react-native'
 
 import Counter from '@/components/Counter'
+import Header from '@/components/Header'
 import SliderRange from '@/components/SliderRange'
 import Title from '@/components/Title'
 
-const MoreInformationsForm = () => {
+const MoreInformationsForm = ({ handlePreviousStep }) => {
   const { setValue, watch } = useFormContext()
   const [counterValue, setCounterValue] = useState(1)
   const level_min = watch('level_min') || null
@@ -23,7 +24,7 @@ const MoreInformationsForm = () => {
 
   return (
     <View>
-      <Title variant="pageTitle">Informations supplémentaires</Title>
+      <Header title="Informations supplémentaires" onBackPress={handlePreviousStep} />
       <View style={styles.counterContainer}>
         <Counter min={1} max={3} value={counterValue} onChange={setCounterValue} />
       </View>

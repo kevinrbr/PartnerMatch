@@ -33,6 +33,12 @@ const ResearchForm = () => {
     setStep(step + 1)
   }
 
+  const handlePreviousStep = () => {
+    if (step > 1) {
+      setStep(step - 1)
+    }
+  }
+
   const onSubmit = (data: any) => {
     post(data, {
       onSuccess: data => {
@@ -50,9 +56,9 @@ const ResearchForm = () => {
       <FormProvider {...methods}>
         <View style={styles.container}>
           {step === 1 && <CityForm />}
-          {step === 2 && <ClubForm />}
-          {step === 3 && <DateForm />}
-          {step === 4 && <MoreInformationsForm />}
+          {step === 2 && <ClubForm handlePreviousStep={handlePreviousStep} />}
+          {step === 3 && <DateForm handlePreviousStep={handlePreviousStep} />}
+          {step === 4 && <MoreInformationsForm handlePreviousStep={handlePreviousStep} />}
           <Button
             title={step === 4 ? 'Enregistrer' : 'Suivant'}
             onPress={methods.handleSubmit(step === 4 ? onSubmit : handleNextStep)}
