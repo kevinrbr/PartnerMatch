@@ -1,11 +1,11 @@
 import { Controller, useFormContext } from 'react-hook-form'
 import { View } from 'react-native'
 
+import Header from '@/components//Header'
 import TextError from '@/components/TextError'
-import Title from '@/components/Title'
 import TextInput from '@/components/input/TextInput'
 
-const ClubForm = () => {
+const ClubForm = ({ handlePreviousStep }) => {
   const {
     control,
     formState: { errors }
@@ -13,7 +13,7 @@ const ClubForm = () => {
 
   return (
     <View>
-      <Title variant="pageTitle">Dans quelle club ?</Title>
+      <Header title="Dans quel club ?" onBackPress={handlePreviousStep} />
       <View>
         <Controller
           control={control}

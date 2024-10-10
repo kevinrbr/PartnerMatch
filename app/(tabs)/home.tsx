@@ -73,7 +73,7 @@ const Home = () => {
           />
         )}
         <View>
-          <View>
+          <View style={styles.homeHeader}>
             <Text style={styles.labelTitle}>Ville</Text>
             <Text style={styles.title}>Nantes, Loire-Atlantique</Text>
           </View>
@@ -114,6 +114,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 80,
     paddingHorizontal: 16
+  },
+  homeHeader: {
+    marginBottom: 24
   },
   slotContainer: {
     flex: 1,

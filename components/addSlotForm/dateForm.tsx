@@ -2,11 +2,12 @@ import React from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { StyleSheet, View } from 'react-native'
 
+import Header from '@/components/Header'
 import TextError from '@/components/TextError'
 import Title from '@/components/Title'
 import DateInput from '@/components/input/DateInput'
 
-const DateForm = () => {
+const DateForm = ({ handlePreviousStep }) => {
   const {
     control,
     formState: { errors }
@@ -14,7 +15,7 @@ const DateForm = () => {
 
   return (
     <View>
-      <Title variant="pageTitle">Quand jouez vous ?</Title>
+      <Header title="Quand jouez vous ?" onBackPress={handlePreviousStep} />
       <View>
         <Controller
           control={control}

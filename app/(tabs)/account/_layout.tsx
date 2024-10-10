@@ -14,19 +14,19 @@ export default function AccountLayout() {
       <Stack.Screen
         name="accountDetailList"
         options={{
-          header: () => <Header title="Informations personnelles" />
+          header: () => <Header title="Informations personnelles" layoutHeader />
         }}
       />
       <Stack.Screen
         name="firstName"
         options={{
-          header: () => <Header title="Quel est votre prénom ?" />
+          header: () => <Header title="Quel est votre prénom ?" layoutHeader />
         }}
       />
       <Stack.Screen
         name="lastName"
         options={{
-          header: () => <Header title="Quel est votre nom ?" />
+          header: () => <Header title="Quel est votre nom ?" layoutHeader />
         }}
       />
     </Stack>
