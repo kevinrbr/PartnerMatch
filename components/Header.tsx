@@ -1,6 +1,6 @@
 import { useNavigation } from 'expo-router'
 import React from 'react'
-import { Pressable, StyleSheet, View } from 'react-native'
+import { Pressable, StyleSheet, View, ViewStyle } from 'react-native'
 import { ChevronLeftIcon } from 'react-native-heroicons/outline'
 
 import Title from '@/components/Title'
@@ -9,9 +9,10 @@ type HeaderProps = {
   title: string
   onBackPress?: () => void
   layoutHeader?: boolean
+  style?: ViewStyle
 }
 
-const Header = ({ title, onBackPress, layoutHeader }: HeaderProps) => {
+const Header = ({ title, onBackPress, layoutHeader, style }: HeaderProps) => {
   const navigation = useNavigation()
 
   const handleBackPress = () => {
@@ -25,7 +26,7 @@ const Header = ({ title, onBackPress, layoutHeader }: HeaderProps) => {
   return (
     <Pressable
       onPress={handleBackPress}
-      style={[styles.headerContainer, layoutHeader && styles.layoutHeader]}
+      style={[styles.headerContainer, layoutHeader && styles.layoutHeader, style]}
     >
       <ChevronLeftIcon color="#000" size={24} />
       <Title variant="headerTitle">{title}</Title>

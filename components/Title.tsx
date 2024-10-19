@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Satoshi-Regular',
     color: '#4E5D6B',
-    marginBottom: 32
+    marginBottom: 16
   }
 })
 

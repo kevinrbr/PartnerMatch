@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { Keyboard, TouchableWithoutFeedback, View } from 'react-native'
 
 type DismissKeyboardProps = {
   children?: ReactNode
@@ -7,8 +7,8 @@ type DismissKeyboardProps = {
 
 const DismissKeyboard = ({ children }: DismissKeyboardProps) => {
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      {children}
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
+      <View style={{ flex: 1 }}>{children}</View>
     </TouchableWithoutFeedback>
   )
 }

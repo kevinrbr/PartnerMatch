@@ -1,7 +1,7 @@
 import { router } from 'expo-router'
 import { useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
 
 import Button from '@/components/Button'
 import DismissKeyboard from '@/components/DismissKeyboard'
@@ -54,16 +54,23 @@ const ResearchForm = () => {
   return (
     <DismissKeyboard>
       <FormProvider {...methods}>
-        <View style={styles.container}>
-          {step === 1 && <CityForm />}
-          {step === 2 && <ClubForm handlePreviousStep={handlePreviousStep} />}
-          {step === 3 && <DateForm handlePreviousStep={handlePreviousStep} />}
-          {step === 4 && <MoreInformationsForm handlePreviousStep={handlePreviousStep} />}
-          <Button
-            title={step === 4 ? 'Enregistrer' : 'Suivant'}
-            onPress={methods.handleSubmit(step === 4 ? onSubmit : handleNextStep)}
-          />
-        </View>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.container}
+        >
+          <View style={styles.formContainer}>
+            {step === 1 && <CityForm />}
+            {step === 2 && <ClubForm handlePreviousStep={handlePreviousStep} />}
+            {step === 3 && <DateForm handlePreviousStep={handlePreviousStep} />}
+            {step === 4 && <MoreInformationsForm handlePreviousStep={handlePreviousStep} />}
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              title={step === 4 ? 'Enregistrer' : 'Suivant'}
+              onPress={methods.handleSubmit(step === 4 ? onSubmit : handleNextStep)}
+            />
+          </View>
+        </KeyboardAvoidingView>
       </FormProvider>
     </DismissKeyboard>
   )
@@ -71,11 +78,15 @@ const ResearchForm = () => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1
+  },
+  formContainer: {
+    flex: 1,
     paddingHorizontal: 16,
-    paddingTop: 80,
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'space-between',
+    paddingTop: 80
+  },
+  buttonContainer: {
+    paddingHorizontal: 16,
     paddingBottom: 16
   }
 })
