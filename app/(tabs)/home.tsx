@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16
   },
   homeHeader: {
-    marginBottom: 24
+    marginBottom: 16
   },
   slotContainer: {
     flex: 1,
