@@ -35,13 +35,9 @@ const Booking = () => {
     <DismissKeyboard>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <View style={styles.container}>
-          <Title variant="pageTitle" hasSubtitle>
-            Parties et réservations
-          </Title>
-          <Title variant="subTitle">Réservations à venir</Title>
           <Toast message={toastMessage} showToast={showToast} setShowToast={setShowToast} />
           {booksByUserId.length > 0 || slotsByUserId.length > 0 ? (
-            <View style={styles.bookingContainer}>
+            <View>
               <FlatList
                 data={combinedAndSortedSlots}
                 renderItem={({ item }) => <SlotCard slot={item} />}
@@ -72,13 +68,7 @@ export default Booking
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 80,
-    paddingHorizontal: 16,
-    backgroundColor: 'white'
-  },
-  bookingContainer: {
-    marginTop: 32,
-    marginBottom: 16
+    paddingHorizontal: 16
   },
   emptyContainer: {
     display: 'flex',

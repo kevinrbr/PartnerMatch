@@ -32,7 +32,7 @@ const Messaging = () => {
   if (isLoadingSlots || isLoadingRooms) {
     return (
       <View style={styles.container}>
-        <Title variant="pageTitle">Messagerie</Title>
+        {/* <Title variant="pageTitle">Messagerie</Title> */}
         <Title variant="pageTitle">Chargement...</Title>
       </View>
     )
@@ -41,7 +41,7 @@ const Messaging = () => {
   if (rooms.length === 0) {
     return (
       <View style={styles.container}>
-        <Title variant="pageTitle">Messagerie</Title>
+        {/* <Title variant="pageTitle">Messagerie</Title> */}
         <EmptyContent
           title="Vos parties à venir apparaîtront ici"
           content="Trouvez des partenaires parmis des centaines de joueurs ou publiez vos créneaux et
@@ -53,7 +53,7 @@ const Messaging = () => {
 
   return (
     <View style={styles.container}>
-      <Title variant="pageTitle">Messagerie</Title>
+      {/* <Title variant="pageTitle">Messagerie</Title> */}
       <FlatList
         data={rooms}
         keyExtractor={room => room.id.toString()}
@@ -69,8 +69,6 @@ export default Messaging
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    paddingTop: 80,
     paddingHorizontal: 16
   }
 })

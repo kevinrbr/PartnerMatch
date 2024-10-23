@@ -1,8 +1,8 @@
 import { useFormContext, Controller } from 'react-hook-form'
 import { View } from 'react-native'
 
+import Header from '@/components/Header'
 import TextError from '@/components/TextError'
-import Title from '@/components/Title'
 import TextInput from '@/components/input/TextInput'
 
 const CityForm = () => {
@@ -13,7 +13,7 @@ const CityForm = () => {
 
   return (
     <View>
-      <Title variant="pageTitle">Dans quelle ville ?</Title>
+      <Header title="Dans quel ville ?" noHorizontalMargin />
       <View>
         <Controller
           control={control}

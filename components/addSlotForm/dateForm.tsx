@@ -15,7 +15,12 @@ const DateForm = ({ handlePreviousStep }) => {
 
   return (
     <View>
-      <Header title="Quand jouez vous ?" onBackPress={handlePreviousStep} />
+      <Header
+        title="Quand jouez vous ?"
+        onBackPress={handlePreviousStep}
+        backRoute
+        noHorizontalMargin
+      />
       <View>
         <Controller
           control={control}

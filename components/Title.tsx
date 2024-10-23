@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     marginBottom: 32
   },
   headerTitle: {
-    fontSize: 20,
+    fontSize: 22,
     fontFamily: 'Poppins-Bold',
     color: '#191822',
     marginBottom: 0

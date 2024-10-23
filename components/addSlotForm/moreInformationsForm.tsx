@@ -5,7 +5,6 @@ import { View, StyleSheet } from 'react-native'
 import Counter from '@/components/Counter'
 import Header from '@/components/Header'
 import SliderRange from '@/components/SliderRange'
-import Title from '@/components/Title'
 
 const MoreInformationsForm = ({ handlePreviousStep }) => {
   const { setValue, watch } = useFormContext()
@@ -24,7 +23,12 @@ const MoreInformationsForm = ({ handlePreviousStep }) => {
 
   return (
     <View>
-      <Header title="Informations supplémentaires" onBackPress={handlePreviousStep} />
+      <Header
+        title="Informations supplémentaires"
+        onBackPress={handlePreviousStep}
+        backRoute
+        noHorizontalMargin
+      />
       <View style={styles.counterContainer}>
         <Counter min={1} max={3} value={counterValue} onChange={setCounterValue} />
       </View>

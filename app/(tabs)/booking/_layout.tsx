@@ -4,17 +4,23 @@ import Header from '@/components/Header'
 
 export default function BookingLayout() {
   return (
-    <Stack screenOptions={{ contentStyle: { backgroundColor: '#fff' } }}>
+    <Stack screenOptions={{ contentStyle: { backgroundColor: '#fff' }, animation: 'none' }}>
       <Stack.Screen
         name="index"
         options={{
-          headerShown: false
+          header: () => (
+            <Header
+              title="Parties et réservations"
+              subTitle="Réservations à venir"
+              backRoute={false}
+            />
+          )
         }}
       />
       <Stack.Screen
         name="manageMySlots"
         options={{
-          header: () => <Header title="Gérer mes annonces" />
+          header: () => <Header title="Gérer mes annonces" backRoute />
         }}
       />
       <Stack.Screen
