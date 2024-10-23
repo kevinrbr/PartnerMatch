@@ -35,14 +35,14 @@ const ChatCard = ({ onPress, hasNewMessage }: TextInputProps) => {
           <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
             Nantes - Ucpa Sport Station
           </Text>
-          <Text style={styles.date}>ven 12 juil.</Text>
         </View>
         <View style={styles.bottom}>
           <Text style={styles.name}>Kévin: </Text>
           <Text style={styles.lastMessage} numberOfLines={1} ellipsizeMode="tail">
             Je suis disponible à partir de 18h, est-ce que ça vous interesse
           </Text>
-          <Text style={styles.lastMessageHour}>10h21</Text>
+          <Text>-</Text>
+          <Text style={styles.lastMessageHour}>1h</Text>
         </View>
       </View>
       <View style={[styles.noNotificationDot, hasNewMessage && styles.notificationDot]} />

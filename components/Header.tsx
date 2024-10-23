@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
     marginLeft: -6,
     backgroundColor: 'white',
     paddingHorizontal: 16,
-    marginBottom: 32
+    marginBottom: 32,
+    marginTop: 32
   },
   layoutHeader: {
     paddingTop: 80

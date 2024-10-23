@@ -7,11 +7,11 @@ export default function ChatLayout() {
   const insets = useSafeAreaInsets()
 
   return (
-    <Stack screenOptions={{ contentStyle: { backgroundColor: '#fff', paddingTop: 25 } }}>
+    <Stack screenOptions={{ contentStyle: { backgroundColor: '#fff' } }}>
       <Stack.Screen
         name="index"
         options={{
-          headerShown: false
+          header: () => <Header title="Room" style={{ paddingTop: insets.top }} />
         }}
       />
       <Stack.Screen
