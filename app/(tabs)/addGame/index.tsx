@@ -82,8 +82,7 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 80
+    paddingHorizontal: 16
   },
   buttonContainer: {
     paddingHorizontal: 16,

@@ -13,7 +13,12 @@ const ClubForm = ({ handlePreviousStep }) => {
 
   return (
     <View>
-      <Header title="Dans quel club ?" onBackPress={handlePreviousStep} />
+      <Header
+        title="Dans quel club ?"
+        onBackPress={handlePreviousStep}
+        backRoute
+        noHorizontalMargin
+      />
       <View>
         <Controller
           control={control}

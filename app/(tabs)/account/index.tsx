@@ -20,7 +20,6 @@ const Account = () => {
 
   return (
     <View style={styles.container}>
-      <Title variant="pageTitle">Profil</Title>
       {user ? (
         <View>
           <View style={styles.header}>
@@ -55,7 +54,6 @@ export default Account
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 80,
     paddingHorizontal: 16
   },
   header: {

@@ -8,13 +8,19 @@ export default function BookingLayout() {
       <Stack.Screen
         name="index"
         options={{
-          headerShown: false
+          header: () => (
+            <Header
+              title="Parties et réservations"
+              subTitle="Réservations à venir"
+              backRoute={false}
+            />
+          )
         }}
       />
       <Stack.Screen
         name="manageMySlots"
         options={{
-          header: () => <Header title="Gérer mes annonces" />
+          header: () => <Header title="Gérer mes annonces" backRoute />
         }}
       />
       <Stack.Screen
