@@ -4,7 +4,7 @@ import Header from '@/components/Header'
 
 export default function ChatLayout() {
   return (
-    <Stack screenOptions={{ contentStyle: { backgroundColor: '#fff' } }}>
+    <Stack screenOptions={{ contentStyle: { backgroundColor: '#fff' }, animation: 'none' }}>
       <Stack.Screen
         name="index"
         options={{
