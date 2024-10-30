@@ -16,7 +16,6 @@ const Messaging = () => {
   const slotIds = combinedSlots?.map(slot => slot.id) || []
 
   const { data: rooms, isLoading: isLoadingRooms, refetch } = useRoomBySlotId(slotIds)
-
   useFocusEffect(
     useCallback(() => {
       refetch()
@@ -32,20 +31,17 @@ const Messaging = () => {
   if (isLoadingSlots || isLoadingRooms) {
     return (
       <View style={styles.container}>
-        {/* <Title variant="pageTitle">Messagerie</Title> */}
         <Title variant="pageTitle">Chargement...</Title>
       </View>
     )
   }
 
-  if (rooms.length === 0) {
+  if (!rooms.length) {
     return (
       <View style={styles.container}>
-        {/* <Title variant="pageTitle">Messagerie</Title> */}
         <EmptyContent
-          title="Vos parties à venir apparaîtront ici"
-          content="Trouvez des partenaires parmis des centaines de joueurs ou publiez vos créneaux et
-            partager une partie."
+          title="Vos discussions apparaîtront ici"
+          content="Rejoignez une partie pour échanger avec vos futurs partenaires"
         />
       </View>
     )
@@ -53,12 +49,16 @@ const Messaging = () => {
 
   return (
     <View style={styles.container}>
-      {/* <Title variant="pageTitle">Messagerie</Title> */}
       <FlatList
         data={rooms}
         keyExtractor={room => room.id.toString()}
         renderItem={({ item: room }) => (
-          <ChatCard hasNewMessage={room.hasNewMessage} onPress={() => handleCardPress(room.id)} />
+          <ChatCard
+            hasNewMessage={room.hasNewMessage}
+            onPress={() => handleCardPress(room.id)}
+            title={room.title}
+            id={room.id}
+          />
         )}
       />
     </View>

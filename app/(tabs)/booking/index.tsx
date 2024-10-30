@@ -46,8 +46,9 @@ const Booking = () => {
             </View>
           ) : (
             <EmptyContent
-              title="Vos discussions apparaîtront ici"
-              content="Rejoignez une partie pour échanger avec vos futurs partenaires"
+              title="Vos parties à venir apparaîtront ici"
+              content="Trouvez des partenaires parmis des centaines de joueurs ou publiez vos créneaux et
+            partager une partie."
             />
           )}
           {slotsByUserId.length > 0 && (

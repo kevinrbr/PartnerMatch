@@ -1,13 +1,20 @@
-import { router } from 'expo-router'
 import React from 'react'
 import { StyleSheet, Image, View, Text, Pressable } from 'react-native'
+
+import { useLastMessageByRoomId } from '@/services/messages/useLastMessageByRoomId'
 
 type TextInputProps = {
   hasNewMessage?: boolean
   onPress: () => void
+  title: string
+  id: string
 }
 
-const ChatCard = ({ onPress, hasNewMessage }: TextInputProps) => {
+const ChatCard = ({ onPress, hasNewMessage, title, id }: TextInputProps) => {
+  const { data, isFetched, isLoading } = useLastMessageByRoomId({
+    roomId: id
+  })
+
   return (
     <Pressable style={styles.container} onPress={onPress}>
       <View style={styles.contentContainer}>
@@ -33,16 +40,22 @@ const ChatCard = ({ onPress, hasNewMessage }: TextInputProps) => {
             </View>
           </View>
           <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
-            Nantes - Ucpa Sport Station
+            {title}
           </Text>
         </View>
         <View style={styles.bottom}>
-          <Text style={styles.name}>Kévin: </Text>
-          <Text style={styles.lastMessage} numberOfLines={1} ellipsizeMode="tail">
-            Je suis disponible à partir de 18h, est-ce que ça vous interesse
-          </Text>
-          <Text>-</Text>
-          <Text style={styles.lastMessageHour}>1h</Text>
+          {data ? (
+            <>
+              <Text style={styles.name}>{data?.profiles.firstName}: </Text>
+              <Text style={styles.lastMessage} numberOfLines={1} ellipsizeMode="tail">
+                {data?.message}
+              </Text>
+              <Text>-</Text>
+              <Text style={styles.lastMessageHour}>1h</Text>
+            </>
+          ) : (
+            <Text>Envoyez le premier message</Text>
+          )}
         </View>
       </View>
       <View style={[styles.noNotificationDot, hasNewMessage && styles.notificationDot]} />
