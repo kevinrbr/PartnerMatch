@@ -14,7 +14,7 @@ type LastMessage = {
   message: string
   room_id: string
   sender_id: string
-  profiles: Profile
+  firstName: string
 }
 
 type UseMessagesParams = {
@@ -31,7 +31,7 @@ export function useLastMessageByRoomId({ roomId }: UseMessagesParams) {
           *,
           profiles:profiles(firstName)
         `
-        ) // Assurez-vous que le select est correct
+        )
         .eq('room_id', roomId)
         .order('created_at', { ascending: false })
         .limit(1)
@@ -43,7 +43,7 @@ export function useLastMessageByRoomId({ roomId }: UseMessagesParams) {
       return data && data.length > 0
         ? {
             ...data[0],
-            profiles: data[0].profiles[0]
+            firstName: data[0].profiles.firstName
           }
         : null
     } catch (error) {

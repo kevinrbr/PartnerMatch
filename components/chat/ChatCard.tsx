@@ -46,7 +46,7 @@ const ChatCard = ({ onPress, hasNewMessage, title, id }: TextInputProps) => {
         <View style={styles.bottom}>
           {data ? (
             <>
-              <Text style={styles.name}>{data?.profiles.firstName}: </Text>
+              <Text style={styles.name}>{data.firstName}: </Text>
               <Text style={styles.lastMessage} numberOfLines={1} ellipsizeMode="tail">
                 {data?.message}
               </Text>
