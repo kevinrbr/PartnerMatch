@@ -1,7 +1,8 @@
 import { useFocusEffect, useRouter } from 'expo-router'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { StyleSheet, View, FlatList, Text } from 'react-native'
 
+import { useRealtimeLastMessage } from '@/common/useRealtimeLastMessage'
 import EmptyContent from '@/components/EmptyContent'
 import Title from '@/components/Title'
 import ChatCard from '@/components/chat/ChatCard'
@@ -25,27 +26,24 @@ const Messaging = () => {
 
   const router = useRouter()
 
-  const handleCardPress = roomId => {
+  const handleCardPress = (roomId: string) => {
     router.push({ pathname: '/chat/[room]', params: { roomId } })
   }
 
   if (isLoadingSlots || isLoadingRooms) {
     return (
       <View style={styles.container}>
-        {/* <Title variant="pageTitle">Messagerie</Title> */}
         <Title variant="pageTitle">Chargement...</Title>
       </View>
     )
   }
 
-  if (rooms.length === 0) {
+  if (!rooms.length) {
     return (
       <View style={styles.container}>
-        {/* <Title variant="pageTitle">Messagerie</Title> */}
         <EmptyContent
-          title="Vos parties à venir apparaîtront ici"
-          content="Trouvez des partenaires parmis des centaines de joueurs ou publiez vos créneaux et
-            partager une partie."
+          title="Vos discussions apparaîtront ici"
+          content="Rejoignez une partie pour échanger avec vos futurs partenaires"
         />
       </View>
     )
@@ -53,13 +51,19 @@ const Messaging = () => {
 
   return (
     <View style={styles.container}>
-      {/* <Title variant="pageTitle">Messagerie</Title> */}
       <FlatList
         data={rooms}
         keyExtractor={room => room.id.toString()}
-        renderItem={({ item: room }) => (
-          <ChatCard hasNewMessage={room.hasNewMessage} onPress={() => handleCardPress(room.id)} />
-        )}
+        renderItem={({ item: room }) => {
+          return (
+            <ChatCard
+              hasNewMessage={room.hasNewMessage}
+              onPress={() => handleCardPress(room.id)}
+              title={room.title}
+              id={room.id}
+            />
+          )
+        }}
       />
     </View>
   )

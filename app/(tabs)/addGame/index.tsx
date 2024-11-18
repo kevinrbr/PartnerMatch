@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
 
+import { formatDateDDYY } from '@/common/date'
 import Button from '@/components/Button'
 import DismissKeyboard from '@/components/DismissKeyboard'
 import CityForm from '@/components/addSlotForm/cityForm'
@@ -39,11 +40,16 @@ const ResearchForm = () => {
     }
   }
 
+  const formatRoomName = data => {
+    const date = formatDateDDYY(data.date)
+    return `${data.club} - ${date}`
+  }
+
   const onSubmit = (data: any) => {
     post(data, {
       onSuccess: data => {
         if (data && data.id) {
-          createRoom(data.id)
+          createRoom({ slotId: data.id, title: formatRoomName(data) })
           const toast = { showToastParams: 'true', message: 'Publié avec succès' }
           router.push({ pathname: '/(tabs)/home/', params: toast })
         }

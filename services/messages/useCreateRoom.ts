@@ -7,10 +7,11 @@ import { supabase } from '@/supabase'
 export function useCreateRoom() {
   const queryClient = useQueryClient()
 
-  const createRoom = async function (slotId: number) {
+  const createRoom = async function ({ slotId, title }: { slotId: number; title: string }) {
     try {
       const { data, error } = await supabase.from('rooms').insert({
-        slot_id: slotId
+        slot_id: slotId,
+        title
       })
 
       if (error) {

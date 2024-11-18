@@ -1,3 +1,4 @@
 export const messagesQueryKey = {
-  all: ['messages']
+  all: ['messages'],
+  latest: (roomId: string) => ['messages', 'latest', roomId]
 }
