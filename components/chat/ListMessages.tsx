@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native'
 
 import MessageCard from './MessageCard'
 
+import { useRealtimeMessages } from '@/common/useRealtimeMessages'
 import { getUserId } from '@/services/account/useUser'
 import { useMessage } from '@/stores/messages'
 import { supabase } from '@/supabase'
@@ -17,6 +18,9 @@ const ListMessages = ({ roomId }: ListMessageProps) => {
   const flatListRef = useRef(null)
   const { messages, optimisticsIds, addMessage } = useMessage(state => state)
 
+  // Utilisation du hook avec roomId
+  useRealtimeMessages(roomId)
+
   useEffect(() => {
     const fetchUserId = async () => {
       const id = await getUserId()
@@ -27,29 +31,6 @@ const ListMessages = ({ roomId }: ListMessageProps) => {
 
   useEffect(() => {
     flatListRef.current?.scrollToEnd({ animated: false })
-  }, [messages])
-
-  useEffect(() => {
-    const channel = supabase.channel(`room-id-${roomId}`).on(
-      'postgres_changes',
-      {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'messages',
-        filter: `room_id=eq.${roomId}`
-      },
-      async payload => {
-        if (!optimisticsIds.includes(payload.new.id)) {
-          await addMessage(payload.new as IMessage)
-        }
-      }
-    )
-
-    const subscription = channel.subscribe()
-
-    return () => {
-      subscription.unsubscribe()
-    }
   }, [messages])
 
   return (

@@ -1,7 +1,8 @@
 import { useFocusEffect, useRouter } from 'expo-router'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { StyleSheet, View, FlatList, Text } from 'react-native'
 
+import { useRealtimeLastMessage } from '@/common/useRealtimeLastMessage'
 import EmptyContent from '@/components/EmptyContent'
 import Title from '@/components/Title'
 import ChatCard from '@/components/chat/ChatCard'
@@ -16,6 +17,7 @@ const Messaging = () => {
   const slotIds = combinedSlots?.map(slot => slot.id) || []
 
   const { data: rooms, isLoading: isLoadingRooms, refetch } = useRoomBySlotId(slotIds)
+
   useFocusEffect(
     useCallback(() => {
       refetch()
@@ -24,7 +26,7 @@ const Messaging = () => {
 
   const router = useRouter()
 
-  const handleCardPress = roomId => {
+  const handleCardPress = (roomId: string) => {
     router.push({ pathname: '/chat/[room]', params: { roomId } })
   }
 
@@ -52,14 +54,16 @@ const Messaging = () => {
       <FlatList
         data={rooms}
         keyExtractor={room => room.id.toString()}
-        renderItem={({ item: room }) => (
-          <ChatCard
-            hasNewMessage={room.hasNewMessage}
-            onPress={() => handleCardPress(room.id)}
-            title={room.title}
-            id={room.id}
-          />
-        )}
+        renderItem={({ item: room }) => {
+          return (
+            <ChatCard
+              hasNewMessage={room.hasNewMessage}
+              onPress={() => handleCardPress(room.id)}
+              title={room.title}
+              id={room.id}
+            />
+          )
+        }}
       />
     </View>
   )

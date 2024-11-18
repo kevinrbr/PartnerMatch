@@ -1,6 +1,8 @@
 import React from 'react'
 import { StyleSheet, Image, View, Text, Pressable } from 'react-native'
 
+import { getDateHours } from '@/common/date'
+import { useRealtimeLastMessage } from '@/common/useRealtimeLastMessage'
 import { useLastMessageByRoomId } from '@/services/messages/useLastMessageByRoomId'
 
 type TextInputProps = {
@@ -14,6 +16,8 @@ const ChatCard = ({ onPress, hasNewMessage, title, id }: TextInputProps) => {
   const { data, isFetched, isLoading } = useLastMessageByRoomId({
     roomId: id
   })
+
+  const lastMessage = useRealtimeLastMessage(id)
 
   return (
     <Pressable style={styles.container} onPress={onPress}>
@@ -48,10 +52,12 @@ const ChatCard = ({ onPress, hasNewMessage, title, id }: TextInputProps) => {
             <>
               <Text style={styles.name}>{data.firstName}: </Text>
               <Text style={styles.lastMessage} numberOfLines={1} ellipsizeMode="tail">
-                {data?.message}
+                {lastMessage?.message}
               </Text>
               <Text>-</Text>
-              <Text style={styles.lastMessageHour}>1h</Text>
+              <Text style={styles.lastMessageHour}>
+                {getDateHours(lastMessage?.created_at.toString())}
+              </Text>
             </>
           ) : (
             <Text>Envoyez le premier message</Text>
