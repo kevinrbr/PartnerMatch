@@ -11,14 +11,15 @@ import {
 const StackLayout = () => {
   const segments = useSegments()
   return (
-    <View style={{ flex: 1 }}>
-      <Tabs initialRouteName="messaging" sceneContainerStyle={{ backgroundColor: '#fff' }}>
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+      <Tabs initialRouteName="chat">
         <Tabs.Screen
           name="home"
           options={{
             tabBarIcon: () => <HomeIcon color="#182A60" strokeWidth="1" />,
             tabBarShowLabel: false,
-            headerShown: false
+            headerShown: false,
+            sceneStyle: { backgroundColor: '#fff' }
           }}
         />
         <Tabs.Screen
