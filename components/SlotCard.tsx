@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native'
 import { ClockIcon } from 'react-native-heroicons/outline'
 
-import { getDateHours } from '@/common/date'
+import { formatDateDDYY, getDateHours } from '@/common/date'
 import { ISlot } from '@/types/slot'
 
 type SlotCardProps = {
@@ -36,7 +36,9 @@ const SlotCard = ({ slot, onClick }: SlotCardProps) => {
             </Text>
             <View style={styles.hourContainer}>
               <ClockIcon color="#FF7131" size={16} />
-              <Text style={styles.hour}>{getDateHours(slot.date.toString())}</Text>
+              <Text style={styles.hour}>
+                {formatDateDDYY(slot.date.toString())} - {getDateHours(slot.date.toString())}
+              </Text>
             </View>
           </View>
           <View>
