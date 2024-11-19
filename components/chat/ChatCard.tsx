@@ -54,9 +54,8 @@ const ChatCard = ({ onPress, hasNewMessage, title, id }: TextInputProps) => {
               <Text style={styles.lastMessage} numberOfLines={1} ellipsizeMode="tail">
                 {lastMessage?.message}
               </Text>
-              <Text>-</Text>
               <Text style={styles.lastMessageHour}>
-                {getDateHours(lastMessage?.created_at.toString())}
+                {lastMessage?.created_at && getDateHours(lastMessage?.created_at.toString())}
               </Text>
             </>
           ) : (
