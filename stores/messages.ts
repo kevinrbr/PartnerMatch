@@ -6,6 +6,7 @@ interface MessageState {
   messages: IMessage[]
   optimisticsIds: string[]
   addMessage: (message: IMessage) => void
+  setMessages: (messages: IMessage[]) => void // Nouvelle fonction pour définir les messages
 }
 
 export const useMessage = create<MessageState>(set => ({
@@ -19,5 +20,9 @@ export const useMessage = create<MessageState>(set => ({
       }
       return updatedState
     })
+  },
+  setMessages: messages => {
+    // Fonction pour définir tous les messages à la fois
+    set({ messages })
   }
 }))

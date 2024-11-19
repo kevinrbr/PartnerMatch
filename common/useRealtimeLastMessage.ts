@@ -4,7 +4,6 @@ import { supabase } from '@/supabase' // Assurez-vous que supabase est bien conf
 import { IMessage } from '@/types/message'
 
 export const useRealtimeLastMessage = (roomId: string) => {
-  console.log(roomId)
   const [lastMessage, setLastMessage] = useState<IMessage | null>(null)
 
   useEffect(() => {

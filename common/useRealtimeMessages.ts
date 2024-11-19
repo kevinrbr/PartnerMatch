@@ -8,21 +8,19 @@ export const useRealtimeMessages = (roomId: string) => {
   const { optimisticsIds, addMessage } = useMessage(state => state)
 
   useEffect(() => {
-    // Créer un canal pour écouter les changements dans la table "messages" pour une salle spécifique
     const channel = supabase.channel(`room-id-${roomId}`).on(
       'postgres_changes',
       {
-        event: 'INSERT', // Quand un message est ajouté
+        event: 'INSERT',
         schema: 'public',
         table: 'messages',
-        filter: `room_id=eq.${roomId}` // Filtrer les messages uniquement pour cette salle
+        filter: `room_id=eq.${roomId}`
       },
       payload => {
         const newMessage = payload.new as IMessage
 
-        // Si le message n'a pas déjà été ajouté (pour éviter les mises à jour optimistes)
         if (!optimisticsIds.includes(newMessage.id)) {
-          addMessage(newMessage) // Ajouter le message au store
+          addMessage(newMessage)
         }
       }
     )

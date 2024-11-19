@@ -16,9 +16,9 @@ type ListMessageProps = {
 const ListMessages = ({ roomId }: ListMessageProps) => {
   const [userId, setUserId] = useState('')
   const flatListRef = useRef(null)
-  const { messages, optimisticsIds, addMessage } = useMessage(state => state)
+  const { messages, setMessages } = useMessage(state => state) // Déstructure aussi `setMessages`
 
-  // Utilisation du hook avec roomId
+  // Abonnement aux messages en temps réel
   useRealtimeMessages(roomId)
 
   useEffect(() => {
@@ -28,6 +28,26 @@ const ListMessages = ({ roomId }: ListMessageProps) => {
     }
     fetchUserId()
   }, [])
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      const { data, error } = await supabase
+        .from('messages')
+        .select('*')
+        .eq('room_id', roomId)
+        .order('created_at', { ascending: true })
+
+      if (error) {
+        console.error(error)
+      } else {
+        // Mettre à jour les messages dans le store
+        setMessages(data)
+      }
+    }
+
+    // Charger les messages quand le composant est monté
+    fetchMessages()
+  }, [roomId, setMessages]) // Effecte déclenché par `roomId` pour charger les messages à chaque changement de salle
 
   useEffect(() => {
     flatListRef.current?.scrollToEnd({ animated: false })
