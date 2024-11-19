@@ -11,9 +11,7 @@ type SlotCardProps = {
 
 const SlotCard = ({ slot, onClick }: SlotCardProps) => {
   const numberOfPlacesLabel = slot => {
-    return +slot.nbPlaces > 1
-      ? +slot.nbPlaces + ' places disponibles'
-      : +slot.nbPlaces + ' place disponible'
+    return +slot.nbPlaces > 1 ? +slot.nbPlaces + ' places disponibles' : 'Complet'
   }
 
   const handlePress = () => {
